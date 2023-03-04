@@ -1,28 +1,39 @@
 const http = require('http');
-const { json } = require('stream/consumers');
-const port = 3000;
+const express = require('express');
+const { stringify } = require('querystring');
+const app = express();
 
-const server = http.createServer((req, res) => {
+app.listen(3000);
+app.use(express.static('public'));
+app.use(express.json()); 
+app.use(express.urlencoded()); 
 
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.setHeader('Content-Type', 'application/json');
 
 
-  if (req.method === 'POST') {
-    let body = '';
-    req.on('data', chunk => {
-      body += chunk.toString();
-    });
-    req.on('end', () => {
-      console.log(body);
-      res.end(JSON.stringify("Req suc"));
-    });
-  } else {
-    res.end(JSON.stringify("Req suc"));
+
+app.get('/',(req,res) =>{
+
+res.sendFile(__dirname + '/index.html')
+
+}
+);
+
+
+app.post('/', (req, res) => {
+  console.log(req.body);
+  if (comparepassword(req.body.username, req.body.password) == true) {
+    res.redirect('/userpage.html')
+    console.log("im done");
   }
 });
 
-server.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}/`);
-});
+
+
+function comparepassword(username, password){
+console.log(username + password);
+
+
+  if(username == "Daniel" && password == "Lolmand"){
+    return true;
+  }
+}
