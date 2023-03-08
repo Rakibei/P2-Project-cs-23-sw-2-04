@@ -14,7 +14,6 @@ app.use(session({
   cookie: { secure: false }
 }));
 
-app.use(express.static('public'));
 app.use('/private', isAuthenticated, express.static(path.join(__dirname, 'private')));
 app.use(express.json()); 
 app.use(express.urlencoded()); 
@@ -26,10 +25,24 @@ app.use((req,res,next) => {
   next();
 });
 
-app.get('/', checkIfAlreadyAuthenticated, (req,res) => {
-  console.log("the cookie is " + req.session);
+app.get('/', (req,res) => {
+
+  // asks if the user has been here before
+  // if they have send them to the site
+  // if not continue
+  console.log("the cookie is ", req.session);
+
+
+  if(req.session.isAuthenticated == true){
+
+    res.redirect('/private/userpage.html')
+  } else{
+    res.redirect('index.html')
+  }
+
 });
 
+app.use(express.static('public'));
 
 
 app.post('/', (req,res) => {
@@ -38,12 +51,39 @@ app.post('/', (req,res) => {
         console.log("Im here");
         req.session.isAuthenticated = true;
         req.session.save()
-        console.log("the cookie is " + JSON.stringify(req.session));
-        res.redirect('private/userpage.html')
+        res.redirect('/private/userpage.html');
     } else {
         // Handle failed authentication here...
     }
 });
+
+
+
+app.get('/private/userpage.html',(req,res)=>{
+/*
+User object
+User id Name Password Email
+Time block object
+Time block id Start time End time Project id User id
+Project object
+Project id Name Start date End date Mere???
+User assigned project object
+assigned id Project id User id Start date End date
+
+*/
+
+console.log("Hello")
+
+
+});
+
+
+
+
+
+
+
+
 
 function comparepassword(username,password){
     return username === "Daniel" && password === "Lolmand";
@@ -59,17 +99,9 @@ function isAuthenticated(req, res, next) {
     next();
   } else {
     // Redirect to login page or send error message
-    res.code('/login');
+    res.status(401).send('Acces not granted');
   }
 }
 
-function checkIfAlreadyAuthenticated(req, res, next) {
-  console.log("m");
-  // Check if the user is authenticated (e.g., by checking for a session cookie)
-  if (req.session.isAuthenticated) {
-    res.redirect('private/userpage.html');
-  } else {
-    console.log("the user was not granted acces with this cookie " + JSON.stringify(req.session));
-    res.sendFile(__dirname + '/index.html');
-  }
-}
+
+

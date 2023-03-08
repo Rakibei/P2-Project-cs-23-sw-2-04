@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/Rakibei/P2-Project-cs-23-sw-2-04#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "express-session": "^1.17.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.21"
