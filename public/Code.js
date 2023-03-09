@@ -19,6 +19,5 @@ document.querySelector('form').addEventListener('submit', (event) => {
 .catch(error => console.error(error));
 });
 
-var data = JSON.parse(sessionStorage.getItem('data'));
-console.log(data); // { username: 'Flavio' }
+
 

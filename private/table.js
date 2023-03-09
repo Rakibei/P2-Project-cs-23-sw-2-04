@@ -1,14 +1,8 @@
-(function()
-{
-  if( window.localStorage )
-  {
-    if( !localStorage.getItem('firstLoad') )
-    {
-      localStorage['firstLoad'] = true;
-      window.location.reload();
-    }  
-    else
-      localStorage.removeItem('firstLoad');
-  }
-})();
-
+window.addEventListener('load', () => {
+  fetch('/sesionData')
+      .then(response => response.json())
+      .then(data => {
+          // Do something with session data here
+          console.log(data);
+      });
+});
