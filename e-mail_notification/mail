@@ -1,0 +1,37 @@
+const nodemailer = require('nodemailer');
+const cron = require('node-cron');
+
+// the "host" mail
+let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: 'p2projectmail@gmail.com', //NB. we will most likely have to add this 'app' to the google account.
+        pass: 'jxxsfqhgyfbtgfye'
+    }
+});
+//password vorespassword
+
+// E-mail content
+const mailOptions = {
+    from: 'p2projectmail@gmail.com',
+    to: 'nikolajfagejensen@gmail.com, markuspedersen13@gmail.com',
+    subject: 'Reminder',
+    text: 'SUBMIT YOU BASTARD!'
+};
+
+// Here we define a time for the mail to go out, right now it is set to every minut
+// 0 mean at minut zero.
+// 10 mean at 10 hours.
+// * is an empty parameter.
+// 1 is the day of the week, i.e. Monday. this is a function of cron.
+cron.schedule('0 10 * * 1', () => {
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+});
