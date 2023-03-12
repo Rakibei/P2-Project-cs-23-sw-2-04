@@ -100,13 +100,19 @@ let project2 ={
   EndDate:20.12,
   UserIDs:[1234,23321] ,
 }
-
+let project3 ={
+  projectID:12351,
+  name:"Project3",
+  startDate:19.02,
+  EndDate:20.12,
+  UserIDs:[1234,23321] ,
+}
 
 
 // The info is stored in session and is sent to the client
 req.session.user = user;
 req.session.Timeblock = Timeblock;
-req.session.projects =[project1,project2];
+req.session.projects =[project1,project2,project3];
 req.session.save();
 res.json(req.session);
 

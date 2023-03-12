@@ -1,38 +1,15 @@
-let project1 = {
-    projectID: 12351,
-    name: "p1",
-    startDate: 19.02,
-    EndDate: 20.12,
-    UserIDs: [1234,23321],
-    UserName: "Daniel"
-  }
-  let project2 = {
-    projectID:12351,
-    name:"p2",
-    startDate:19.02,
-    EndDate:20.12,
-    UserIDs:[1234,23321],
-    UserName:"Daniel"
-  }
-  let project3 = {
-    projectID:123511,
-    name:"p3",
-    startDate:19.02,
-    EndDate:20.12,
-    UserIDs:[1234,23321],
-    UserName:"Daniel"
-  }
-  let project4 = {
-    projectID:123521,
-    name:"p4",
-    startDate:19.02,
-    EndDate:20.12,
-    UserIDs:[1234,23321],
-    UserName:"Daniel"
-  }
-  let projects = [project1,project2,project3,project4]
-  
-  document.getElementById('timesheetcontainer').innerHTML = rendertimesheettable(projects);
+
+window.addEventListener('load', () => {
+  fetch('/sesionData')
+      .then(response => response.json())
+      .then(data => {
+          // Do something with session data here
+          console.log(data);
+          let projects = data.projects;
+          document.getElementById('timesheetcontainer').innerHTML = rendertimesheettable(projects);
+      });
+});
+
 
   function rendertimesheettable (projects){
       let timesheettable= `<body>
