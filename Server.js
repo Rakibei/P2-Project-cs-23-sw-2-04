@@ -4,6 +4,9 @@
 import http from 'http';
 import { join } from 'path';
 import express from 'express';
+
+import {connectToDatabase, getUsers, getUser, createUser, comparePassword, createProject} from './database.js';
+
 const { json } = express;
 const { urlencoded } = express;
 const { static: serveStatic } = express;
@@ -17,6 +20,9 @@ const app = express();
 //The server listens on port 3000 localhost so the ip is 127.0.0.1:3000
 app.listen(3000);
 
+
+// Database connection
+const poolData = await connectToDatabase();
 
 // Use session to set up cookies middleware before other middleware functions
 app.use(session({
@@ -60,10 +66,11 @@ app.use(serveStatic ('public'));
 
 
 // When the server recives a post requst to the server directly
-app.post('/', (req,res) => {
+app.post('/', async (req,res) => {
   // The contents are printed
+  const comp = await comparePassword(poolData,req.body.username, req.body.password)
     console.log(req.body);
-    if (comparepassword(req.body.username, req.body.password)) {
+    if (comp) {
       // If the user is authenticated then the server redirects them and saves their cookie to show that they are
         console.log(req.body.username + " is here");
         req.session.isAuthenticated = true;
@@ -135,10 +142,6 @@ console.log("Data Sent")
 
 
 
-
-function comparepassword(username,password){
-    return username === "Daniel" && password === "Lolmand";
-}
 
 // Handle 404 errors
 app.use((req,res) => {

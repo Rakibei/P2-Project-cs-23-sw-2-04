@@ -1,11 +1,11 @@
-import { createPool } from 'mysql2'
-import { genSalt, hash as _hash, compare } from 'bcrypt'
+import mysql2 from 'mysql2'
+import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
 
 export function connectToDatabase() {
     try {
         dotenv.config()
-        const pool = createPool({ 
+        const pool = mysql2.createPool({ 
             host: process.env.MYSQL_HOST,
             user: process.env.MYSQL_USER,
             password: process.env.MYSQL_PASSWORD,
@@ -44,29 +44,32 @@ export async function getUser(pool, id) {
 
 export async function createUser(pool, username, password) {
     try {
-        const salt = await genSalt(10)
-        const hash = await _hash(password, salt)
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(password, salt)
 
         const [result] = await pool.query(`
         INSERT INTO users (username, password)
         VALUES (?, ?)
         `, [username, hash])
         const id = result.insertId
-        return getUser(id)
+        return getUser(pool, id)
     } catch (error) {
         console.log(error)
         return false // error occurred
     }
 }
 
-export async function comparePassword(username, password) {
+export async function comparePassword(pool, username, password) {
+
+    console.log(pool + " " + username + " " + password);
+
     try {
         const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username])
         const user = rows[0]
         if (!user) {
             return false // user not found
         }
-        const match = await compare(password, user.password)
+        const match = await bcrypt.compare(password, user.password)
         return match // true or false
     } catch (error) {
         console.log(error)
