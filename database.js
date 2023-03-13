@@ -1,7 +1,7 @@
-import mysql from 'mysql2'
-import bcrypt from 'bcrypt'
+const mysql = require('mysql2')
+const bcrypt = require('bcrypt')
 
-import dotenv from 'dotenv'
+const dotenv = require('dotenv')
 dotenv.config()
 
 const pool = mysql.createPool({ 
@@ -11,7 +11,7 @@ const pool = mysql.createPool({
     database: process.env.MYSQL_DATABASE,
 }).promise()
 
-export async function getUsers() {
+async function getUsers() {
     try {
         const [rows] = await pool.query("SELECT * FROM users")
         return rows
@@ -21,7 +21,7 @@ export async function getUsers() {
     }
 }
 
-export async function getUser(id) {
+async function getUser(id) {
     try {
         const [user] = await pool.query(`
         SELECT * 
@@ -35,7 +35,7 @@ export async function getUser(id) {
     }
 }
 
-export async function createUser(username, password) {
+async function createUser(username, password) {
     try {
         const salt = await bcrypt.genSalt(10)
         const hash = await bcrypt.hash(password, salt)
@@ -52,8 +52,7 @@ export async function createUser(username, password) {
     }
 }
 
-
-export async function comparePassword(username, password) {
+async function comparePassword(username, password) {
     try {
         const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username])
         const user = rows[0]
@@ -86,8 +85,16 @@ comparePassword('madstest', 'hej').then((result) => {
 //const newUser = await createUser('madstest', 'hej')
 //console.log(newUser)
 
-const users = await getUsers()
-console.log(users)
+const promise1 = new Promise((resolve, reject) => {
+    resolve( getUsers());
+});
+
+promise1.then((users) => {
+    console.log(users)
+})
+
+//const users = getUsers().promise()
+//console.log(users)
 
 //const user =  await getUser(2)
 //console.log(user)
