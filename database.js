@@ -88,6 +88,25 @@ export async function createProject(pool, ProjectId, name, startDate, endDate, h
     }
 }
 
+export async function getProject(pool, id) {
+    try {
+        const [project] = await pool.query(`SELECT * FROM projects WHERE id = ?`,[id])
+        return project[0]
+    } catch (error) {
+        console.log(error);
+        return false; // error occurred
+    }
+}
+
+export async function getProject(pool) {
+    try {
+        const [rows] = await pool.query("SELECT * FROM projects")
+        return rows
+    } catch (error) {
+        console.log(error)
+        return false // error occurred
+    }
+}
 
 
 
