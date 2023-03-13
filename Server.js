@@ -1,14 +1,22 @@
+
+
 // The servers parameters are set up so that it works with express
-const http = require('http');
-const path = require('path');
-const express = require('express');
-const session = require('express-session');
-const { stringify } = require('querystring');
+import http from 'http';
+import { join } from 'path';
+import express from 'express';
+const { json } = express;
+const { urlencoded } = express;
+const { static: serveStatic } = express;
+import { fileURLToPath } from 'url';
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+import session from 'express-session';
+import { stringify } from 'querystring';
 // The server is given the name app and calls from the express function
 const app = express();
 
 //The server listens on port 3000 localhost so the ip is 127.0.0.1:3000
 app.listen(3000);
+
 
 // Use session to set up cookies middleware before other middleware functions
 app.use(session({
@@ -19,11 +27,11 @@ app.use(session({
 }));
 
 //The servers private folder is static and is only able to be used after the isAuthenticated function has confirmed the user
-app.use('/private', isAuthenticated, express.static(path.join(__dirname, 'private')));
+app.use('/private', isAuthenticated, serveStatic(join(__dirname, 'private')));
 
 //This middleware allows the server to parse data sent in JSON and html forms format
-app.use(express.json()); 
-app.use(express.urlencoded()); 
+app.use(json()); 
+app.use(urlencoded()); 
 
 
 // This middleware is to log all requsts sent to the server and log what methond they used and what they want.
@@ -47,7 +55,7 @@ app.get('/', (req,res) => {
   }
 });
 // we now say that the client can acces the public folder otherwise the client dosent send a get requst
-app.use(express.static('public'));
+app.use(serveStatic ('public'));
 
 
 
