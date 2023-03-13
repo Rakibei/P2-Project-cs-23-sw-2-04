@@ -5,7 +5,7 @@ import http from 'http';
 import { join } from 'path';
 import express from 'express';
 
-import {connectToDatabase, getUsers, getUser, createUser, comparePassword, createProject} from './database.js';
+import {connectToDatabase, getUsers, getUser, createUser, comparePassword, createProject, getUserProjects,getUserIdWithName} from './database.js';
 
 const { json } = express;
 const { urlencoded } = express;
@@ -74,6 +74,7 @@ app.post('/', async (req,res) => {
       // If the user is authenticated then the server redirects them and saves their cookie to show that they are
         console.log(req.body.username + " is here");
         req.session.isAuthenticated = true;
+        req.session.userName = req.body.username
         req.session.save()
         res.redirect('/private/userpage.html?');
     } else {
@@ -83,51 +84,15 @@ app.post('/', async (req,res) => {
 
 
 // for when the user needs their userdata on the next page
-app.get('/sesionData',(req,res)=>{
+app.get('/sesionData',async(req,res)=>{
 
+  let userID = await getUserIdWithName(poolData,req.session.userName);
+  let userProjects = await getUserProjects(poolData,userID);
 
-// Example data
-let user ={
-  id:"1234",
-  Name:"Daniel", 
-  Password:"Lolmand",
-  Email:"Lol@das.dk",
-}
-let Timeblock ={
-  id:12351,
-  StartTime:12.21,
-  EndTime:22.22,
-  ProjectID:123,
-  UserIDs:[1234,23321] ,
-}
-
-let project1 ={
-  projectID:12351,
-  name:"Project1",
-  startDate:19.02,
-  EndDate:20.12,
-  UserIDs:[1234,23321] ,
-}
-let project2 ={
-  projectID:12351,
-  name:"Project2",
-  startDate:19.02,
-  EndDate:20.12,
-  UserIDs:[1234,23321] ,
-}
-let project3 ={
-  projectID:12351,
-  name:"Project3",
-  startDate:19.02,
-  EndDate:20.12,
-  UserIDs:[1234,23321] ,
-}
 
 
 // The info is stored in session and is sent to the client
-req.session.user = user;
-req.session.Timeblock = Timeblock;
-req.session.projects =[project1,project2,project3];
+req.session.projects = userProjects;
 req.session.save();
 res.json(req.session);
 
