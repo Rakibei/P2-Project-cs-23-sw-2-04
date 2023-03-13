@@ -1,18 +1,32 @@
 {
-  "name": "database",
+  "name": "github",
   "version": "1.0.0",
-  "description": "",
+  "description": "Overleaf/Latex: https://da.overleaf.com/4497578287twjssgtfpmwn",
+  "main": "Code.js",
   "type": "module",
-  "main": "database.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+    "devStart": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rakibei/P2-Project-cs-23-sw-2-04.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rakibei/P2-Project-cs-23-sw-2-04/issues"
+  },
+  "homepage": "https://github.com/Rakibei/P2-Project-cs-23-sw-2-04#readme",
   "dependencies": {
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
     "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "mysql2": "^3.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
   }
 }
