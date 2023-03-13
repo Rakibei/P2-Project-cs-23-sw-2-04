@@ -86,11 +86,26 @@ comparePassword('madstest', 'hej').then((result) => {
 //const newUser = await createUser('madstest', 'hej')
 //console.log(newUser)
 
-const users = await getUsers()
-console.log(users)
+//const users = await getUsers()
+//console.log(users)
 
 //const user =  await getUser(2)
 //console.log(user)
 
 //const result = await createUser('Markus', '1234')
 //console.log(result)
+
+
+export async function createProject(ProjectId, name, startDate, endDate, hoursSpent) {
+    try {
+      const values = [ProjectId, name, startDate, endDate, hoursSpent];
+      await pool.query('INSERT INTO projects (ProjectId, name, startDate, endDate, hoursSpent) VALUES (?, ?, ?, ?, ?)', values);
+      return true; // success
+    } catch (error) {
+      console.log(error);
+      return false; // error occurred
+    }
+  }
+
+const result = await createProject(1, 'Project A', '2022-01-01', '2022-06-30', 100)
+console.log(result);
