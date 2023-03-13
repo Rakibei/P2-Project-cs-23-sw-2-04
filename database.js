@@ -98,7 +98,7 @@ export async function getProject(pool, id) {
     }
 }
 
-export async function getProject(pool) {
+export async function getProjects(pool) {
     try {
         const [rows] = await pool.query("SELECT * FROM projects")
         return rows
@@ -108,9 +108,44 @@ export async function getProject(pool) {
     }
 }
 
+export async function getUserIdWithName(pool, username) {
+    try {
+        const [userId] = await pool.query('SELECT * FROM users WHERE username = ?', [username])
+        return userId[0].id
+    } catch (error) {
+        console.log(error)
+        return false // error occurred
+    }
+}
+
+export async function getUserProjects(pool, userId) {
+    try {
+        const [userProjectsLinks] = await pool.query('SELECT * FROM userProjectLinks WHERE userId = ?', [userId])
+        //console.log([userProjectsLinks].projectId);
+        const [projectIds] = userProjectsLinks.map(link => link.projectId)
+        const [projects] = await pool.query('SELECT * FROM projects WHERE ProjectId = ?', projectIds)
+        return [projects][0]
+    } catch (error) {
+        console.log(error)
+        return false // error occurred
+    }
+
+}
+
+export async function createUserProjectLink(pool, userId, projectId) {
+    try {
+        const values = [userId, projectId];
+        await pool.query('INSERT INTO userProjectLinks (userId, projectId) VALUES (?, ?)', values);
+        return true; // success
 
 
+    } catch (error) {
+        console.log(error)
+        return false // error occurred
+    }
 
+
+}
 
 /*
 comparePassword('madstest', 'hej').then((result) => {
@@ -121,7 +156,7 @@ comparePassword('madstest', 'hej').then((result) => {
 //const newUser = await createUser('madstest', 'hej')
 //console.log(newUser)
 //const pool = await connectToDatabase();
-//const users = await getUsers(pool)
+//const users = await getUserProjects(pool, 8)
 //console.log(users)
 
 //const user =  await getUser(2)
