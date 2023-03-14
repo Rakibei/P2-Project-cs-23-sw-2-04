@@ -91,7 +91,7 @@ window.addEventListener('load', () => {
             let cell = tableID.rows[j].cells[i].querySelector("input[type='number']");
             cell.addEventListener('input', SumOfRow);
             console.log(cell.value);
-            totalCollumValue += parseInt(cell.value);
+            totalCollumValue += parseFloat(cell.value);
           }
           tableID.rows[amountOfRows -1].cells[i].querySelector("input[type='number']").value = totalCollumValue;
           totalCollumValue = 0;
