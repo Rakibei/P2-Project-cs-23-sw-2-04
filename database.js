@@ -143,6 +143,16 @@ export async function createUserProjectLink(pool, userId, projectId) {
     }
 }
 
+export async function setUserLevel(pool, userId, newLevel) {
+    try {
+        await pool.query('UPDATE users SET level = "?" WHERE id = "?"', [newLevel, userId]);
+        return true; // success
+    } catch (error) {
+        console.log(error)
+        return false // error occurred
+    }
+}
+
 /*
 comparePassword('madstest', 'hej').then((result) => {
     console.log(result); // true or false
@@ -158,9 +168,9 @@ comparePassword('madstest', 'hej').then((result) => {
 //createUserProjectLink(pool, 8, 2)
 //const users = await getUserProjects(pool, 8)
 //console.log(users)
-
+//console.log( await setUserLevel(pool, 1, 1) )
 //const user =  await getUser(2)
 //console.log(user)
-
+//getUser(pool, 2);
 //const result = await createUser('Markus', '1234')
 //console.log(result)
