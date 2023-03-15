@@ -5,7 +5,7 @@ import http from 'http';
 import { join } from 'path';
 import express from 'express';
 
-import {connectToDatabase, getUsers, getUser, createUser, comparePassword, createProject, getUserProjects,getUserIdWithName} from './database.js';
+import {ConnectToDatabase, GetUsers, GetUser, CreateUser, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName} from './database.js';
 
 const { json } = express;
 const { urlencoded } = express;
@@ -14,7 +14,8 @@ import { fileURLToPath } from 'url';
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 import session from 'express-session';
 import { stringify } from 'querystring';
-import { autoMailer } from './e-mail_notification/mail.js';
+// import { autoMailer } from './e-mail_notification/mail.js';
+
 // The server is given the name app and calls from the express function
 const app = express();
 
@@ -23,7 +24,7 @@ app.listen(3000);
 
 
 // Database connection
-const poolData = connectToDatabase();
+const poolData = ConnectToDatabase();
 
 // Use session to set up cookies middleware before other middleware functions
 app.use(session({
@@ -69,7 +70,7 @@ app.use(serveStatic ('public'));
 // When the server recives a post requst to the server directly
 app.post('/', async (req,res) => {
   // The contents are printed
-  const comp = await comparePassword(poolData,req.body.username, req.body.password)
+  const comp = await ComparePassword(poolData,req.body.username, req.body.password)
     console.log(req.body);
     if (comp) {
       // If the user is authenticated then the server redirects them and saves their cookie to show that they are
@@ -99,7 +100,30 @@ console.log("Data Sent")
 
 });
 
+// handle Admin functions
 
+// This folder is only accelisble after the user is confirmed to be an admin
+app.use('/admin', isAuthenticated, serveStatic(join(__dirname, 'admin')));
+
+// Handle the admin page
+app.get('/admin/admin.html', async (req, res) => {
+
+
+
+
+});
+
+
+// Handle the Admins requsts
+app.post('/adminRequests', isAuthenticated, async (req, res) => {
+
+  console.log(req.body);
+  if (req.body.function == "CreateUser"){
+    let CreateUserData = await CreateUser(poolData,req.body.createUsername,req.body.createPassword);
+    console.log(CreateUserData);
+  }
+
+});
 
 
 

@@ -20,8 +20,9 @@ document.getElementById("UserLevelButton").addEventListener("click", ()=> {
 document.querySelector('#userCreationForm').addEventListener('submit', (event) => {
     event.preventDefault();
     const data = {
-      username: event.target.username.value,
-      password: event.target.password.value
+        createUsername: event.target.createUsername.value,
+        createPassword: event.target.createPassword.value,
+        function: "CreateUser"
     };
    fetch('http://127.0.0.1:3000/adminRequests', {
     method: 'POST',

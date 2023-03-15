@@ -52,7 +52,7 @@ export async function CreateUser(pool, username, password) {
         VALUES (?, ?)
         `, [username, hash])
         const id = result.insertId
-        return getUser(pool, id)
+        return GetUser(pool, id)
     } catch (error) {
         console.log(error)
         return false // error occurred
