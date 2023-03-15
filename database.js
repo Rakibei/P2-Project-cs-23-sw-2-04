@@ -61,8 +61,6 @@ export async function createUser(pool, username, password) {
 
 export async function comparePassword(pool, username, password) {
 
-    console.log(pool + " " + username + " " + password);
-
     try {
         const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username])
         const user = rows[0]
@@ -121,10 +119,10 @@ export async function getUserIdWithName(pool, username) {
 export async function getUserProjects(pool, userId) {
     try {
         const [userProjectsLinks] = await pool.query('SELECT * FROM userProjectLinks WHERE userId = ?', [userId])
-        //console.log([userProjectsLinks].projectId);
-        const [projectIds] = userProjectsLinks.map(link => link.projectId)
-        const [projects] = await pool.query('SELECT * FROM projects WHERE ProjectId = ?', projectIds)
-        return [projects][0]
+        const projectIds = userProjectsLinks.map(link => link.projectId)
+
+        const [projects] = await pool.query('SELECT * FROM projects WHERE ProjectId IN (?)', [projectIds])
+        return projects;
     } catch (error) {
         console.log(error)
         return false // error occurred
@@ -143,8 +141,6 @@ export async function createUserProjectLink(pool, userId, projectId) {
         console.log(error)
         return false // error occurred
     }
-
-
 }
 
 /*
@@ -156,6 +152,10 @@ comparePassword('madstest', 'hej').then((result) => {
 //const newUser = await createUser('madstest', 'hej')
 //console.log(newUser)
 //const pool = await connectToDatabase();
+
+//createProject(pool, 2, "projectB", '1900-00-01', 'SELECT CURDATE()', 69)
+
+//createUserProjectLink(pool, 8, 2)
 //const users = await getUserProjects(pool, 8)
 //console.log(users)
 
