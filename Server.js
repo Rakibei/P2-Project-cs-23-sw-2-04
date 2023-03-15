@@ -54,7 +54,7 @@ app.get('/', (req,res) => {
 // We check if the user has accesed the site before 
   if(req.session.isAuthenticated == true){
     // If they are authenticated then redirect them to the next site
-    res.redirect('/private/userpage.html')
+    res.redirect('/private/homepage.html')
   } else{
     // If not send them to the login page
     res.redirect('index.html')
@@ -76,7 +76,7 @@ app.post('/', async (req,res) => {
         req.session.isAuthenticated = true;
         req.session.userName = req.body.username
         req.session.save()
-        res.redirect('/private/userpage.html?');
+        res.redirect('/private/homepage.html');
     } else {
         // Handle failed authentication here...
     }
@@ -93,6 +93,7 @@ app.get('/sesionData',async(req,res)=>{
 
 // The info is stored in session and is sent to the client
 req.session.projects = userProjects;
+req.session.userID = userID;
 req.session.save();
 res.json(req.session);
 
@@ -104,23 +105,40 @@ console.log("Data Sent")
 });
 
 
+// handle Admin functions
+
+// This folder is only accelisble after the user is confirmed to be an admin
+app.use('/admin', isAuthenticated, serveStatic(join(__dirname, 'admin')));
+
+// Handle the admin page
+app.get('/admin/admin.html', async (req, res) => {
+
+});
+
+
+// Handle the Admins requsts
+app.post('/adminRequests', isAuthenticated, async (req, res) => {
+
+
+
+});
+
+
+
 
 
 
 
 // Handle 404 errors
 app.use((req,res) => {
-    res.status(404).send('404 error page does not exist');
+  res.status(404).send('404 error page does not exist');
 });
 
 function isAuthenticated(req, res, next) {
-  if (req.session.isAuthenticated) {
-    next();
-  } else {
-    // send error message
-    res.status(401).send('Acces not granted');
-  }
+if (req.session.isAuthenticated) {
+  next();
+} else {
+  // send error message
+  res.status(401).send('Acces not granted');
 }
-
-
-
+}
