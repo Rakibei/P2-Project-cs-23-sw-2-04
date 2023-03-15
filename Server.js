@@ -14,6 +14,7 @@ import { fileURLToPath } from 'url';
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 import session from 'express-session';
 import { stringify } from 'querystring';
+import { autoMailer } from './e-mail_notification/mail.js';
 // The server is given the name app and calls from the express function
 const app = express();
 
@@ -22,7 +23,7 @@ app.listen(3000);
 
 
 // Database connection
-const poolData = await connectToDatabase();
+const poolData = connectToDatabase();
 
 // Use session to set up cookies middleware before other middleware functions
 app.use(session({
@@ -82,31 +83,20 @@ app.post('/', async (req,res) => {
     }
 });
 
-
 // for when the user needs their userdata on the next page
 app.get('/sesionData',async(req,res)=>{
 
   let userID = await getUserIdWithName(poolData,req.session.userName);
   let userProjects = await getUserProjects(poolData,userID);
 
-
-
 // The info is stored in session and is sent to the client
 req.session.projects = userProjects;
 req.session.save();
 res.json(req.session);
 
-
-
 console.log("Data Sent")
 
-
 });
-
-
-
-
-
 
 // Handle 404 errors
 app.use((req,res) => {
@@ -120,7 +110,8 @@ function isAuthenticated(req, res, next) {
     // send error message
     res.status(401).send('Acces not granted');
   }
-}
+};
 
+//email notification should be added here.
 
-
+autoMailer()

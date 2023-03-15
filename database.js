@@ -27,7 +27,7 @@ export async function getUsers(pool) {
         return false // error occurred
     }
 }
-
+ 
 export async function getUser(pool, id) {
     try {
         const [user] = await pool.query(`
