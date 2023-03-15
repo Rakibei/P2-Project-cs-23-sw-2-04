@@ -2,7 +2,7 @@ import mysql2 from 'mysql2'
 import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
 
-export function connectToDatabase() {
+export function ConnectToDatabase() {
     try {
         dotenv.config()
         const pool = mysql2.createPool({ 
@@ -18,7 +18,7 @@ export function connectToDatabase() {
     }
 }
 
-export async function getUsers(pool) {
+export async function GetUsers(pool) {
     try {
         const [rows] = await pool.query("SELECT * FROM users")
         return rows
@@ -28,7 +28,7 @@ export async function getUsers(pool) {
     }
 }
 
-export async function getUser(pool, id) {
+export async function GetUser(pool, id) {
     try {
         const [user] = await pool.query(`
         SELECT * 
@@ -42,7 +42,7 @@ export async function getUser(pool, id) {
     }
 }
 
-export async function createUser(pool, username, password) {
+export async function CreateUser(pool, username, password) {
     try {
         const salt = await bcrypt.genSalt(10)
         const hash = await bcrypt.hash(password, salt)
@@ -59,7 +59,7 @@ export async function createUser(pool, username, password) {
     }
 }
 
-export async function comparePassword(pool, username, password) {
+export async function ComparePassword(pool, username, password) {
 
     try {
         const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username])
@@ -75,7 +75,7 @@ export async function comparePassword(pool, username, password) {
     }
 }
 
-export async function createProject(pool, ProjectId, name, startDate, endDate, hoursSpent) {
+export async function CreateProject(pool, ProjectId, name, startDate, endDate, hoursSpent) {
     try {
         const values = [ProjectId, name, startDate, endDate, hoursSpent];
         await pool.query('INSERT INTO projects (ProjectId, name, startDate, endDate, hoursSpent) VALUES (?, ?, ?, ?, ?)', values);
@@ -86,7 +86,7 @@ export async function createProject(pool, ProjectId, name, startDate, endDate, h
     }
 }
 
-export async function getProject(pool, id) {
+export async function GetProject(pool, id) {
     try {
         const [project] = await pool.query(`SELECT * FROM projects WHERE id = ?`,[id])
         return project[0]
@@ -96,7 +96,7 @@ export async function getProject(pool, id) {
     }
 }
 
-export async function getProjects(pool) {
+export async function GetProjects(pool) {
     try {
         const [rows] = await pool.query("SELECT * FROM projects")
         return rows
@@ -106,7 +106,7 @@ export async function getProjects(pool) {
     }
 }
 
-export async function getUserIdWithName(pool, username) {
+export async function GetUserIdWithName(pool, username) {
     try {
         const [userId] = await pool.query('SELECT * FROM users WHERE username = ?', [username])
         return userId[0].id
@@ -116,7 +116,7 @@ export async function getUserIdWithName(pool, username) {
     }
 }
 
-export async function getUserProjects(pool, userId) {
+export async function GetUserProjects(pool, userId) {
     try {
         const [userProjectsLinks] = await pool.query('SELECT * FROM userProjectLinks WHERE userId = ?', [userId])
         const projectIds = userProjectsLinks.map(link => link.projectId)
@@ -130,7 +130,7 @@ export async function getUserProjects(pool, userId) {
 
 }
 
-export async function createUserProjectLink(pool, userId, projectId) {
+export async function CreateUserProjectLink(pool, userId, projectId) {
     try {
         const values = [userId, projectId];
         await pool.query('INSERT INTO userProjectLinks (userId, projectId) VALUES (?, ?)', values);
@@ -143,10 +143,20 @@ export async function createUserProjectLink(pool, userId, projectId) {
     }
 }
 
-export async function setUserLevel(pool, userId, newLevel) {
+export async function SetUserLevel(pool, userId, newLevel) {
     try {
-        await pool.query('UPDATE users SET level = "?" WHERE id = "?"', [newLevel, userId]);
+        pool.query('UPDATE users SET level = "?" WHERE id = "?"', [newLevel, userId]);
         return true; // success
+    } catch (error) {
+        console.log(error)
+        return false // error occurred
+    }
+}
+
+export async function GetUserLevel(pool, userId) {
+    try {
+        const [user] = await pool.query('SELECT * FROM users WHERE id = ?', [userId]);
+        return user[0].level; // success
     } catch (error) {
         console.log(error)
         return false // error occurred
@@ -161,13 +171,13 @@ comparePassword('madstest', 'hej').then((result) => {
 
 //const newUser = await createUser('madstest', 'hej')
 //console.log(newUser)
-//const pool = await connectToDatabase();
+//const pool = await ConnectToDatabase();
 
 //createProject(pool, 2, "projectB", '1900-00-01', 'SELECT CURDATE()', 69)
-
+//const userLevel = await GetUserLevel(pool, 1)
 //createUserProjectLink(pool, 8, 2)
 //const users = await getUserProjects(pool, 8)
-//console.log(users)
+//console.log(userLevel)
 //console.log( await setUserLevel(pool, 1, 1) )
 //const user =  await getUser(2)
 //console.log(user)
