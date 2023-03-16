@@ -87,8 +87,8 @@ app.post('/', async (req,res) => {
 // for when the user needs their userdata on the next page
 app.get('/sesionData',async(req,res)=>{
 
-  let userID = await getUserIdWithName(poolData,req.session.userName);
-  let userProjects = await getUserProjects(poolData,userID);
+  let userID = await GetUserIdWithName(poolData,req.session.userName);
+  let userProjects = await GetUserProjects(poolData,userID);
 
 // The info is stored in session and is sent to the client
 req.session.projects = userProjects;
@@ -124,7 +124,7 @@ app.post('/adminRequests', isAuthenticated, async (req, res) => {
   }
 
   if (req.body.function == "CreateProject"){
-    let CreateProjectData = await CreateProject(poolData,req.body.ProjectId,req.body.projectName, req.body.projectStartDate, req.body.projectEndDate, req.body.projectHoursSpent);
+    let CreateProjectData = await CreateProject(poolData,req.body.projectName, req.body.projectStartDate, req.body.projectEndDate, req.body.projectHoursSpent);
     console.log(CreateProjectData);
   }
 
