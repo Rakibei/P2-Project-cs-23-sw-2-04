@@ -5,7 +5,7 @@ import http from 'http';
 import { join } from 'path';
 import express from 'express';
 
-import {connectToDatabase, getUsers, getUser, createUser, comparePassword, createProject, getUserProjects,getUserIdWithName} from './database.js';
+import {ConnectToDatabase, GetUsers, GetUser, CreateUser, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName} from './database.js';
 
 const { json } = express;
 const { urlencoded } = express;
@@ -14,6 +14,8 @@ import { fileURLToPath } from 'url';
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 import session from 'express-session';
 import { stringify } from 'querystring';
+// import { autoMailer } from './e-mail_notification/mail.js';
+
 // The server is given the name app and calls from the express function
 const app = express();
 
@@ -22,7 +24,7 @@ app.listen(3000);
 
 
 // Database connection
-const poolData = await connectToDatabase();
+const poolData = ConnectToDatabase();
 
 // Use session to set up cookies middleware before other middleware functions
 app.use(session({
@@ -54,7 +56,7 @@ app.get('/', (req,res) => {
 // We check if the user has accesed the site before 
   if(req.session.isAuthenticated == true){
     // If they are authenticated then redirect them to the next site
-    res.redirect('/private/userpage.html')
+    res.redirect('/private/homepage.html')
   } else{
     // If not send them to the login page
     res.redirect('index.html')
@@ -68,7 +70,7 @@ app.use(serveStatic ('public'));
 // When the server recives a post requst to the server directly
 app.post('/', async (req,res) => {
   // The contents are printed
-  const comp = await comparePassword(poolData,req.body.username, req.body.password)
+  const comp = await ComparePassword(poolData,req.body.username, req.body.password)
     console.log(req.body);
     if (comp) {
       // If the user is authenticated then the server redirects them and saves their cookie to show that they are
@@ -76,12 +78,11 @@ app.post('/', async (req,res) => {
         req.session.isAuthenticated = true;
         req.session.userName = req.body.username
         req.session.save()
-        res.redirect('/private/userpage.html?');
+        res.redirect('/private/homepage.html');
     } else {
         // Handle failed authentication here...
     }
 });
-
 
 // for when the user needs their userdata on the next page
 app.get('/sesionData',async(req,res)=>{
@@ -89,16 +90,43 @@ app.get('/sesionData',async(req,res)=>{
   let userID = await getUserIdWithName(poolData,req.session.userName);
   let userProjects = await getUserProjects(poolData,userID);
 
-
-
 // The info is stored in session and is sent to the client
 req.session.projects = userProjects;
+req.session.userID = userID;
 req.session.save();
 res.json(req.session);
 
-
-
 console.log("Data Sent")
+
+});
+
+// handle Admin functions
+
+// This folder is only accelisble after the user is confirmed to be an admin
+app.use('/admin', isAuthenticated, serveStatic(join(__dirname, 'admin')));
+
+// Handle the admin page
+app.get('/admin/admin.html', async (req, res) => {
+
+
+
+
+});
+
+
+// Handle the Admins requsts
+app.post('/adminRequests', isAuthenticated, async (req, res) => {
+
+  console.log(req.body);
+  if (req.body.function == "CreateUser"){
+    let CreateUserData = await CreateUser(poolData,req.body.createUsername,req.body.createPassword);
+    console.log(CreateUserData);
+  }
+
+  if (req.body.function == "CreateProject"){
+    let CreateProjectData = await CreateProject(poolData,req.body.ProjectId,req.body.projectName, req.body.projectStartDate, req.body.projectEndDate, req.body.projectHoursSpent);
+    console.log(CreateProjectData);
+  }
 
 
 });
@@ -106,11 +134,9 @@ console.log("Data Sent")
 
 
 
-
-
 // Handle 404 errors
 app.use((req,res) => {
-    res.status(404).send('404 error page does not exist');
+  res.status(404).send('404 error page does not exist');
 });
 
 function isAuthenticated(req, res, next) {

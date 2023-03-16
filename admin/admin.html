@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="adminStylesheet.css">
+</head>
+<body>
+    <h1>Welcome Admin</h1>
+
+    <button id="userButton">Create user</button>
+    <button id="projectButton">Create project</button>
+    <button id="UserLevelButton">Set user level</button>
+
+
+
+    <div id="userCreation">
+        <form id="userCreationForm">
+            <label for="createUsername">The Username:</label>
+            <input type="text" id="createUsername" name="createUsername"><br><br>
+            <label for="createPassword">The password:</label>
+            <input type="text" id="createPassword" name="createPassword"><br><br>
+            <input type="submit" value="Submit">
+          </form>
+    </div>
+
+
+    <div id="projectCreation">
+        <form id="projectCreationForm">
+            <label for="projectId">The Projecets ID</label>
+            <input type="text" id="projectId" name="projectId"> <br><br>
+
+            <label for="projectName">The Projecets name</label>
+            <input type="text" id="projectName" name="projectName"> <br><br>
+
+            <label for="projectStartDate">The Projecets start date</label>
+            <input type="text" id="projectStartDate" name="projectStartDate"> <br><br>
+
+            <label for="projectEndDate">The Projecets end date</label>
+            <input type="text" id="projectEndDate" name="projectEndDate"> <br><br>
+
+            <label for="projectHoursSpent">The Projecets hours spent</label>
+            <input type="text" id="projectHoursSpent" name="projectHoursSpent"> <br><br>
+
+            <input type="submit" value="Submit">
+
+          </form>
+
+    </div>
+
+    <div id="setUserLevel">
+        <h1>Hello level</h1>
+
+    </div>
+
+
+
+<script src="adminCode.js"></script> 
+
+</body>
+</html>

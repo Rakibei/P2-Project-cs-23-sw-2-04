@@ -1,5 +1,10 @@
-const nodemailer = require('nodemailer');
-const cron = require('node-cron');
+import nodemailer from 'nodemailer'
+import cron from 'node-cron'
+
+export async function autoMailer(){
+
+//If you need to access the email account, the username is p2projectmail@gmail.com.
+//The password is "vorespassword".
 
 // the "host" mail
 let transporter = nodemailer.createTransport({
@@ -8,16 +13,15 @@ let transporter = nodemailer.createTransport({
     secure: true,
     auth: {
         user: 'p2projectmail@gmail.com', //NB. we will most likely have to add this 'app' to the google account.
-        pass: 'jxxsfqhgyfbtgfye'
+        pass: 'vqcdbdfyzsjdazwo', //App-key generated på gmail.
     }
 });
-//password vorespassword
 
 // E-mail content
 const mailOptions = {
     from: 'p2projectmail@gmail.com',
-    to: 'nikolajfagejensen@gmail.com, markuspedersen13@gmail.com',
-    subject: 'Reminder',
+    to: 'nikolajfagejensen@gmail.com, , tobias.k.w.a@gmail.com',
+    subject: 'Yo Boy!',
     text: 'SUBMIT YOU BASTARD!'
 };
 
@@ -26,7 +30,7 @@ const mailOptions = {
 // 10 mean at 10 hours.
 // * is an empty parameter.
 // 1 is the day of the week, i.e. Monday. this is a function of cron.
-cron.schedule('0 10 * * 1', () => {
+cron.schedule('0 10 * * 1', () => {   
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.log(error);
@@ -35,3 +39,4 @@ cron.schedule('0 10 * * 1', () => {
         }
     });
 });
+};
