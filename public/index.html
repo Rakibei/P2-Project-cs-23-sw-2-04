@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>NORDUnet LOG IN</title>
+   <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
-    <p>Hello there</p>
-    
-    <form>
-        <label for="username">Username:</label>
-        <input type="Username" id="username" name="username"><br><br>
-        <label for="password">Password:</label>
-        <input type="Password" id="password" name="password"><br><br>
-        <input type="submit" value="Submit">
-      </form>
-      <h1></h1>
-
-
-
-
-    <script src="LoginPage.js"></script>
-    
+   <div class="container">
+      <div class="motherBox">
+         <div class="login-title"><span>NORDUnet Login</span></div>
+         <form action="#">
+            <div class="linje">
+               <input type="text" id="username" placeholder="Username" required>
+            </div>
+            <div class="linje">
+               <input type="password" id="password" placeholder="Password" required>
+            </div>
+            <div class="linje btn">
+               <input type="submit" value="Login">
+            </div>
+            <div class="pass-word"><a href="#"> Forgot Password?</a></div>
+         </form>
+      </div>
+   </div>
+   <script src="LoginPage.js"></script>
 </body>
 </html>
