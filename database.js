@@ -121,7 +121,7 @@ export async function GetUserProjects(pool, userId) {
         const [userProjectsLinks] = await pool.query('SELECT * FROM userProjectLinks WHERE userId = ?', [userId])
         const projectIds = userProjectsLinks.map(link => link.projectId)
 
-        const [projects] = await pool.query('SELECT * FROM projects WHERE ProjectId IN (?)', [projectIds])
+        const [projects] = await pool.query('SELECT * FROM projects WHERE id IN (?)', [projectIds])
         return projects;
     } catch (error) {
         console.log(error)
@@ -184,13 +184,13 @@ comparePassword('madstest', 'hej').then((result) => {
 
 //const newUser = await createUser('madstest', 'hej')
 //console.log(newUser)
-//const pool = await ConnectToDatabase();
+const pool = await ConnectToDatabase();
 
 //CreateProject(pool, "projectC", '1900-00-01', 'SELECT CURDATE()', 69)
 //const userLevel = await GetUserLevel(pool, 1)
-//createUserProjectLink(pool, 8, 2)
-//const users = await getUserProjects(pool, 8)
-//console.log(userLevel)
+//CreateUserProjectLink(pool, 8, 2)
+const users = await GetUserProjects(pool, 8)
+console.log(users)
 //console.log( await setUserLevel(pool, 1, 1) )
 //const user =  await getUser(2)
 //console.log(user)
