@@ -184,13 +184,13 @@ comparePassword('madstest', 'hej').then((result) => {
 
 //const newUser = await createUser('madstest', 'hej')
 //console.log(newUser)
-const pool = await ConnectToDatabase();
+//const pool = await ConnectToDatabase();
 
 //CreateProject(pool, "projectC", '1900-00-01', 'SELECT CURDATE()', 69)
 //const userLevel = await GetUserLevel(pool, 1)
 //CreateUserProjectLink(pool, 8, 2)
-const users = await GetUserProjects(pool, 8)
-console.log(users)
+//const users = await GetUserProjects(pool, 8)
+//console.log(users)
 //console.log( await setUserLevel(pool, 1, 1) )
 //const user =  await getUser(2)
 //console.log(user)

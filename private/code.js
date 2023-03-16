@@ -1,11 +1,11 @@
-
+let projects 
 window.addEventListener('load', () => {
     fetch('/sesionData')
         .then(response => response.json())
         .then(data => {
             // Do something with session data here
             console.log(data);
-            let projects = data.projects;
+            projects = data.projects;
             document.getElementById('timesheetcontainer').innerHTML = rendertimesheettable(projects);
             SumOfRow();
         });
@@ -73,11 +73,11 @@ AddRowBtn.addEventListener("click", CreateNewRow);
         timesheettable+=`<tr>
             <td></td>
             <td>Total Hours</td>`;
-        timesheettable+=`<td><input type="number" id="tuesdaymeeting" value="0" step="0.5" name="tuesday" min="0" max="20"></td>`;
-        timesheettable+=`<td><input type="number" id="tuesdaymeeting" value="0" step="0.5" name="tuesday" min="0" max="20"></td>`;
-        timesheettable+=`<td><input type="number" id="wednesdaymeeting" value="0" step="0.5" name="wednesday" min="0" max="20"></td>`;
-        timesheettable+=`<td><input type="number" id="thursdaymeeting" value="0" step="0.5" name="thursday" min="0" max="20"></td>`;
-        timesheettable+=`<td><input type="number" id="fridaymeeting"value="0" step="0.5" name="friday" min="0" max="20"></td>`;
+        timesheettable+=`<td><input type="number" id="tuesdaymeeting" value="0" step="0.5" name="tuesday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="tuesdaymeeting" value="0" step="0.5" name="tuesday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="wednesdaymeeting" value="0" step="0.5" name="wednesday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="thursdaymeeting" value="0" step="0.5" name="thursday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="fridaymeeting"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
         timesheettable += `</tbody></table></body>`
         return timesheettable;
       }
@@ -112,8 +112,7 @@ AddRowBtn.addEventListener("click", CreateNewRow);
         var cell8 = row.insertCell(7);
         
         //inserts the imput for the different cells
-        cell1.innerHTML = ` <select name="" id="ProjectsDropdown">
-                            <option value="Default">Default</option>
+        cell1.innerHTML = ` <select name="ProjectsDropdown" id="ProjectsDropdown">
                             </select>`;
         cell2.innerHTML = ` <select name="" id="tasks">
                             <option value="Default">Default</option>
@@ -124,21 +123,21 @@ AddRowBtn.addEventListener("click", CreateNewRow);
         cell6.innerHTML = `<input type="number" id="mondaymeeting" value="0" step="0.5" name="monday" min="0" max="20">`;
         cell7.innerHTML = `<input type="number" id="mondaymeeting" value="0" step="0.5" name="monday" min="0" max="20">`;
         cell8.innerHTML = `<input type="button" value="Delete Row" onclick="DeleteRow()">`;
-        
-        PopulateDropdownProjects();
 
+        PopulateDropdownProjects();
       }
       
-      const ProjectsDropdown = document.getElementById("ProjectsDropdown");
-      function PopulateDropdownProjects(){
-      for(let i=0; i<projects.length; i++){
-        let option = document.createElement("OPTION");
-        option.innerHTML = projects[i].name;
-        option.value = projects[i].name;
-        ProjectsDropdown.appendChild(option);
-        console.log("ajaj");                                  
+        
+        function PopulateDropdownProjects(){
+        const ProjectsDropdown = document.getElementById("ProjectsDropdown");
+        for(let i=0; i<projects.length; i++){
+          let option = document.createElement("OPTION");
+          option.innerHTML = projects[i].name;
+          option.value = projects[i].name;
+          ProjectsDropdown.appendChild(option);
+                                         
       }
-    }
+    } 
 
 
 
