@@ -145,7 +145,8 @@ export async function CreateUserProjectLink(pool, userId, projectId) {
 
 export async function SetUserLevel(pool, userId, newLevel) {
     try {
-        pool.query('UPDATE users SET level = "?" WHERE id = "?"', [newLevel, userId]);
+        const values = [newLevel, userId]
+        pool.query('UPDATE users SET level = "?" WHERE id = "?"', values);
         return true; // success
     } catch (error) {
         console.log(error)
@@ -187,10 +188,10 @@ comparePassword('madstest', 'hej').then((result) => {
 const pool = await ConnectToDatabase();
 
 //CreateProject(pool, "projectC", '1900-00-01', 'SELECT CURDATE()', 69)
-//const userLevel = await GetUserLevel(pool, 1)
+const userLevel = await SetUserLevel(pool, 8,2)
 //CreateUserProjectLink(pool, 8, 2)
-const users = await GetUserProjects(pool, 8)
-console.log(users)
+//const users = await GetUserProjects(pool, 8)
+console.log(userLevel)
 //console.log( await setUserLevel(pool, 1, 1) )
 //const user =  await getUser(2)
 //console.log(user)
