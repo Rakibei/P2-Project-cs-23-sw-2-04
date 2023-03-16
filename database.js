@@ -75,10 +75,10 @@ export async function ComparePassword(pool, username, password) {
     }
 }
 
-export async function CreateProject(pool, ProjectId, name, startDate, endDate, hoursSpent) {
+export async function CreateProject(pool, name, startDate, endDate, hoursSpent) {
     try {
-        const values = [ProjectId, name, startDate, endDate, hoursSpent];
-        await pool.query('INSERT INTO projects (ProjectId, name, startDate, endDate, hoursSpent) VALUES (?, ?, ?, ?, ?)', values);
+        const values = [name, startDate, endDate, hoursSpent];
+        await pool.query('INSERT INTO projects (name, startDate, endDate, hoursSpent) VALUES (?, ?, ?, ?)', values);
         return true; // success
     } catch (error) {
         console.log(error);
@@ -173,7 +173,7 @@ comparePassword('madstest', 'hej').then((result) => {
 //console.log(newUser)
 //const pool = await ConnectToDatabase();
 
-//createProject(pool, 2, "projectB", '1900-00-01', 'SELECT CURDATE()', 69)
+//CreateProject(pool, "projectC", '1900-00-01', 'SELECT CURDATE()', 69)
 //const userLevel = await GetUserLevel(pool, 1)
 //createUserProjectLink(pool, 8, 2)
 //const users = await getUserProjects(pool, 8)
