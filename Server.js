@@ -5,7 +5,7 @@ import http from 'http';
 import { join } from 'path';
 import express from 'express';
 
-import {ConnectToDatabase, GetUsers, GetUser, CreateUser, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName} from './database.js';
+import {ConnectToDatabase, GetUsers, GetUser, CreateUser, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName,GetUserLevel, SetUserLevel} from './database.js';
 
 const { json } = express;
 const { urlencoded } = express;
@@ -80,7 +80,7 @@ app.post('/', async (req,res) => {
         req.session.save()
         res.redirect('/private/homepage.html');
     } else {
-        // Handle failed authentication here...
+        // Handle failed authentication here...  
     }
 });
 
@@ -127,7 +127,21 @@ app.post('/adminRequests', isAuthenticated, async (req, res) => {
     let CreateProjectData = await CreateProject(poolData,req.body.projectName, req.body.projectStartDate, req.body.projectEndDate, req.body.projectHoursSpent);
     console.log(CreateProjectData);
   }
+  
+  if (req.body.function == "seeUserLevel"){
+    let userID = await GetUserIdWithName(poolData,req.body.seeUserLevel);
+    let seeUserLevelData = await GetUserLevel(poolData,userID);
+    console.log(seeUserLevelData);
+    res.json(seeUserLevelData);
+  }
 
+  if (req.body.function == "setUserLevel"){
+    let userID = await GetUserIdWithName(poolData,req.body.setUserLevelName);
+    console.log(userID);
+
+    let seeUserNewLevelData = await SetUserLevel(poolData,userID,parseInt(req.body.setUserLevelValue));
+    console.log(seeUserNewLevelData);
+  }
 
 });
 

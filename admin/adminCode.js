@@ -60,11 +60,11 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
   });
 
 
-  document.querySelector('#projectCreationForm').addEventListener('submit', (event) => {
+  document.querySelector('#searchUserLevel').addEventListener('submit', (event) => {
     event.preventDefault();
     const data = {
-        projectName: event.target.projectName.value,
-        function: "CreateProject"
+        seeUserLevel: event.target.seeUserLevel.value,
+        function: "seeUserLevel"
     };
    fetch('http://127.0.0.1:3000/adminRequests', {
     method: 'POST',
@@ -74,7 +74,43 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
     body: JSON.stringify(data)
   })
   .then(response => {
- 
+    response.json()
+    .then(data => {document.getElementById('SeeUserInfo').innerHTML = getUserLevelName(data);
+    });
+
+  })
+  .catch(error => console.error(error));
+  });
+
+  function getUserLevelName(data) {
+    switch (data) {
+      case 0:
+        return "The Users level is Basic User";
+      case 1:
+        return "The Users level is Manager";
+      case 2:
+        return "The Users level is Admin";
+    default:
+        return "The User does not exist"
+    }
+  }
+
+  document.querySelector('#setUserLevelForm').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = {
+        setUserLevelName: event.target.setUserLevelName.value,
+        setUserLevelValue: event.target.setUserLevelValue.value,
+        function: "setUserLevel"
+    };
+   fetch('http://127.0.0.1:3000/adminRequests', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => {
+    
   })
   .catch(error => console.error(error));
   });
