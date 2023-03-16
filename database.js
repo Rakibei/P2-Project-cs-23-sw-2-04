@@ -163,6 +163,19 @@ export async function GetUserLevel(pool, userId) {
     }
 }
 
+export async function CreateTasks(pool, projectId, name, description, status) {
+    try {
+        // Create the task
+        const [result] = await pool.query(`
+            INSERT INTO tasks (projectId, name, description, status) VALUES (?, ?, ?, ?)`, [projectId, name, description, status]);
+        const taskId = result.insertId;
+
+    } catch (error) {
+        console.log(error);
+        return false; // error occurred
+    }
+}
+
 /*
 comparePassword('madstest', 'hej').then((result) => {
     console.log(result); // true or false
