@@ -40,11 +40,30 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
   document.querySelector('#projectCreationForm').addEventListener('submit', (event) => {
     event.preventDefault();
     const data = {
-        projectId: event.target.projectId.value,
         projectName: event.target.projectName.value,
         projectStartDate: event.target.projectStartDate.value,
         projectEndDate: event.target.projectEndDate.value,
-        projectHoursSpent: event.target.projectEndDate.value,
+        projectHoursSpent: event.target.projectHoursSpent.value,
+        function: "CreateProject"
+    };
+   fetch('http://127.0.0.1:3000/adminRequests', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => {
+ 
+  })
+  .catch(error => console.error(error));
+  });
+
+
+  document.querySelector('#projectCreationForm').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = {
+        projectName: event.target.projectName.value,
         function: "CreateProject"
     };
    fetch('http://127.0.0.1:3000/adminRequests', {

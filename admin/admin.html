@@ -29,9 +29,6 @@
 
     <div id="projectCreation">
         <form id="projectCreationForm">
-            <label for="projectId">The Projecets ID</label>
-            <input type="text" id="projectId" name="projectId"> <br><br>
-
             <label for="projectName">The Projecets name</label>
             <input type="text" id="projectName" name="projectName"> <br><br>
 
@@ -39,10 +36,10 @@
             <input type="text" id="projectStartDate" name="projectStartDate"> <br><br>
 
             <label for="projectEndDate">The Projecets end date</label>
-            <input type="text" id="projectEndDate" name="projectEndDate"> <br><br>
+            <input type="date" id="projectEndDate" name="projectEndDate"> <br><br>
 
             <label for="projectHoursSpent">The Projecets hours spent</label>
-            <input type="text" id="projectHoursSpent" name="projectHoursSpent"> <br><br>
+            <input type="date" id="projectHoursSpent" name="projectHoursSpent"> <br><br>
 
             <input type="submit" value="Submit">
 
@@ -51,7 +48,13 @@
     </div>
 
     <div id="setUserLevel">
-        <h1>Hello level</h1>
+        <form id="SearchUserLevel">
+        <label for="SeeUserLevel">Search for the users current level</label>
+        <input type="text" id="SeeUserLevel" name="SeeUserLevel"> <br><br>
+        <input type="submit" value="Submit">
+        <div id="SeeUserInfo"></div>
+        </form>
+        
 
     </div>
 
