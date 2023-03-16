@@ -123,6 +123,12 @@ app.post('/adminRequests', isAuthenticated, async (req, res) => {
     console.log(CreateUserData);
   }
 
+  if (req.body.function == "CreateProject"){
+    let CreateProjectData = await CreateProject(poolData,req.body.ProjectId,req.body.projectName, req.body.projectStartDate, req.body.projectEndDate, req.body.projectHoursSpent);
+    console.log(CreateProjectData);
+  }
+
+
 });
 
 
