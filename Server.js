@@ -137,7 +137,9 @@ app.post('/adminRequests', isAuthenticated, async (req, res) => {
 
   if (req.body.function == "setUserLevel"){
     let userID = await GetUserIdWithName(poolData,req.body.setUserLevelName);
-    let seeUserNewLevelData = await SetUserLevel(poolData,userID,req.body.setUserLevelValue);
+    console.log(userID);
+
+    let seeUserNewLevelData = await SetUserLevel(poolData,userID,parseInt(req.body.setUserLevelValue));
     console.log(seeUserNewLevelData);
   }
 
