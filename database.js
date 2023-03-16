@@ -163,11 +163,11 @@ export async function GetUserLevel(pool, userId) {
     }
 }
 
-export async function CreateTasks(pool, projectId, name, description, status) {
+export async function CreateTasks(pool, projectId, name, description, estimate) {
     try {
         // Create the task
         const [result] = await pool.query(`
-            INSERT INTO tasks (projectId, name, description, status) VALUES (?, ?, ?, ?)`, [projectId, name, description, status]);
+            INSERT INTO tasks (projectId, name, description, estimate) VALUES (?, ?, ?, ?)`, [projectId, name, description, estimate]);
         const taskId = result.insertId;
 
     } catch (error) {
