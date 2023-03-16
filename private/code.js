@@ -24,7 +24,7 @@ AddRowBtn.addEventListener("click", CreateNewRow);
      
         let timesheettable= `<body>
             <table id="timesheet">
-                <caption>Time sheet for week 14 for ${projects[0].UserName} </caption>
+                <caption>Time sheet for week 14 for </caption>
                 <thead>
                     <tr>
                         <th> Project </th><th>Task</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th>
@@ -92,10 +92,6 @@ AddRowBtn.addEventListener("click", CreateNewRow);
         tr.parentNode.removeChild(tr);
     }     
 
-    
-       
-        
-
       //A function that will create a new row in the table
       function CreateNewRow() {
 
@@ -116,7 +112,7 @@ AddRowBtn.addEventListener("click", CreateNewRow);
         var cell8 = row.insertCell(7);
         
         //inserts the imput for the different cells
-        cell1.innerHTML = ` <select name="" id="tasks">
+        cell1.innerHTML = ` <select name="" id="ProjectsDropdown">
                             <option value="Default">Default</option>
                             </select>`;
         cell2.innerHTML = ` <select name="" id="tasks">
@@ -129,8 +125,23 @@ AddRowBtn.addEventListener("click", CreateNewRow);
         cell7.innerHTML = `<input type="number" id="mondaymeeting" value="0" step="0.5" name="monday" min="0" max="20">`;
         cell8.innerHTML = `<input type="button" value="Delete Row" onclick="DeleteRow()">`;
         
+        PopulateDropdownProjects();
 
       }
+      
+      const ProjectsDropdown = document.getElementById("ProjectsDropdown");
+      function PopulateDropdownProjects(){
+      for(let i=0; i<projects.length; i++){
+        let option = document.createElement("OPTION");
+        option.innerHTML = projects[i].name;
+        option.value = projects[i].name;
+        ProjectsDropdown.appendChild(option);
+        console.log("ajaj");                                  
+      }
+    }
+
+
+
 
       // Cells are the x axis rows are the y axis
 
