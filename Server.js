@@ -5,7 +5,7 @@ import http from 'http';
 import { join } from 'path';
 import express from 'express';
 
-import {ConnectToDatabase, GetUsers, GetUser, CreateUser, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName,GetUserLevel, SetUserLevel} from './database.js';
+import {ConnectToDatabase, GetUsers, GetUser, CreateUser, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName,GetUserLevel, SetUserLevel,CreateUserManagerLink,CreateUserProjectLink,GetProjectIdWithName} from './database.js';
 
 const { json } = express;
 const { urlencoded } = express;
@@ -14,7 +14,7 @@ import { fileURLToPath } from 'url';
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 import session from 'express-session';
 import { stringify } from 'querystring';
-// import { autoMailer } from './e-mail_notification/mail.js';
+//import { autoMailer } from './e-mail_notification/mail.js';
 
 // The server is given the name app and calls from the express function
 const app = express();
@@ -110,9 +110,15 @@ app.use('/manager', isAuthenticated, serveStatic(join(__dirname, 'manager')));
 
 
 
+//Maneger skal kunne se brugere under sig og hvilke projekter der er under sig
 
 
 
+app.post('/managerRequests', isAuthenticated, async (req, res) => {
+
+console.log(req.body);
+
+});
 
 
 
@@ -158,6 +164,24 @@ app.post('/adminRequests', isAuthenticated, async (req, res) => {
     let seeUserNewLevelData = await SetUserLevel(poolData,userID,parseInt(req.body.setUserLevelValue));
     console.log(seeUserNewLevelData);
   }
+
+  if (req.body.function == "LinkUsers"){
+    let managerID = await GetUserIdWithName(poolData,req.body.managerToLink);
+    let userID = await GetUserIdWithName(poolData,req.body.userToLink);
+    let projectID = await GetProjectIdWithName(poolData,req.body.projectToLink)
+    let newLinkData = await CreateUserManagerLink(poolData,userID,managerID,projectID);
+    console.log(newLinkData);
+  }
+
+
+  if (req.body.function == "CreateUserProjectLink"){
+    let managerID = await GetUserIdWithName(poolData,req.body.createManager);
+    let projectID = await GetProjectIdWithName(poolData,req.body.projectToLink)
+
+    let newLinkData = await CreateUserProjectLink(poolData,managerID,projectID,1);
+    console.log(newLinkData);
+  }
+  
 
 });
 
