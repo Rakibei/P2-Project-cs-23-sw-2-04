@@ -100,18 +100,34 @@ console.log("Data Sent")
 
 });
 
+
+
+// handle the manager function
+
+app.use('/manager', isAuthenticated, serveStatic(join(__dirname, 'manager')));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // handle Admin functions
 
 // This folder is only accelisble after the user is confirmed to be an admin
 app.use('/admin', isAuthenticated, serveStatic(join(__dirname, 'admin')));
-
-// Handle the admin page
-app.get('/admin/admin.html', async (req, res) => {
-
-
-
-
-});
 
 
 // Handle the Admins requsts
