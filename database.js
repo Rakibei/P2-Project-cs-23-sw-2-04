@@ -106,6 +106,20 @@ export async function GetProjects(pool) {
     }
 }
 
+export async function GetProjectIdWithName(pool, projectName) {
+    try {
+        const [projectId] = await pool.query('SELECT * FROM projects WHERE name = ?', [projectName])
+        return projectId[0].id
+    } catch (error) {
+        console.log(error)
+        return false // error occurred
+    }
+}
+
+
+
+
+
 export async function GetUserIdWithName(pool, username) {
     try {
         const [userId] = await pool.query('SELECT * FROM users WHERE username = ?', [username])
@@ -194,6 +208,7 @@ comparePassword('madstest', 'hej').then((result) => {
     console.log(result); // true or false
 });
 */
+
 
 //const newUser = await createUser('madstest', 'hej')
 //console.log(newUser)

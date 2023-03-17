@@ -12,7 +12,9 @@
 
     <button id="userButton">Create user</button>
     <button id="projectButton">Create project</button>
-    <button id="UserLevelButton">Set user level</button>
+    <button id="userLevelButton">Set user level</button>
+    <button id="projectLinkButton">Create project link</button>
+
 
 
 
@@ -33,13 +35,13 @@
             <input type="text" id="projectName" name="projectName"> <br><br>
 
             <label for="projectStartDate">The Projecets start date</label>
-            <input type="text" id="projectStartDate" name="projectStartDate"> <br><br>
+            <input type="date" id="projectStartDate" name="projectStartDate"> <br><br>
 
             <label for="projectEndDate">The Projecets end date</label>
             <input type="date" id="projectEndDate" name="projectEndDate"> <br><br>
 
             <label for="projectHoursSpent">The Projecets hours spent</label>
-            <input type="date" id="projectHoursSpent" name="projectHoursSpent"> <br><br>
+            <input type="text" id="projectHoursSpent" name="projectHoursSpent"> <br><br>
 
             <input type="submit" value="Submit">
 
@@ -69,6 +71,27 @@
 
     </div>
 
+    <div id="createUserManagerLink">
+        <form id="createUserManagerLinkForm">
+            <label for="managerToLink">The manger to link to</label>
+            <input type="text" name="managerToLink" id="managerToLink"> <br> <br>
+            <label for="userToLink">The user to link to</label>
+            <input type="text" name="userToLink" id="userToLink"> <br> <br>
+            <label for="projectToLinkForUser">The project to link to</label>
+            <input type="text" name="projectToLinkForUser" id="projectToLinkForUser"> <br> <br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <div id="createManagerForProject">
+        <form id="createManagerForProjectForm">
+            <label for="createManager">The User to make manager</label>
+            <input type="text" name="createManager" id="createManager"> <br> <br>
+            <label for="projectToLinkForManager">The project to link to</label>
+            <input type="text" name="projectToLinkForManager" id="projectToLinkForManager"> <br> <br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
 
 
 <script src="adminCode.js"></script> 

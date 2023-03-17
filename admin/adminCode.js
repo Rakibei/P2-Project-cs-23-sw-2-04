@@ -2,17 +2,28 @@ document.getElementById("userButton").addEventListener("click", () => {
     document.getElementById("userCreation").style.display = "block";
     document.getElementById("projectCreation").style.display = "none";
     document.getElementById("setUserLevel").style.display = "none";
+    document.getElementById("createUserManagerLink").style.display = "none";
 });
 document.getElementById("projectButton").addEventListener("click", ()=> {
     document.getElementById("userCreation").style.display = "none";
     document.getElementById("projectCreation").style.display = "block";
     document.getElementById("setUserLevel").style.display = "none";
+    document.getElementById("createUserManagerLink").style.display = "none";
 });
-document.getElementById("UserLevelButton").addEventListener("click", ()=> {
-    document.getElementById("userCreation").style.display = "none";
-    document.getElementById("projectCreation").style.display = "none";
-    document.getElementById("setUserLevel").style.display = "block";
+document.getElementById("userLevelButton").addEventListener("click", ()=> {
+  document.getElementById("userCreation").style.display = "none";
+  document.getElementById("projectCreation").style.display = "none";
+  document.getElementById("setUserLevel").style.display = "block";
+  document.getElementById("createUserManagerLink").style.display = "none";
 });
+document.getElementById("projectLinkButton").addEventListener("click", ()=> {
+  document.getElementById("userCreation").style.display = "none";
+  document.getElementById("projectCreation").style.display = "none";
+  document.getElementById("setUserLevel").style.display = "none";
+  document.getElementById("createUserManagerLink").style.display = "block";
+});
+
+
 
 
 
@@ -87,9 +98,7 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
       case 0:
         return "The Users level is Basic User";
       case 1:
-        return "The Users level is Manager";
-      case 2:
-        return "The Users level is Admin";
+        return "The Users level is Admin";        
     default:
         return "The User does not exist"
     }
@@ -101,6 +110,49 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
         setUserLevelName: event.target.setUserLevelName.value,
         setUserLevelValue: event.target.setUserLevelValue.value,
         function: "setUserLevel"
+    };
+   fetch('http://127.0.0.1:3000/adminRequests', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => {
+    
+  })
+  .catch(error => console.error(error));
+  });
+
+
+  document.querySelector('#createUserManagerLink').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = {
+      managerToLink: event.target.managerToLink.value,
+      userToLink: event.target.userToLink.value,
+      projectToLink: event.target.projectToLinkForUser.value,
+      function: "LinkUsers"
+    };
+   fetch('http://127.0.0.1:3000/adminRequests', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => {
+    
+  })
+  .catch(error => console.error(error));
+  });
+
+
+  document.querySelector('#createManagerForProject').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = {
+      createManager: event.target.createManager.value,
+      projectToLink: event.target.projectToLinkForManager.value,
+      function: "CreateUserProjectLink"
     };
    fetch('http://127.0.0.1:3000/adminRequests', {
     method: 'POST',
