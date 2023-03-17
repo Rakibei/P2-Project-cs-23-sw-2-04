@@ -42,15 +42,15 @@ export async function GetUser(pool, id) {
     }
 }
 
-export async function CreateUser(pool, username, password) {
+export async function CreateUser(pool, username, password, isAdmin) {
     try {
         const salt = await bcrypt.genSalt(10)
         const hash = await bcrypt.hash(password, salt)
 
         const [result] = await pool.query(`
-        INSERT INTO users (username, password)
-        VALUES (?, ?)
-        `, [username, hash])
+        INSERT INTO users (username, password, isAdmin)
+        VALUES (?, ?, ?)
+        `, [username, hash, isAdmin])
         const id = result.insertId
         return GetUser(pool, id)
     } catch (error) {
@@ -130,10 +130,10 @@ export async function GetUserProjects(pool, userId) {
 
 }
 
-export async function CreateUserProjectLink(pool, userId, projectId) {
+export async function CreateUserProjectLink(pool, userId, projectId, isManagerForProject) {
     try {
-        const values = [userId, projectId];
-        await pool.query('INSERT INTO userProjectLinks (userId, projectId) VALUES (?, ?)', values);
+        const values = [userId, projectId, isManagerForProject];
+        await pool.query('INSERT INTO userProjectLinks (userId, projectId, isManagerForProject) VALUES (?, ?, ?)', values);
         return true; // success
 
 
@@ -143,10 +143,10 @@ export async function CreateUserProjectLink(pool, userId, projectId) {
     }
 }
 
-export async function SetUserLevel(pool, userId, newLevel) {
+export async function SetUserLevel(pool, userId, isNowAdmin) {
     try {
-        const values = [newLevel, userId]
-        pool.query('UPDATE users SET level = "?" WHERE id = "?"', values);
+        const values = [isNowAdmin, userId]
+        pool.query('UPDATE users SET isAdmin = "?" WHERE id = "?"', values);
         return true; // success
     } catch (error) {
         console.log(error)
@@ -157,7 +157,7 @@ export async function SetUserLevel(pool, userId, newLevel) {
 export async function GetUserLevel(pool, userId) {
     try {
         const [user] = await pool.query('SELECT * FROM users WHERE id = ?', [userId]);
-        return user[0].level; // success
+        return user[0].isAdmin; // success
     } catch (error) {
         console.log(error)
         return false // error occurred
@@ -177,6 +177,18 @@ export async function CreateTasks(pool, projectId, name, description, estimate) 
     }
 }
 
+export async function CreateUserManagerLink(pool, userId, managerId, projectId) {
+    try {
+        const values = [userId, managerId, projectId];
+        await pool.query('INSERT INTO userManagerLinks (userId, managerId, projectId) VALUES (?, ?, ?)', values);
+        return true; // success
+    } catch (error) {
+        console.log(error)
+        return false; // error occurred
+    }
+}
+
+
 /*
 comparePassword('madstest', 'hej').then((result) => {
     console.log(result); // true or false
@@ -186,6 +198,7 @@ comparePassword('madstest', 'hej').then((result) => {
 //const newUser = await createUser('madstest', 'hej')
 //console.log(newUser)
 //const pool = await ConnectToDatabase();
+<<<<<<< Updated upstream
 
 //CreateProject(pool, "projectC", '1900-00-01', 'SELECT CURDATE()', 69)
 //const userLevel = await SetUserLevel(pool, 8,2)
@@ -193,6 +206,14 @@ comparePassword('madstest', 'hej').then((result) => {
 //const users = await GetUserProjects(pool, 8)
 //console.log(users)
 //console.log(userLevel) 
+=======
+//const userLevel = await CreateUserManagerLink(pool, 1, 9)
+//CreateProject(pool, "projectC", '1900-00-01', 'SELECT CURDATE()', 69)
+//const userLevel = await SetUserLevel(pool, 9,2)
+//CreateUserProjectLink(pool, 8, 2)
+//const users = await GetUserProjects(pool, 8)
+//console.log(userLevel)
+>>>>>>> Stashed changes
 //console.log( await setUserLevel(pool, 1, 1) )
 //const user =  await getUser(2)
 //console.log(user)
