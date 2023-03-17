@@ -198,22 +198,7 @@ comparePassword('madstest', 'hej').then((result) => {
 //const newUser = await createUser('madstest', 'hej')
 //console.log(newUser)
 //const pool = await ConnectToDatabase();
-<<<<<<< Updated upstream
 
-//CreateProject(pool, "projectC", '1900-00-01', 'SELECT CURDATE()', 69)
-//const userLevel = await SetUserLevel(pool, 8,2)
-//CreateUserProjectLink(pool, 8, 2)
-//const users = await GetUserProjects(pool, 8)
-//console.log(users)
-//console.log(userLevel) 
-=======
-//const userLevel = await CreateUserManagerLink(pool, 1, 9)
-//CreateProject(pool, "projectC", '1900-00-01', 'SELECT CURDATE()', 69)
-//const userLevel = await SetUserLevel(pool, 9,2)
-//CreateUserProjectLink(pool, 8, 2)
-//const users = await GetUserProjects(pool, 8)
-//console.log(userLevel)
->>>>>>> Stashed changes
 //console.log( await setUserLevel(pool, 1, 1) )
 //const user =  await getUser(2)
 //console.log(user)
