@@ -202,6 +202,25 @@ export async function CreateUserManagerLink(pool, userId, managerId, projectId) 
     }
 }
 
+export async function GetmanagerProjects(pool, userId) {
+    try {
+        const [userProjectsLinks] = await pool.query('SELECT * FROM userProjectLinks WHERE userId = ? AND isManagerForProject = true', [userId])
+        const projectIds = userProjectsLinks.map(link => link.projectId)
+
+        if (projectIds.length === 0) {
+            return [];
+        }
+
+        const [projects] = await pool.query('SELECT * FROM projects WHERE id IN (?)', [projectIds])
+        return projects;
+    } catch (error) {
+        console.log(error)
+        return false // error occurred
+    }
+}
+
+
+
 
 /*
 comparePassword('madstest', 'hej').then((result) => {

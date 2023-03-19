@@ -5,7 +5,7 @@ import http from 'http';
 import { join } from 'path';
 import express from 'express';
 
-import {ConnectToDatabase, GetUsers, GetUser, CreateUser, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName,GetUserLevel, SetUserLevel,CreateUserManagerLink,CreateUserProjectLink,GetProjectIdWithName} from './database.js';
+import {ConnectToDatabase, GetUsers, GetUser, CreateUser,GetmanagerProjects, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName,GetUserLevel, SetUserLevel,GetProjects,CreateUserManagerLink,CreateUserProjectLink,GetProjectIdWithName} from './database.js';
 
 const { json } = express;
 const { urlencoded } = express;
@@ -108,17 +108,43 @@ app.use('/manager', isAuthenticated, serveStatic(join(__dirname, 'manager')));
 
 
 
-
-
 //Maneger skal kunne se brugere under sig og hvilke projekter der er under sig
 
 
 
 app.post('/managerRequests', isAuthenticated, async (req, res) => {
-
 console.log(req.body);
-
+if (req.body.function == "LinkUsers"){
+  let managerID = await GetUserIdWithName(poolData,req.body.managerToLink);
+  let userID = await GetUserIdWithName(poolData,req.body.userToLink);
+  let projectID = await GetProjectIdWithName(poolData,req.body.projectToLink)
+  let newLinkData = await CreateUserManagerLink(poolData,userID,managerID,projectID);
+  console.log(newLinkData);}
 });
+
+app.get('/managerRequests', isAuthenticated, async (req, res) => {
+  console.log("Someone wants projects");
+
+
+  // Se hvad deres ID er
+  // Få alle projetor
+  let managerID = await GetUserIdWithName(poolData, req.session.userName);
+  let managerProjects = await GetmanagerProjects(poolData,managerID);
+  console.log(managerProjects);
+  res.send(managerProjects);
+});
+
+
+
+
+
+
+// Get a list of all projects that the manager is linked too
+
+// let req.session.userName
+
+
+
 
 
 
@@ -140,24 +166,24 @@ app.use('/admin', isAuthenticated, serveStatic(join(__dirname, 'admin')));
 app.post('/adminRequests', isAuthenticated, async (req, res) => {
 
   console.log(req.body);
-  if (req.body.function == "CreateUser"){
-    let CreateUserData = await CreateUser(poolData,req.body.createUsername,req.body.createPassword);
+  if (req.body.functionName == "CreateUser"){
+    let CreateUserData = await CreateUser(poolData,req.body.createUsername,req.body.createPassword, 0);
     console.log(CreateUserData);
   }
 
-  if (req.body.function == "CreateProject"){
+  if (req.body.functionName == "CreateProject"){
     let CreateProjectData = await CreateProject(poolData,req.body.projectName, req.body.projectStartDate, req.body.projectEndDate, req.body.projectHoursSpent);
     console.log(CreateProjectData);
   }
   
-  if (req.body.function == "seeUserLevel"){
+  if (req.body.functionName == "seeUserLevel"){
     let userID = await GetUserIdWithName(poolData,req.body.seeUserLevel);
     let seeUserLevelData = await GetUserLevel(poolData,userID);
     console.log(seeUserLevelData);
     res.json(seeUserLevelData);
   }
 
-  if (req.body.function == "setUserLevel"){
+  if (req.body.functionName == "setUserLevel"){
     let userID = await GetUserIdWithName(poolData,req.body.setUserLevelName);
     console.log(userID);
 
@@ -165,16 +191,8 @@ app.post('/adminRequests', isAuthenticated, async (req, res) => {
     console.log(seeUserNewLevelData);
   }
 
-  if (req.body.function == "LinkUsers"){
-    let managerID = await GetUserIdWithName(poolData,req.body.managerToLink);
-    let userID = await GetUserIdWithName(poolData,req.body.userToLink);
-    let projectID = await GetProjectIdWithName(poolData,req.body.projectToLink)
-    let newLinkData = await CreateUserManagerLink(poolData,userID,managerID,projectID);
-    console.log(newLinkData);
-  }
 
-
-  if (req.body.function == "CreateUserProjectLink"){
+  if (req.body.functionName == "CreateUserProjectLink"){
     let managerID = await GetUserIdWithName(poolData,req.body.createManager);
     let projectID = await GetProjectIdWithName(poolData,req.body.projectToLink)
 
