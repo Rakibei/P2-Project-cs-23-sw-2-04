@@ -5,8 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
-    
+    <h1>Hello manager</h1>
+
+
+    <button id="createUserManagerLinkButton">Create a link to a user</button>
+
+    <div id="createUserManagerLink">
+        <form id="createUserManagerLinkForm">
+            <label for="managerToLink">The manger to link to</label>
+            <input type="text" name="managerToLink" id="managerToLink"> <br> <br>
+            <label for="userToLink">The user to link to</label>
+            <input type="text" name="userToLink" id="userToLink"> <br> <br>
+            <label for="projectToLinkForUser">The project to link to</label>
+            <input type="text" name="projectToLinkForUser" id="projectToLinkForUser"> <br> <br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <div id="showProjects">
+        <button id="showProjectsButton">Show Projects</button>
+        <div id="showProjectsReplace"></div>
+    </div>
+
+
+
+
+<script src="manager.js"></script>
 </body>
 </html>
