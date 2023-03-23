@@ -90,11 +90,12 @@ form,.menu{
     align-items: center;
     width: 30%;
 }
-
+/* her redigere jeg label*/
 label{
     padding-left: 0;
 }
 
+/* her redigere jeg skrive felterne*/
 input{
 
     border-radius: 5px;
@@ -103,7 +104,7 @@ input{
 }
 
 
-
+/* her er display kontrol over de forskellige menuer */
 #userCreation{
     display: none;
 }

@@ -4,33 +4,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Manager</title>
     <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
-    <h1>Hello manager</h1>
-
-
-    <button id="createUserManagerLinkButton">Create a link to a user</button>
-
-    <div id="createUserManagerLink">
-        <form id="createUserManagerLinkForm">
-            <label for="managerToLink">The manger to link to</label>
-            <input type="text" name="managerToLink" id="managerToLink"> <br> <br>
-            <label for="userToLink">The user to link to</label>
-            <input type="text" name="userToLink" id="userToLink"> <br> <br>
-            <label for="projectToLinkForUser">The project to link to</label>
-            <input type="text" name="projectToLinkForUser" id="projectToLinkForUser"> <br> <br>
-            <input type="submit" value="Submit">
-        </form>
-    </div>
-
-    <div id="showProjects">
+    <div class="welcome-title"><span>Welcome Manager</span></div>
+    
+    <div class="menu">
+        <button id="createUserManagerLinkButton">Create a link to a user</button>
         <button id="showProjectsButton">Show Projects</button>
-        <div id="showProjectsReplace">
+        <br><br>
+        <div id="createUserManagerLink">
+            <form id="createUserManagerLinkForm">
+                <label for="managerToLink">link Manager</label>
+                <input type="text" name="managerToLink" id="managerToLink" placeholder="ManagerName" required> <br> <br>
+                <label for="userToLink">link User</label>
+                <input type="text" name="userToLink" id="userToLink" placeholder="UserName" required> <br> <br>
+                <label for="projectToLinkForUser">link Project</label>
+                <input type="text" name="projectToLinkForUser" id="projectToLinkForUser" placeholder="ProjectName" required> <br> <br>
+                <input type="submit" class="sbmt" value="Submit">
+            </form>
+        </div>
+
+        <div id="showProjects">
+            <div id="showProjectsReplace">
+            </div>
         </div>
     </div>
-
 
 
 
