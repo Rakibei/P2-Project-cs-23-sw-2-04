@@ -35,7 +35,30 @@ document.getElementById("showProjectsButton").addEventListener("click", () => {
     },
   })
   .then(response => response.json())
-  .then(data => console.log(data))
+  .then(jsonData => {
+    const table = document.createElement("table");
+
+    const headerRow = document.createElement("tr");
+
+    Object.keys(jsonData[0]).forEach((key) => {
+    const headerCell = document.createElement("th");
+    headerCell.textContent = key;
+    headerRow.appendChild(headerCell);
+    });
+
+    table.appendChild(headerRow);
+
+    jsonData.forEach((data) => {
+    const dataRow = document.createElement("tr");
+    Object.values(data).forEach((value) => {
+        const dataCell = document.createElement("td");
+        dataCell.textContent = value;
+        dataRow.appendChild(dataCell);
+    });
+    table.appendChild(dataRow);
+    });
+    document.getElementById("showProjectsReplace").appendChild(table);
+})
   .catch(error => console.error(error));
 });
 
