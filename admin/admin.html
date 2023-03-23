@@ -4,67 +4,67 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin</title>
     <link rel="stylesheet" href="adminStylesheet.css">
 </head>
 <body>
-    <h1>Welcome Admin</h1>
-
-    <button id="userButton">Create user</button>
-    <button id="projectButton">Create project</button>
-    <button id="userLevelButton">Set user level</button>
-    <button id="createManagerButton">Create Manager</button>
-
-
-
+    <div class="container">
+        <div class="welcome-title"><span>Welcome Admin</span></div>
+        <div class="menu">
+            <button id="userButton">Create user</button>
+            <button id="projectButton">Create project</button>
+            <button id="userLevelButton">Set user level</button>
+            <button id="createManagerButton">Create Manager</button>
+        </div>
+<br>
 
     <div id="userCreation">
         <form id="userCreationForm">
-            <label for="createUsername">The Username:</label>
-            <input type="text" id="createUsername" name="createUsername"><br><br>
-            <label for="createPassword">The password:</label>
-            <input type="text" id="createPassword" name="createPassword"><br><br>
-            <input type="submit" value="Submit">
-          </form>
+            <label for="createUsername">New Username:</label>
+            <input type="text" id="createUsername" name="createUsername" placeholder="UserName" required><br><br>
+            <label for="createPassword">New Password:</label>
+            <input type="text" id="createPassword" name="createPassword" placeholder="PassWord" required><br><br>
+            <input type="submit" class="sbmt" value="Create User">
+        </form>
     </div>
 
 
     <div id="projectCreation">
         <form id="projectCreationForm">
-            <label for="projectName">The Projecets name</label>
-            <input type="text" id="projectName" name="projectName"> <br><br>
+            <label for="projectName">Project name</label>
+            <input type="text" id="projectName" name="projectName" placeholder="ProjectName" required> <br><br>
 
-            <label for="projectStartDate">The Projecets start date</label>
-            <input type="date" id="projectStartDate" name="projectStartDate"> <br><br>
+            <label for="projectStartDate">Start Date</label>
+            <input type="date" id="projectStartDate" name="projectStartDate"  required> <br><br>
 
-            <label for="projectEndDate">The Projecets end date</label>
-            <input type="date" id="projectEndDate" name="projectEndDate"> <br><br>
+            <label for="projectEndDate">End Date</label>
+            <input type="date" id="projectEndDate" name="projectEndDate"  required> <br><br>
 
-            <label for="projectHoursSpent">The Projecets hours spent</label>
-            <input type="text" id="projectHoursSpent" name="projectHoursSpent"> <br><br>
+            <label for="projectHoursSpent">Total Hours</label>
+            <input type="number" id="projectHoursSpent" name="projectHoursSpent" placeholder="0" required> <br><br>
 
-            <input type="submit" value="Submit">
+            <input type="submit" class="sbmt" value="Create Project">
 
-          </form>
+        </form>
 
     </div>
 
     <div id="setUserLevel">
         <form id="searchUserLevel">
-        <label for="seeUserLevel">Search for the users current level</label>
-        <input type="text" id="seeUserLevel" name="seeUserLevel">
-        <input type="submit" value="Submit">
+        <label for="seeUserLevel">Search Level</label>
+        <input type="text" id="seeUserLevel" name="seeUserLevel" placeholder="UserLevel" required> <br>
+        <input type="submit" class="sbmt" value="Submit"> <br><br>
         </form>
         <div id="SeeUserInfo"></div>
 
         <form id="setUserLevelForm">
-            <label for="setUserLevelName">The users name</label>
-            <input type="text" id="setUserLevelName" name="setUserLevelName"> <br> <br>
+            <label for="setUserLevelName">Username</label>
+            <input type="text" id="setUserLevelName" name="setUserLevelName" placeholder="UserName" required> <br>
 
-            <label for="setUserLevelValue">The users level</label>
-            <input type="number" id="setUserLevelValue" name="setUserLevelValue">
+            <label for="setUserLevelValue">UserLevel</label>
+            <input type="number" id="setUserLevelValue" name="setUserLevelValue" placeholder="0" required><br><br>
 
-            <input type="submit" value="Submit">
+            <input type="submit" class="sbmt" value="Submit">
             </form>
         
         
@@ -75,15 +75,15 @@
 
     <div id="createManagerForProject">
         <form id="createManagerForProjectForm">
-            <label for="createManager">The User to make manager</label>
-            <input type="text" name="createManager" id="createManager"> <br> <br>
-            <label for="projectToLinkForManager">The project to link to</label>
-            <input type="text" name="projectToLinkForManager" id="projectToLinkForManager"> <br> <br>
-            <input type="submit" value="Submit">
+            <label for="createManager">Upgrade User to Manager</label>
+            <input type="text" name="createManager" id="createManager" placeholder="UserName" required> <br> <br>
+            <label for="projectToLinkForManager">link Project</label>
+            <input type="text" name="projectToLinkForManager" id="projectToLinkForManager" placeholder="ProjectName" required> <br> <br>
+            <input type="submit" class="sbmt" value="Submit">
         </form>
     </div>
 
-
+</div>
 <script src="adminCode.js"></script> 
 
 </body>
