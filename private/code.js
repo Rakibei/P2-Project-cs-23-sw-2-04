@@ -7,7 +7,9 @@ window.addEventListener('load', () => {
             console.log(data);
             projects = data.projects;
             document.getElementById('timesheetcontainer').innerHTML = rendertimesheettable(projects);
-            SumOfRow();
+            SumOfCollum();
+            SumOffTotalHoursRow();
+            SumOfAbsenceHoursRow();
         });
   });
 
@@ -15,6 +17,7 @@ window.addEventListener('load', () => {
  executed resulting in the creation of a new row*/
 const AddRowBtn = document.getElementById("AddRow");
 AddRowBtn.addEventListener("click", CreateNewRow);
+
 
 
 
@@ -35,41 +38,32 @@ AddRowBtn.addEventListener("click", CreateNewRow);
             timesheettable+=`<tr>
                 <td>${projects[i].name}</td>
                 
-                <td>
-                    <select name="" id="tasks">
-                        <option value="Task1">Task 1</option>
-                        <option value="Task2">Task 2</option>
-                        <option value="Task3">Task 3</option>
-                        <option value="task4">Task 4</option>
-                    </select></td>`;
-            timesheettable+=`<td><input type="number" id="monday${i}" value="0" step="0.5" name="monday" min="0" max="20"></td>`;
-            timesheettable+=`<td><input type="number" id="tuesday${i}" value="0" step="0.5" name="tuesday" min="0" max="20"></td>`;
-            timesheettable+=`<td><input type="number" id="wednesday${i}" value="0" step="0.5" name="wednesday" min="0" max="20"></td>`;
-            timesheettable+=`<td><input type="number" id="thursday${i}" value="0" step="0.5" name="thursday" min="0" max="20"></td>`;
-            timesheettable+=`<td><input type="number" id="friday${i}"value="0" step="0.5" name="friday" min="0" max="20"></td>`;
+                <td></td>`;
+            timesheettable+=`<td><input class="inputfield" type="number" placeholder="0" id="monday${i}" value="0" oninput="validity.valid||(value='0');" step="0.5" name="monday" min="0" max="20"></td>`;
+            timesheettable+=`<td><input class="inputfield" type="number" id="tuesday${i}" value="0" oninput="validity.valid||(value='0');" step="0.5" name="tuesday" min="0" max="20"></td>`;
+            timesheettable+=`<td><input class="inputfield" type="number" id="wednesday${i}" value="0" oninput="validity.valid||(value='0');" step="0.5" name="wednesday" min="0" max="20"></td>`;
+            timesheettable+=`<td><input class="inputfield" type="number" id="thursday${i}" value="0" oninput="validity.valid||(value='0');" step="0.5" name="thursday" min="0" max="20"></td>`;
+            timesheettable+=`<td><input class="inputfield" type="number" id="friday${i}"value="0" oninput="validity.valid||(value='0');" step="0.5" name="friday" min="0" max="20"></td>`;
   
         }
       timesheettable+=`<tr>
-                <td>Absence</td>
-                <td>
-                    <select name="" id="tasks">
-                        <option value="Task1">Sygefravår</option>
-                        <option value="Task2">Barnets 1. 
-                        sygedag</option>
-                    </select></td>`;
-            timesheettable+=`<td><input type="number" id="mondaysick" value="0" step="0.5" name="monday" min="0" max="20"></td>`;
-            timesheettable+=`<td><input type="number" id="tuesdaysick" value="0" step="0.5" name="tuesday" min="0" max="20"></td>`;
-            timesheettable+=`<td><input type="number" id="wednesdaysick" value="0" step="0.5" name="wednesday" min="0" max="20"></td>`;
-            timesheettable+=`<td><input type="number" id="thursdaysick" value="0" step="0.5" name="thursday" min="0" max="20"></td>`;
-            timesheettable+=`<td><input type="number" id="fridaysick"value="0" step="0.5" name="friday" min="0" max="20"></td>`;
-      timesheettable+=`<tr>
             <td>Meetings</td>
             <td></td>`;
-        timesheettable+=`<td><input type="number" id="mondaymeeting" value="0" step="0.5" name="monday" min="0" max="20"></td>`;
-        timesheettable+=`<td><input type="number" id="tuesdaymeeting" value="0" step="0.5" name="tuesday" min="0" max="20"></td>`;
-        timesheettable+=`<td><input type="number" id="wednesdaymeeting" value="0" step="0.5" name="wednesday" min="0" max="20"></td>`;
-        timesheettable+=`<td><input type="number" id="thursdaymeeting" value="0" step="0.5" name="thursday" min="0" max="20"></td>`;
-        timesheettable+=`<td><input type="number" id="fridaymeeting"value="0" step="0.5" name="friday" min="0" max="20"></td>`;
+        timesheettable+=`<td><input class="inputfield" type="number" id="mondaymeeting" value="0" oninput="validity.valid||(value='0');" step="0.5" name="monday" min="0" max="20"></td>`;
+        timesheettable+=`<td><input class="inputfield" type="number" id="tuesdaymeeting" value="0" oninput="validity.valid||(value='0');" step="0.5" name="tuesday" min="0" max="20"></td>`;
+        timesheettable+=`<td><input class="inputfield" type="number" id="wednesdaymeeting" value="0" oninput="validity.valid||(value='0');" step="0.5" name="wednesday" min="0" max="20"></td>`;
+        timesheettable+=`<td><input class="inputfield" type="number" id="thursdaymeeting" value="0" oninput="validity.valid||(value='0');" step="0.5" name="thursday" min="0" max="20"></td>`;
+        timesheettable+=`<td><input class="inputfield" type="number" id="fridaymeeting"value="0" oninput="validity.valid||(value='0');" step="0.5" name="friday" min="0" max="20"></td>`;
+        timesheettable+=`<tr>
+                <td>Absence</td>
+                <td>
+                    </td>`;
+            timesheettable+=`<td><input class="inputfield" type="number" id="mondaysick" value="0" oninput="validity.valid||(value='0');" step="0.5" name="monday" min="0" max="20"></td>`;
+            timesheettable+=`<td><input class="inputfield" type="number" id="tuesdaysick" value="0" oninput="validity.valid||(value='0');" step="0.5" name="tuesday" min="0" max="20"></td>`;
+            timesheettable+=`<td><input class="inputfield" type="number" id="wednesdaysick" value="0" oninput="validity.valid||(value='0');" step="0.5" name="wednesday" min="0" max="20"></td>`;
+            timesheettable+=`<td><input class="inputfield" type="number" id="thursdaysick" value="0" oninput="validity.valid||(value='0');" step="0.5" name="thursday" min="0" max="20"></td>`;
+            timesheettable+=`<td><input class="inputfield" type="number" id="fridaysick"value="0" oninput="validity.valid||(value='0');" step="0.5" name="friday" min="0" max="20"></td>`;
+            timesheettable+=`<td><input class="inputfield" type="number" id="TotalAbsenceHours"value="0"  step="0.5" name="friday" min="0" max="70" readonly></td>`;
         timesheettable+=`<tr>
             <td></td>
             <td>Total Hours</td>`;
@@ -77,6 +71,7 @@ AddRowBtn.addEventListener("click", CreateNewRow);
         timesheettable+=`<td><input type="number" id="tuesdaymeeting" value="0" step="0.5" name="tuesday" min="0" max="20" readonly></td>`;
         timesheettable+=`<td><input type="number" id="wednesdaymeeting" value="0" step="0.5" name="wednesday" min="0" max="20" readonly></td>`;
         timesheettable+=`<td><input type="number" id="thursdaymeeting" value="0" step="0.5" name="thursday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="fridaymeeting"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
         timesheettable+=`<td><input type="number" id="fridaymeeting"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
         timesheettable += `</tbody></table></body>`
         return timesheettable;
@@ -90,7 +85,9 @@ AddRowBtn.addEventListener("click", CreateNewRow);
         //tr is the row to be removed
         let tr = td.parentNode; 
         tr.parentNode.removeChild(tr);
-    }     
+    }    
+    
+    
 
       //A function that will create a new row in the table
       function CreateNewRow() {
@@ -113,10 +110,9 @@ AddRowBtn.addEventListener("click", CreateNewRow);
         
         //inserts the imput for the different cells
         cell1.innerHTML = ` <select name="ProjectsDropdown" id="ProjectsDropdown">
+
                             </select>`;
-        cell2.innerHTML = ` <select name="" id="tasks">
-                            <option value="Default">Default</option>
-                            </select>`;
+        cell2.innerHTML = 
         cell3.innerHTML = `<input type="number" id="mondaymeeting" value="0" step="0.5" name="monday" min="0" max="20">`;
         cell4.innerHTML = `<input type="number" id="mondaymeeting" value="0" step="0.5" name="monday" min="0" max="20">`;
         cell5.innerHTML = `<input type="number" id="mondaymeeting" value="0" step="0.5" name="monday" min="0" max="20">`;
@@ -125,6 +121,7 @@ AddRowBtn.addEventListener("click", CreateNewRow);
         cell8.innerHTML = `<input type="button" value="Delete Row" onclick="DeleteRow()">`;
 
         PopulateDropdownProjects();
+        SumOfCollum();
       }
       
         
@@ -146,7 +143,7 @@ AddRowBtn.addEventListener("click", CreateNewRow);
 
 
       //a function that sums up all the values of a collum and inserts the final value as the last cell in the collum
-      function SumOfRow() {
+      function SumOfCollum() {
         let tableID = document.getElementById("timesheet");
         let amountOfRows = tableID.rows.length;
         let amountOfCollums = tableID.rows[0].cells.length;
@@ -156,13 +153,65 @@ AddRowBtn.addEventListener("click", CreateNewRow);
         let totalCollumValue = 0;
         
         for (let i = 2; i < amountOfCollums; i++) {
-          for (let j = 1; j < amountOfRows -1; j++) {
+          for (let j = 1; j < amountOfRows -2; j++) {
             let cell = tableID.rows[j].cells[i].querySelector("input[type='number']");
-            cell.addEventListener('input', SumOfRow);
-            console.log(cell.value);
+            cell.addEventListener('input', SumOfCollum);
             totalCollumValue += parseFloat(cell.value);
+            console.log(totalCollumValue);
+
+            
+
+
+
+
           }
+          
           tableID.rows[amountOfRows -1].cells[i].querySelector("input[type='number']").value = totalCollumValue;
           totalCollumValue = 0;
+        
+        
         }
+        SumOffTotalHoursRow();
+        SumOfAbsenceHoursRow();
       }
+
+      
+      
+      function SumOffTotalHoursRow(){
+      
+      
+        let table = document.getElementById('timesheet');
+        let totalamountOfCollums = table.rows.length
+        let amountOfRows = table.rows[0].cells.length;
+
+        let totalRowValue = 0
+        for(i=2; i<=totalamountOfCollums; i++){
+        totalRowValue += parseFloat(table.rows[totalamountOfCollums -1].cells[i].querySelector("input[type='number']").value);
+        console.log(totalRowValue);
+      }
+
+        table.rows[amountOfRows -2].cells[totalamountOfCollums+1].querySelector("input[type='number']").value = totalRowValue;
+        totalRowValue=0;  
+        
+
+        }
+
+        function SumOfAbsenceHoursRow(){
+  
+          let table = document.getElementById('timesheet');
+          let totalamountOfCollums = table.rows.length
+          let amountOfRows = table.rows[0].cells.length;
+  
+          let totalRowValue = 0
+          for(i=2; i<=totalamountOfCollums; i++){
+          totalRowValue += parseFloat(table.rows[totalamountOfCollums -2].cells[i].querySelector("input[type='number']").value);
+          let cell = table.rows[totalamountOfCollums -2].cells[i];
+          cell.addEventListener('input', SumOfAbsenceHoursRow);
+         
+        }
+  
+          table.rows[amountOfRows -3].cells[totalamountOfCollums+1].querySelector("input[type='number']").value = totalRowValue;
+          totalRowValue=0;
+      }
+    
+    
