@@ -58,7 +58,7 @@ export async function CreateUser(pool, username, password, isAdmin) {
         return false // error occurred
     }
 }
-
+ 
 export async function ComparePassword(pool, username, password) {
 
     try {
@@ -191,6 +191,16 @@ export async function CreateTasks(pool, projectId, name, description, estimate) 
     }
 }
 
+export async function GetProjectTasks(pool, projectId) {
+    try {
+        const [rows] = await pool.query(`SELECT * FROM tasks WHERE projectId = ?`, [projectId])
+        return rows
+    } catch (error) {
+        console.log(error);
+        return false; // error occurred
+    }
+}
+
 export async function CreateUserManagerLink(pool, userId, managerId, projectId) {
     try {
         const values = [userId, managerId, projectId];
@@ -233,8 +243,10 @@ comparePassword('madstest', 'hej').then((result) => {
 //console.log(newUser)
 //const pool = await ConnectToDatabase();
 
+//CreateTasks(pool, 2, "Task3", "Hej", 21)
+
 //console.log( await setUserLevel(pool, 1, 1) )
-//const user =  await getUser(2)
+//const user =  await GetProjectTasks()
 //console.log(user)
 //getUser(pool, 2);
 //const result = await createUser('Markus', '1234')
