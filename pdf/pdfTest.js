@@ -9,7 +9,7 @@ export async function CreatePDF(username,projectData){
     doc.text(JSON.stringify(projectData));
     doc.end();
 
-    return doc;
+    return "./pdf/"+username+"TimeSheet.pdf";
 
 }
 

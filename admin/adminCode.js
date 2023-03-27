@@ -172,4 +172,28 @@ document.querySelector('#exportButton').addEventListener('click', (event) => {
 });
 });
 
+document.querySelector('#exportButtonXlsx').addEventListener('click', (event) => {
+  event.preventDefault();
+  const data = {
+    functionName: "ExportExcel"
+  };
+ fetch('http://127.0.0.1:3000/adminRequests', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(data)
+})
+.then(response =>{
+  response.blob().then(blob => {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'DanielTimeSheet.xlsx';
+    document.body.appendChild(link);
+    link.click();
+});
+});
+});
+
 console.log(document.cookie);
