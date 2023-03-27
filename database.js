@@ -42,15 +42,15 @@ export async function GetUser(pool, id) {
     }
 }
 
-export async function CreateUser(pool, username, password, isAdmin) {
+export async function CreateUser(pool, username, password, isAdmin, fullname, phone, email) {
     try {
         const salt = await bcrypt.genSalt(10)
         const hash = await bcrypt.hash(password, salt)
 
         const [result] = await pool.query(`
-        INSERT INTO users (username, password, isAdmin)
-        VALUES (?, ?, ?)
-        `, [username, hash, isAdmin])
+        INSERT INTO users (username, password, isAdmin, fullname, phone, email)
+        VALUES (?, ?, ?, ?, ?, ?)
+        `, [username, hash, isAdmin, fullname, phone, email])
         const id = result.insertId
         return GetUser(pool, id)
     } catch (error) {
