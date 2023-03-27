@@ -5,7 +5,9 @@ import http from 'http';
 import { join } from 'path';
 import express from 'express';
 
-import {ConnectToDatabase, GetUsers, GetUser, CreateUser,GetmanagerProjects, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName,GetUserLevel, SetUserLevel,GetProjects,CreateUserManagerLink,CreateUserProjectLink,GetProjectIdWithName} from './database.js';
+import {ConnectToDatabase, GetUsers, GetUser, CreateUser,GetmanagerProjects, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName,GetUserLevel, SetUserLevel,GetProjects,CreateUserManagerLink,CreateUserProjectLink,GetProjectIdWithName, GetProject} from './database.js';
+import {CreatePDF} from './pdf/pdfTest.js'
+import path from 'node:path'
 
 const { json } = express;
 const { urlencoded } = express;
@@ -200,6 +202,16 @@ app.post('/adminRequests', isAuthenticated, async (req, res) => {
     console.log(newLinkData);
   }
   
+  if (req.body.functionName == "ExportPDF"){
+    let userID = req.session.userName;
+    GetProjects(poolData).then(projects =>{
+    CreatePDF(userID,projects).then(pdf =>{
+      console.log(pdf.path);
+      res.download(__dirname,'pdf\DanielTimeSheet.pdf')
+    })})
+
+
+  }
 
 });
 
