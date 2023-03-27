@@ -246,7 +246,7 @@ comparePassword('madstest', 'hej').then((result) => {
 //CreateTasks(pool, 2, "Task3", "Hej", 21)
 
 //console.log( await setUserLevel(pool, 1, 1) )
-//const user =  await GetProjectTasks()
+//const user =  await GetProjectTasks(pool, 2)
 //console.log(user)
 //getUser(pool, 2);
 //const result = await createUser('Markus', '1234')
