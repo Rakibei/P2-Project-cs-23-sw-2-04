@@ -1,14 +1,11 @@
 
-import fs from 'fs';
+
 // The servers parameters are set up so that it works with express
 import http from 'http';
 import { join } from 'path';
 import express from 'express';
 
-import {ConnectToDatabase, GetUsers, GetUser, CreateUser,GetmanagerProjects, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName,GetUserLevel, SetUserLevel,GetProjects,CreateUserManagerLink,CreateUserProjectLink,GetProjectIdWithName, GetProject} from './database.js';
-import {CreatePDF} from './pdf/pdfTest.js'
-import {ConvertJsonToExcel} from './xlsx/xlsxTest.js'
-import path from 'node:path'
+import {ConnectToDatabase, GetUsers, GetUser, CreateUser,GetmanagerProjects, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName,GetUserLevel, SetUserLevel,GetProjects,CreateUserManagerLink,CreateUserProjectLink,GetProjectIdWithName, GetProjectTasks} from './database.js';
 
 const { json } = express;
 const { urlencoded } = express;
@@ -17,6 +14,7 @@ import { fileURLToPath } from 'url';
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 import session from 'express-session';
 import { stringify } from 'querystring';
+import { log } from 'console';
 //import { autoMailer } from './e-mail_notification/mail.js';
 
 // The server is given the name app and calls from the express function
@@ -89,15 +87,20 @@ app.post('/', async (req,res) => {
 
 // for when the user needs their userdata on the next page
 app.get('/sesionData',async(req,res)=>{
-
+ 
   let userID = await GetUserIdWithName(poolData,req.session.userName);
   let userProjects = await GetUserProjects(poolData,userID);
+  for (let i = 0; i < userProjects.length; i++) {
+    userProjects[i].tasks = await GetProjectTasks(poolData, userProjects[i].id);
+  }
+  //let userTasks = await userProjects.map(project => GetProjectTasks(poolData, project.projectID));
+  console.log(userProjects);
 
 // The info is stored in session and is sent to the client
 req.session.projects = userProjects;
 req.session.userID = userID;
 req.session.save();
-res.json(req.session);
+res.json(req.session);x
 
 console.log("Data Sent")
 
@@ -136,6 +139,10 @@ app.get('/managerRequests', isAuthenticated, async (req, res) => {
   console.log(managerProjects);
   res.send(managerProjects);
 });
+
+
+
+
 
 
 
@@ -203,25 +210,7 @@ app.post('/adminRequests', isAuthenticated, async (req, res) => {
     console.log(newLinkData);
   }
   
-  if (req.body.functionName == "ExportPDF"){
-    let userID = req.session.userName;
-    GetProjects(poolData).then(projects =>{
-    CreatePDF(userID,projects).then(pdfPath =>{
-      console.log(pdfPath);
-      res.download(pdfPath)
-    })})
-  }
-  
-  if (req.body.functionName == "ExportExcel") {
-    let userID = req.session.userName;
-    GetProjects(poolData).then(projects =>{
-      JSON.stringify(projects)
-      ConvertJsonToExcel(projects,userID).then(xlsxPath =>{
-        console.log(xlsxPath);
-        res.download(xlsxPath)
-      })
-    })
-  }
+
 });
 
 
