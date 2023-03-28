@@ -100,7 +100,7 @@ app.get('/sesionData',async(req,res)=>{
 req.session.projects = userProjects;
 req.session.userID = userID;
 req.session.save();
-res.json(req.session);x
+res.json(req.session);
 
 console.log("Data Sent")
 
