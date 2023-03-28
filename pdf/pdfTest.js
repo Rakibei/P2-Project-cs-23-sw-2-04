@@ -15,9 +15,16 @@ export async function CreatePDF(username,projectData){
             resolve("./pdf/"+username+"TimeSheet.pdf");
         });
 
+        //Size manipulation of the headline
         doc.fontSize(18).text("Allocation of time for "+ username);
+        
+        //layout and size manipulation of the text from projectData.
+        const formattedData = projectData.map(project => { //we omitted the previous stringify function, since that data resisted manipulation.
+            return `Project Name: ${project.name}\nDescription: ${project.description}\nBudget: ${project.budget}`;
+          });
+          doc.moveDown(); //simply create a gap between headline and body.
+          doc.fontSize(12).text(formattedData.join('\n\n'));
 
-        doc.fontSize(12).text(JSON.stringify(projectData));
         doc.end();
     });
 };
