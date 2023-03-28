@@ -42,15 +42,15 @@ export async function GetUser(pool, id) {
     }
 }
 
-export async function CreateUser(pool, username, password, isAdmin) {
+export async function CreateUser(pool, username, password, isAdmin, fullname, phone, email) {
     try {
         const salt = await bcrypt.genSalt(10)
         const hash = await bcrypt.hash(password, salt)
 
         const [result] = await pool.query(`
-        INSERT INTO users (username, password, isAdmin)
-        VALUES (?, ?, ?)
-        `, [username, hash, isAdmin])
+        INSERT INTO users (username, password, isAdmin, fullname, phone, email)
+        VALUES (?, ?, ?, ?, ?, ?)
+        `, [username, hash, isAdmin, fullname, phone, email])
         const id = result.insertId
         return GetUser(pool, id)
     } catch (error) {
@@ -246,7 +246,7 @@ comparePassword('madstest', 'hej').then((result) => {
 //CreateTasks(pool, 2, "Task3", "Hej", 21)
 
 //console.log( await setUserLevel(pool, 1, 1) )
-//const user =  await GetProjectTasks()
+//const user =  await GetProjectTasks(pool, 2)
 //console.log(user)
 //getUser(pool, 2);
 //const result = await createUser('Markus', '1234')

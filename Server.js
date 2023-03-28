@@ -1,5 +1,5 @@
 
-
+import fs from 'fs';
 // The servers parameters are set up so that it works with express
 import http from 'http';
 import { join } from 'path';
@@ -7,6 +7,7 @@ import express from 'express';
 
 import {ConnectToDatabase, GetUsers, GetUser, CreateUser,GetmanagerProjects, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName,GetUserLevel, SetUserLevel,GetProjects,CreateUserManagerLink,CreateUserProjectLink,GetProjectIdWithName, GetProject} from './database.js';
 import {CreatePDF} from './pdf/pdfTest.js'
+import {ConvertJsonToExcel} from './xlsx/xlsxTest.js'
 import path from 'node:path'
 
 const { json } = express;
@@ -205,14 +206,22 @@ app.post('/adminRequests', isAuthenticated, async (req, res) => {
   if (req.body.functionName == "ExportPDF"){
     let userID = req.session.userName;
     GetProjects(poolData).then(projects =>{
-    CreatePDF(userID,projects).then(pdf =>{
-      console.log(pdf.path);
-      res.download(__dirname,'pdf\DanielTimeSheet.pdf')
+    CreatePDF(userID,projects).then(pdfPath =>{
+      console.log(pdfPath);
+      res.download(pdfPath)
     })})
-
-
   }
-
+  
+  if (req.body.functionName == "ExportExcel") {
+    let userID = req.session.userName;
+    GetProjects(poolData).then(projects =>{
+      JSON.stringify(projects)
+      ConvertJsonToExcel(projects,userID).then(xlsxPath =>{
+        console.log(xlsxPath);
+        res.download(xlsxPath)
+      })
+    })
+  }
 });
 
 
