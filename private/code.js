@@ -25,7 +25,7 @@ AddRowBtn.addEventListener("click", CreateNewRow);
 //A fucntion that dynamicly renders a timesheettable for the given Username
 function rendertimesheettable(projects) {
 
-  let timesheettable = `<body>
+  let timesheettable = `<body><div id="container">
             <table id="timesheet">
                 <caption>Time sheet for week 14 for </caption>
                 <thead>
@@ -73,7 +73,7 @@ function rendertimesheettable(projects) {
         timesheettable+=`<td><input type="number" id="thursdaymeeting" value="0" step="0.5" name="thursday" min="0" max="20" readonly></td>`;
         timesheettable+=`<td><input type="number" id="fridaymeeting"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
         timesheettable+=`<td><input type="number" id="fridaymeeting"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
-        timesheettable += `</tbody></table></body>`
+        timesheettable += `</tbody></table></div></body>`
         return timesheettable;
       }
 
