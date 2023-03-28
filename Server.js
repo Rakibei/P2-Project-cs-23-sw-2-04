@@ -1,5 +1,5 @@
 
-
+import fs from 'fs';
 // The servers parameters are set up so that it works with express
 import http from 'http';
 import { join } from 'path';
@@ -17,7 +17,6 @@ import { fileURLToPath } from 'url';
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 import session from 'express-session';
 import { stringify } from 'querystring';
-import { userInfo } from 'os';
 //import { autoMailer } from './e-mail_notification/mail.js';
 
 // The server is given the name app and calls from the express function
@@ -88,8 +87,6 @@ app.post('/', async (req,res) => {
     }
 });
 
-
-
 // for when the user needs their userdata on the next page
 app.get('/sesionData',async(req,res)=>{
 
@@ -105,6 +102,7 @@ res.json(req.session);
 console.log("Data Sent")
 
 });
+
 
 
 // handle the manager function
@@ -213,6 +211,7 @@ app.post('/adminRequests', isAuthenticated, async (req, res) => {
       res.download(pdfPath)
     })})
   }
+  
   if (req.body.functionName == "ExportExcel") {
     let userID = req.session.userName;
     GetProjects(poolData).then(projects =>{
@@ -224,6 +223,8 @@ app.post('/adminRequests', isAuthenticated, async (req, res) => {
     })
   }
 });
+
+
 
 
 // Handle 404 errors
