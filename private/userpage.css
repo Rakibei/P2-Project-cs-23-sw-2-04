@@ -17,7 +17,7 @@ html {
 #container{
     background-color: bisque;
     display: grid;
-    width: 100%;
+    max-width: 100%;
     align-items: center;
 }
 
@@ -33,7 +33,7 @@ table td,table th{
   border:1px solid #ddd;
   text-align: center;
   font-size:20px;
-  padding:10px 15px;
+  padding:5px 5px;
 }
 table th{
 	background-color: rgb(16, 78, 178);
@@ -60,7 +60,8 @@ input{
     border: 1px solid rgb(16, 78, 178);
     border-radius: 5px;
     align-items: center;
-    width: 30%;
+    width: 40%;
+    height: 30%;
 }
 .btn{
     text-align: center;
