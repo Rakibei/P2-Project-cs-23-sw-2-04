@@ -209,10 +209,23 @@ app.post('/adminRequests', isAuthenticated, async (req, res) => {
     case "ExportPDF":
       let userID3 = req.session.userName;
       GetProjects(poolData).then(projects =>{
-      CreatePDF(userID3,projects).then(pdfPath =>{
-        console.log(pdfPath);
-        res.download(pdfPath)
-      })})
+    
+        CreatePDF(userID3, projects).then((pdfPath) => {
+          const stream = fs.createReadStream(pdfPath);
+          stream.on('open', () => {
+            stream.pipe(res);
+          });
+          stream.on('error', (err) => {
+            res.end(err);
+          });
+          res.on('finish', () => {
+            fs.unlink(pdfPath, (err) => {
+              if (err) throw err;
+              console.log('PDF file deleted');
+            });
+          });
+        });});
+      
       break;
     case "ExportExcel":
         let userID4 = req.session.userName;
