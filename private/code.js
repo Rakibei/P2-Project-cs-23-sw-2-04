@@ -9,7 +9,8 @@ window.addEventListener('load', () => {
             document.getElementById('timesheetcontainer').innerHTML = rendertimesheettable(projects);
             for(let i=0; i<projects.length; i++){
             newid = i ;
-            PopulateDropdownProjects(newid)  
+            PopulateDropdownProjects(newid); 
+            LinkingDropdowns(newid,projects);
             }
             SumOfCollum();
             SumOffTotalHoursRow();
@@ -21,6 +22,9 @@ window.addEventListener('load', () => {
  executed resulting in the creation of a new row*/
 const AddRowBtn = document.getElementById("AddRow");
 AddRowBtn.addEventListener("click", CreateNewRow);
+
+
+
 
 
 
@@ -40,9 +44,11 @@ AddRowBtn.addEventListener("click", CreateNewRow);
                 <tbody>`;
         for(let i=0; i<projects.length; i++){
             timesheettable+=`<tr>
-                <td> <select name="ProjectsDropdown${i}"  id="ProjectsDropdown${i}"></select>;</td>
+                <td> <select name="ProjectsDropdown${i}"  id="ProjectsDropdown${i}">
+                <option value="Default">Select a project</option> 
+                </select></td>
                 
-                <td> <select name="TasksDropdown${i}" id="TasksDropdown${i}"></select>;</td>`;
+                <td> <select name="TasksDropdown${i}" id="TasksDropdown${i}"></select></td>`;
 
             timesheettable+=`<td><input class="inputfield" type="number" placeholder="0" id="monday${i}" value="0" oninput="validity.valid||(value='0');" step="0.5" name="monday${i}" min="0" max="20"></td>`;
             timesheettable+=`<td><input class="inputfield" type="number" placeholder="0" id="tuesday${i}" value="0" oninput="validity.valid||(value='0');" step="0.5" name="tuesday${i}" min="0" max="20"></td>`;
@@ -98,6 +104,8 @@ AddRowBtn.addEventListener("click", CreateNewRow);
         return timesheettable;
       }
 
+      
+
     
       //a function the will delete the specific row where the corresponding "delete row button" is pressed
       function DeleteRow() {
@@ -151,8 +159,10 @@ AddRowBtn.addEventListener("click", CreateNewRow);
 
         
         //inserts the imput for the different cells
-        cell1.innerHTML = ` <select name="ProjectsDropdown${newid}" class="ProjectsDropdown" id="ProjectsDropdown${newid}"></select>`;
-        cell2.innerHTML = ` <select name="TaskssDropdown${newid}" id="TaskssDropdown${newid}"> </select>`;
+        cell1.innerHTML = `<select name="ProjectsDropdown${newid}" class="ProjectsDropdown" id="ProjectsDropdown${newid}">
+                          <option value="Default">Select a project</option> 
+                          </select>`;                    
+        cell2.innerHTML = ` <select name="TasksDropdown${newid}" id="TasksDropdown${newid}"> </select>`;
         cell3.innerHTML = `<input type="number" id="monday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
         cell4.innerHTML = `<input type="number" id="tuesday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
         cell5.innerHTML = `<input type="number" id="wednesday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
@@ -164,9 +174,30 @@ AddRowBtn.addEventListener("click", CreateNewRow);
 
       
         PopulateDropdownProjects(newid);
+        LinkingDropdowns(newid,projects);
         SumOfCollum();
       }
       
+
+      function LinkingDropdowns(newid, projects){
+        
+        const projectsnames ={};
+        for(let i=0; i<projects.length; i++){
+          projectsnames[projects[i].name] =  projects[i].tasks.map(task => task.name);
+        }
+      
+        let projectDropdown = document.getElementById("ProjectsDropdown"+newid);
+        let taskDropdown = document.getElementById("TasksDropdown"+newid);
+              
+        projectDropdown.addEventListener("change", () => {
+          let selectedProject = projectDropdown.value;
+          let taskOptions = projectsnames[selectedProject].map(task => `<option>${task}</option>`).join("");
+                
+          taskDropdown.innerHTML = taskOptions;
+        });
+      }
+  
+
         
         function PopulateDropdownProjects(newid){
         const ProjectsDropdown = document.getElementById("ProjectsDropdown"+newid);
@@ -179,6 +210,19 @@ AddRowBtn.addEventListener("click", CreateNewRow);
       }
     } 
 
+  
+    
+
+    function PopulateDropdownTasks(id){
+    let ProjectsDropdown = document.getElementById("TasksDropdown"+id);
+    for(let i=0; i<projects.length; i++){
+      for(let j=0; j<projects[i].tasks.length; j++){
+        let option = document.createElement("OPTION");
+        option.innerHTML = projects[i].tasks[j].name;
+        TasksDropdown.appendChild(option);
+      }
+    }
+  }
 
       // Cells are the x axis rows are the y axis
 
