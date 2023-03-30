@@ -196,4 +196,33 @@ document.querySelector('#exportButtonXlsx').addEventListener('click', (event) =>
 });
 });
 
+
+document.querySelector('#createTaskForProjectForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const data = {
+    projectToLink: event.target.projectToLinkFortask.value,
+    taskDescription: event.target.taskDescription.value,
+    taskName: event.target.taskName.value,
+    estimate: event.target.estimate.value,
+    functionName: "CreateTasks"
+  };
+  console.log(data);
+ fetch('http://127.0.0.1:3000/adminRequests', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(data)
+})
+.then(response => {
+
+})
+.catch(error => console.error(error));
+});
+
+
+
+
+
+
 console.log(document.cookie);
