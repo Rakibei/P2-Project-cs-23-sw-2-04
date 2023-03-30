@@ -44,17 +44,17 @@ function rendertimesheettable(projects) {
                 <tbody>`;
         for(let i=0; i<projects.length; i++){
             timesheettable+=`<tr>
-                <td> <select name="ProjectsDropdown${i}"  id="ProjectsDropdown${i}">
+                <td> <select name="ProjectsDropdown${i}" class="ProjectsDropdown" id="ProjectsDropdown${i}">
                 <option value="Default">Select a project</option> 
                 </select></td>
                 
-                <td> <select name="TasksDropdown${i}" id="TasksDropdown${i}"></select></td>`;
+                <td> <select name="TasksDropdown${i}"class="TasksDropdown" id="TasksDropdown${i}"></select></td>`;
 
-            timesheettable+=`<td><input class="inputfield" type="number" placeholder="0" id="monday${i}" value="0" oninput="validity.valid||(value='0');" step="0.5" name="monday${i}" min="0" max="20"></td>`;
-            timesheettable+=`<td><input class="inputfield" type="number" placeholder="0" id="tuesday${i}" value="0" oninput="validity.valid||(value='0');" step="0.5" name="tuesday${i}" min="0" max="20"></td>`;
-            timesheettable+=`<td><input class="inputfield" type="number" placeholder="0" id="wednesday${i}" value="0" oninput="validity.valid||(value='0');" step="0.5" name="wednesday${i}" min="0" max="20"></td>`;
+            timesheettable+=`<td><input class="inputfield" type="number" placeholder="0" id="monday${i}"value="0" oninput="validity.valid||(value='0');" step="0.5" name="monday${i}" min="0" max="20"></td>`;
+            timesheettable+=`<td><input class="inputfield" type="number" placeholder="0" id="tuesday${i}"value="0" oninput="validity.valid||(value='0');" step="0.5" name="tuesday${i}" min="0" max="20"></td>`;
+            timesheettable+=`<td><input class="inputfield" type="number" placeholder="0" id="wednesday${i}"value="0" oninput="validity.valid||(value='0');" step="0.5" name="wednesday${i}" min="0" max="20"></td>`;
             timesheettable+=`<td><input class="inputfield" type="number" placeholder="0" id="thursday${i}" value="0" oninput="validity.valid||(value='0');" step="0.5" name="thursday${i}" min="0" max="20"></td>`;
-            timesheettable+=`<td><input class="inputfield" type="number" placeholder="0" id="friday${i}"value="0" oninput="validity.valid||(value='0');" step="0.5" name="friday" min="0" max="20"></td>`;
+            timesheettable+=`<td><input class="inputfield" type="number" placeholder="0" id="friday${i}"value="0" oninput="validity.valid||(value='0');" step="0.5" name="friday${i}" min="0" max="20"></td>`;
             timesheettable+=`<td><input class="inputfield" type="number" placeholder="0" id="saturday${i}"value="0" oninput="validity.valid||(value='0');" step="0.5" name="saturday${i}" min="0" max="20"></td>`;
             timesheettable+=`<td><input class="inputfield" type="number" placeholder="0" id="sunday${i}"value="0" oninput="validity.valid||(value='0');" step="0.5" name="Sunday${i}" min="0" max="20"></td>`;
             
@@ -90,14 +90,16 @@ function rendertimesheettable(projects) {
         timesheettable+=`<td><input class="inputfield" type="number" id="thursdayVacation" value="0" oninput="validity.valid||(value='0');" step="0.5" name="thursdayVacation" min="0" max="20"></td>`;
         timesheettable+=`<td><input class="inputfield" type="number" id="fridayAVacation"value="0" oninput="validity.valid||(value='0');" step="0.5" name="fridayVacation" min="0" max="20"></td>`;
         timesheettable+=`<tr>
-            <td></td>
-            <td>Total Hours</td>`;
-        timesheettable+=`<td><input type="number" id="tuesdaymeeting" value="0" step="0.5" name="tuesday" min="0" max="20" readonly></td>`;
-        timesheettable+=`<td><input type="number" id="tuesdaymeeting" value="0" step="0.5" name="tuesday" min="0" max="20" readonly></td>`;
-        timesheettable+=`<td><input type="number" id="wednesdaymeeting" value="0" step="0.5" name="wednesday" min="0" max="20" readonly></td>`;
-        timesheettable+=`<td><input type="number" id="thursdaymeeting" value="0" step="0.5" name="thursday" min="0" max="20" readonly></td>`;
-        timesheettable+=`<td><input type="number" id="fridaymeeting"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
-        timesheettable+=`<td><input type="number" id="fridaymeeting"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
+            <td>Total Hours</td>
+            <td></td>`;
+        timesheettable+=`<td><input type="number" id="mondayTotalhours" value="0" step="0.5" name="tuesday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="tuesdayTotalhours" value="0" step="0.5" name="tuesday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="wednesdayTotalhours" value="0" step="0.5" name="wednesday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="thursdayTotalhours" value="0" step="0.5" name="thursday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="fridayTotalhours"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="SaturdayTotalhours"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="SundayTotalhours"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="WeekTotalhours"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
         timesheettable += `</tbody></table></div></body>`
         return timesheettable;
       }
@@ -160,7 +162,7 @@ function rendertimesheettable(projects) {
         cell1.innerHTML = `<select name="ProjectsDropdown${newid}" class="ProjectsDropdown" id="ProjectsDropdown${newid}">
                           <option value="Default">Select a project</option> 
                           </select>`;                    
-        cell2.innerHTML = ` <select name="TasksDropdown${newid}" id="TasksDropdown${newid}"> </select>`;
+        cell2.innerHTML = ` <select name="TasksDropdown${newid}" class="TasksDropdown" id="TasksDropdown${newid}"> </select>`;
         cell3.innerHTML = `<input type="number" id="monday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
         cell4.innerHTML = `<input type="number" id="tuesday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
         cell5.innerHTML = `<input type="number" id="wednesday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
@@ -168,7 +170,7 @@ function rendertimesheettable(projects) {
         cell7.innerHTML = `<input type="number" id="friday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
         cell8.innerHTML = `<input type="number" id="saturday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
         cell9.innerHTML = `<input type="number" id="sunday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
-        cell10.innerHTML = `<input type="button" value="Delete Row" onclick="DeleteRow()">`;
+        cell10.innerHTML = `<input type="button"class="DeleteRowButton" value="Delete Row" onclick="DeleteRow()">`;
 
       
         PopulateDropdownProjects(newid);
@@ -262,8 +264,6 @@ function rendertimesheettable(projects) {
         let table = document.getElementById('timesheet');
         let totalrows = table.rows.length;
         let rowlength = document.getElementById("timesheet").rows[totalrows-1].cells.length;
-        console.log("se her idiot"+totalrows);
-        console.log("rowlength="+rowlength);
         let Totalhourssum = 0
         
 
