@@ -5,7 +5,7 @@ import http from 'http';
 import { join } from 'path';
 import express from 'express';
 
-import {ConnectToDatabase, GetUsers, GetUser, CreateUser,GetmanagerProjects, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName,GetUserLevel, SetUserLevel,GetProjects,CreateUserManagerLink,CreateUserProjectLink,GetProjectIdWithName, GetProjectTasks} from './database.js';
+import {ConnectToDatabase,CreateTasks, GetUsers, GetUser, CreateUser,GetmanagerProjects, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName,GetUserLevel, SetUserLevel,GetProjects,CreateUserManagerLink,CreateUserProjectLink,GetProjectIdWithName, GetProjectTasks} from './database.js';
 import {CreatePDF} from './pdf/pdfTest.js'
 import {ConvertJsonToExcel} from './xlsx/xlsxTest.js'
 import path from 'node:path'
@@ -202,8 +202,8 @@ app.post('/adminRequests', isAuthenticated, async (req, res) => {
      break;
     case "CreateUserProjectLink":
       let managerID = await GetUserIdWithName(poolData,req.body.createManager);
-      let projectID = await GetProjectIdWithName(poolData,req.body.projectToLink);
-      let newLinkData = await CreateUserProjectLink(poolData,managerID,projectID,1);
+      let projectID1 = await GetProjectIdWithName(poolData,req.body.projectToLink);
+      let newLinkData = await CreateUserProjectLink(poolData,managerID,projectID1,1);
       console.log(newLinkData);
       break;
     case "ExportPDF":
@@ -236,6 +236,11 @@ app.post('/adminRequests', isAuthenticated, async (req, res) => {
         res.download(xlsxPath)})
         })
     break;
+    case "CreateTasks":
+      let projectID2 = await GetProjectIdWithName(poolData,req.body.projectToLink);
+      let task = await CreateTasks(poolData,projectID2,req.body.taskName,req.body.taskDescription,req.body.estimate);
+      console.log(task);
+  
 
 
     default:
