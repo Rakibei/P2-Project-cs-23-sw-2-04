@@ -1,0 +1,73 @@
+/* det her er universal selector for den complete general indstillinger*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Times New Roman', Times, serif;
+}
+/* her redigere jeg baggrund indstillinger*/
+html {
+    overflow: hidden;
+    background: linear-gradient(to bottom, rgba(16, 78, 178, 0.8), rgba(16, 78, 178, 0.25));
+    background-repeat: no-repeat;
+    background-size: cover ;
+    min-height: 100%;
+}
+/* her rediger jeg den div der holder hele tabellen*/
+#container{
+    background-color: bisque;
+    display: grid;
+    max-width: 100%;
+    align-items: center;
+}
+
+/*her redigere jeg selve tabellen */
+table{
+	width: 100%;
+	border-collapse: collapse;
+    border-radius: 3px;
+}
+
+/*her rediger jeg de forskellige rows and collumns*/
+table td,table th{
+  border:1px solid #ddd;
+  text-align: center;
+  font-size:20px;
+  padding:5px 5px;
+}
+table th{
+	background-color: rgb(16, 78, 178);
+	color:#ffffff;
+}
+table tbody tr:nth-child(even){
+	background-color: #f5f5f5;
+}
+
+/*her justere jeg input felterne */
+input{
+    border-radius: 10px;
+    padding-left: 5px;
+}
+
+/* her rediger jeg Add Row knappen*/
+#AddRow{
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 100%;
+    padding-left: 0px;
+    background: rgb(16, 78, 178);
+    color: white;
+    border: 1px solid rgb(16, 78, 178);
+    border-radius: 5px;
+    align-items: center;
+    width: 40%;
+    height: 30%;
+}
+.btn{
+    text-align: center;
+    margin-top: 5px;
+}
+/* her justere jeg hovering over  knappen*/
+#AddRow:hover {
+    background: rgb(112, 155, 223);
+}

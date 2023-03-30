@@ -31,9 +31,9 @@ AddRowBtn.addEventListener("click", CreateNewRow);
 
 
 //A fucntion that dynamicly renders a timesheettable for the given Username
-    function rendertimesheettable (projects){
-     
-        let timesheettable= `<body>
+function rendertimesheettable(projects) {
+
+  let timesheettable = `<body><div id="container">
             <table id="timesheet">
                 <caption>Time sheet for week 14 for </caption>
                 <thead>
@@ -90,17 +90,15 @@ AddRowBtn.addEventListener("click", CreateNewRow);
         timesheettable+=`<td><input class="inputfield" type="number" id="thursdayVacation" value="0" oninput="validity.valid||(value='0');" step="0.5" name="thursdayVacation" min="0" max="20"></td>`;
         timesheettable+=`<td><input class="inputfield" type="number" id="fridayAVacation"value="0" oninput="validity.valid||(value='0');" step="0.5" name="fridayVacation" min="0" max="20"></td>`;
         timesheettable+=`<tr>
-        <td>Total Hours</td>
-        <td></td>`;
-        timesheettable+=`<td><input type="number" id="mondayTotalhours" value="0" step="0.5" name="mondayTotalhours" min="0" max="20" readonly></td>`;
-        timesheettable+=`<td><input type="number" id="tuesdayTotalhours" value="0" step="0.5" name="tuesdayTotalhours" min="0" max="20" readonly></td>`;
-        timesheettable+=`<td><input type="number" id="wednesdayTotalhours" value="0" step="0.5" name="wednesdayTotalhours" min="0" max="20" readonly></td>`;
-        timesheettable+=`<td><input type="number" id="thursdayTotalhours" value="0" step="0.5" name="thursdayTotalhours" min="0" max="20" readonly></td>`;
-        timesheettable+=`<td><input type="number" id="fridayTotalhours"value="0" step="0.5" name="fridayTotalhours" min="0" max="20" readonly></td>`;
-        timesheettable+=`<td><input type="number" id="saturdayTotalhours"value="0" step="0.5" name="saturdayTotalhours" min="0" max="20" readonly></td>`;
-        timesheettable+=`<td><input type="number" id="sundayTotalhours"value="0" step="0.5" name="sundayTotalhours" min="0" max="20" readonly></td>`;
-        timesheettable+=`<td><input type="number" id="Totalhours"value="0" step="0.5" name="Totalhours" min="0" max="70" readonly></td>`;
-        timesheettable += `</tbody></table></body>`
+            <td></td>
+            <td>Total Hours</td>`;
+        timesheettable+=`<td><input type="number" id="tuesdaymeeting" value="0" step="0.5" name="tuesday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="tuesdaymeeting" value="0" step="0.5" name="tuesday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="wednesdaymeeting" value="0" step="0.5" name="wednesday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="thursdaymeeting" value="0" step="0.5" name="thursday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="fridaymeeting"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="fridaymeeting"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
+        timesheettable += `</tbody></table></div></body>`
         return timesheettable;
       }
 

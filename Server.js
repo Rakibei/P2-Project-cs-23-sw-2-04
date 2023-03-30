@@ -1,11 +1,15 @@
 
-
+import fs from 'fs';
 // The servers parameters are set up so that it works with express
 import http from 'http';
 import { join } from 'path';
 import express from 'express';
 
-import {ConnectToDatabase, GetUsers, GetUser, CreateUser,GetmanagerProjects, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName,GetUserLevel, SetUserLevel,GetProjects,CreateUserManagerLink,CreateUserProjectLink,GetProjectIdWithName, GetProjectTasks} from './database.js';
+import {ConnectToDatabase,CreateTasks, GetUsers, GetUser, CreateUser,GetmanagerProjects, ComparePassword, CreateProject, GetUserProjects,GetUserIdWithName,GetUserLevel, SetUserLevel,GetProjects,CreateUserManagerLink,CreateUserProjectLink,GetProjectIdWithName, GetProjectTasks} from './database.js';
+import {CreatePDF} from './pdf/pdfTest.js'
+import {ConvertJsonToExcel} from './xlsx/xlsxTest.js'
+import path from 'node:path'
+
 
 const { json } = express;
 const { urlencoded } = express;
@@ -175,43 +179,78 @@ app.use('/admin', isAuthenticated, serveStatic(join(__dirname, 'admin')));
 // Handle the Admins requsts
 app.post('/adminRequests', isAuthenticated, async (req, res) => {
 
+  switch (req.body.functionName) {
+    case "CreateUser":
+      let CreateUserData = await CreateUser(poolData,req.body.createUsername,req.body.createPassword, 0);
+      console.log(CreateUserData);
+      break;
+    case "CreateProject":
+      let CreateProjectData = await CreateProject(poolData,req.body.projectName, req.body.projectStartDate, req.body.projectEndDate, req.body.projectHoursSpent);
+      console.log(CreateProjectData);
+      break;
+    case "seeUserLevel":
+      let userID1 = await GetUserIdWithName(poolData,req.body.seeUserLevel);
+      let seeUserLevelData = await GetUserLevel(poolData,userID1);
+      console.log(seeUserLevelData);
+      res.json(seeUserLevelData);
+      break;
+    case  "setUserLevel":
+      let userID2 = await GetUserIdWithName(poolData,req.body.setUserLevelName);
+      console.log(userID2);
+      let seeUserNewLevelData = await SetUserLevel(poolData,userID2,parseInt(req.body.setUserLevelValue));
+      console.log(seeUserNewLevelData);
+     break;
+    case "CreateUserProjectLink":
+      let managerID = await GetUserIdWithName(poolData,req.body.createManager);
+      let projectID1 = await GetProjectIdWithName(poolData,req.body.projectToLink);
+      let newLinkData = await CreateUserProjectLink(poolData,managerID,projectID1,1);
+      console.log(newLinkData);
+      break;
+    case "ExportPDF":
+      let userID3 = req.session.userName;
+      GetProjects(poolData).then(projects =>{
+    
+        CreatePDF(userID3, projects).then((pdfPath) => {
+          const stream = fs.createReadStream(pdfPath);
+          stream.on('open', () => {
+            stream.pipe(res);
+          });
+          stream.on('error', (err) => {
+            res.end(err);
+          });
+          res.on('finish', () => {
+            fs.unlink(pdfPath, (err) => {
+              if (err) throw err;
+              console.log('PDF file deleted');
+            });
+          });
+        });});
+      
+      break;
+    case "ExportExcel":
+        let userID4 = req.session.userName;
+        GetProjects(poolData).then(projects =>{
+        JSON.stringify(projects)
+        ConvertJsonToExcel(projects,userID4).then(xlsxPath =>{
+        console.log(xlsxPath);
+        res.download(xlsxPath)})
+        })
+    break;
+    case "CreateTasks":
+      let projectID2 = await GetProjectIdWithName(poolData,req.body.projectToLink);
+      let task = await CreateTasks(poolData,projectID2,req.body.taskName,req.body.taskDescription,req.body.estimate);
+      console.log(task);
+  
+
+
+    default:
+      break;
+  }
+
+
   console.log(req.body);
-  if (req.body.functionName == "CreateUser"){
-    let CreateUserData = await CreateUser(poolData,req.body.createUsername,req.body.createPassword, 0);
-    console.log(CreateUserData);
-  }
 
-  if (req.body.functionName == "CreateProject"){
-    let CreateProjectData = await CreateProject(poolData,req.body.projectName, req.body.projectStartDate, req.body.projectEndDate, req.body.projectHoursSpent);
-    console.log(CreateProjectData);
-  }
-  
-  if (req.body.functionName == "seeUserLevel"){
-    let userID = await GetUserIdWithName(poolData,req.body.seeUserLevel);
-    let seeUserLevelData = await GetUserLevel(poolData,userID);
-    console.log(seeUserLevelData);
-    res.json(seeUserLevelData);
-  }
-
-  if (req.body.functionName == "setUserLevel"){
-    let userID = await GetUserIdWithName(poolData,req.body.setUserLevelName);
-    console.log(userID);
-
-    let seeUserNewLevelData = await SetUserLevel(poolData,userID,parseInt(req.body.setUserLevelValue));
-    console.log(seeUserNewLevelData);
-  }
-
-
-  if (req.body.functionName == "CreateUserProjectLink"){
-    let managerID = await GetUserIdWithName(poolData,req.body.createManager);
-    let projectID = await GetProjectIdWithName(poolData,req.body.projectToLink)
-
-    let newLinkData = await CreateUserProjectLink(poolData,managerID,projectID,1);
-    console.log(newLinkData);
-  }
-  
-
-});
+ });
 
 
 
