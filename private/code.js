@@ -311,3 +311,80 @@ function rendertimesheettable(projects) {
       }
     
     
+
+      document.querySelector('#timeSheetButton').addEventListener('click', (event) => {
+
+
+        let timeData ={
+          vactionhours: 0,
+          absanceHours: 0,
+          meetingHours: 0,
+        }
+
+
+        console.log("Button work");
+        let table = document.getElementById("timesheet");
+        let rowLength = table.rows.length;
+        let collumLength = table.rows[0].cells.length;
+        //console.log("Row length = " + rows + " Collum length = " + collums);
+ 
+        console.log(table);
+
+        // Collect Vacation Data first
+
+        for (i = 2; i< collumLength-2; i++){
+          let input = table.rows[rowLength-2].cells[i].querySelector("input[type=number]");
+          let value = Number(input.value);
+          if(!isNaN(value)){
+          timeData.vactionhours += value;}
+        }
+      
+        // Collect  Absence data
+
+        for (i = 2; i< collumLength; i++){
+          let input = table.rows[rowLength-3].cells[i].querySelector("input[type=number]");
+          let value = Number(input.value);
+          if(!isNaN(value)){
+          timeData.absanceHours += value;}
+        }
+
+        // Collect meeting data
+
+        for (i = 2; i< collumLength; i++){
+          let input = table.rows[rowLength-4].cells[i].querySelector("input[type=number]");
+          let value = Number(input.value);
+          if(!isNaN(value)){
+          timeData.meetingHours += value;}
+        }
+
+        //Dynmicly read rest of project data
+
+        for (let i = rowLength - 5; i > 0; i--) {
+          // Check if project is there 
+          // Get dropdown info 
+          let dropValue = table.rows[i].cells[0].options.value[table.rows[i].cells[0].selectedIndex];
+          console.log(dropValue.text);
+
+          if (!(table.rows[i].cells[0].value in timeData)){
+            timeData[table.rows[i].cells[0].value] = "Tasks" 
+          } else{
+          }
+
+
+          // for (let j = 2; j < array.length; j++) {
+            
+            // Collect info about project and add to object
+            // collect info about task
+
+            // collect hour info
+
+            
+          // }
+        }
+
+
+        console.log(timeData);
+
+
+
+      });
