@@ -108,7 +108,28 @@ res.json(req.session);
 
 console.log("Data Sent")
 
+
+
 });
+
+
+app.get('/profileData',async(req,res)=>{
+
+
+  // spørg server om data
+  let userID = await GetUserIdWithName(poolData,req.session.userName);
+
+
+
+  req.session.userID = userID;
+  req.session.eMail = "Sutminpik@lort.dk";
+  req.session.phone = 15322141;
+
+
+  res.json(req.session);
+
+});
+
 
 
 
