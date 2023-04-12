@@ -15,6 +15,7 @@ window.addEventListener('load', () => {
             SumOfCollum();
             SumOffTotalHoursRow();
             SumOfAbsenceHoursRow();
+            hideColumns(3,4,5,6,7,8);
         });
   });
 
@@ -22,6 +23,27 @@ window.addEventListener('load', () => {
  executed resulting in the creation of a new row*/
 const AddRowBtn = document.getElementById("AddRow");
 AddRowBtn.addEventListener("click", CreateNewRow);
+
+
+
+function hideColumns(columns) {
+  const table = document.getElementById('timesheet');
+  const rows = table.rows;
+  console.log(table);
+  
+
+  for (let i = 0; i <= rows.length - 1; i++) {
+    const cells = rows[i].cells;
+
+    for (let j = columns.length - 1; j >= 0; j--) {
+      const index = columns[j];
+
+      if (index >= 0 && index <= cells.length - 1) {
+        cells[index].style.display = 'none';
+      }
+    }
+  }
+}
 
 
 
