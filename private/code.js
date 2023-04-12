@@ -319,6 +319,7 @@ function rendertimesheettable(projects) {
           vactionhours: 0,
           absanceHours: 0,
           meetingHours: 0,
+          projects: {},
         }
 
 
@@ -362,29 +363,54 @@ function rendertimesheettable(projects) {
         for (let i = rowLength - 5; i > 0; i--) {
           // Check if project is there 
           // Get dropdown info 
-          let dropValue = table.rows[i].cells[0].options.value[table.rows[i].cells[0].selectedIndex];
-          console.log(dropValue.text);
+          let projectDropValue = table.rows[i].cells[0];
+          let taskDropValue = table.rows[i].cells[1]
 
-          if (!(table.rows[i].cells[0].value in timeData)){
-            timeData[table.rows[i].cells[0].value] = "Tasks" 
-          } else{
+          let selectProject = projectDropValue.querySelector("select");
+          let selectTask = taskDropValue.querySelector("select");
+
+
+
+          console.log(selectProject.value);
+
+
+          // Insert a new key into the object with the selected dropdown value if the project is not already there
+          if (!timeData.projects[selectProject.value]) {
+            timeData.projects[selectProject.value] = {};
           }
-
-
-          // for (let j = 2; j < array.length; j++) {
+          
+          // Do the same for the task
+          if (!timeData.projects[selectProject.value][selectTask.value]) {
+            timeData.projects[selectProject.value][selectTask.value] = 0;
+          }
+        
+           // Collect the total hours for a task
+           for (let j = 2; j < collumLength; j++) {
             
-            // Collect info about project and add to object
-            // collect info about task
-
-            // collect hour info
-
+             let input = table.rows[i].cells[j].querySelector("input[type=number]");
+             let value = Number(input.value);
+             if(!isNaN(value)){
+              timeData.projects[selectProject.value][selectTask.value] += value;
+             }
             
-          // }
+           }
+
         }
 
 
         console.log(timeData);
 
+
+        fetch('http://127.0.0.1:3000/submitTime', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(timeData)
+        })
+        .then(response => {
+        })
+        .catch(error => console.error(error));
 
 
       });

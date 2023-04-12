@@ -125,7 +125,6 @@ app.get('/profileData',async(req,res)=>{
   req.session.eMail = "Sutminpik@lort.dk";
   req.session.phone = 15322141;
 
-
   res.json(req.session);
 
 });
@@ -272,6 +271,18 @@ app.post('/adminRequests', isAuthenticated, async (req, res) => {
   console.log(req.body);
 
  });
+
+
+
+
+// Handle timesheet submition
+app.post('/submitTime', isAuthenticated, async (req, res) => {
+
+console.log(req.body);
+
+});
+
+
 
 
 
