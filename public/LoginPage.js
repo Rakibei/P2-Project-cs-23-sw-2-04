@@ -12,12 +12,23 @@ document.querySelector('form').addEventListener('submit', (event) => {
   body: JSON.stringify(data)
 })
 .then(response => {
+
+  if (response.status === 401) {
+    response.text().then(data => {
+      alert(data);
+    });
+  }
+
   if (response.redirected) {
     window.location.href = response.url;
   }
+
+
+
+  
+})
+.then(data => {
+  console.log(data);
 })
 .catch(error => console.error(error));
 });
-
-
-

@@ -74,7 +74,9 @@ app.use(serveStatic ('public'));
 
 // When the server recives a post requst to the server directly
 app.post('/', async (req,res) => {
-  // The contents are printed
+
+
+// For error handling to let the user know they typped wrong
   const comp = await ComparePassword(poolData,req.body.username, req.body.password)
     console.log(req.body);
     if (comp) {
@@ -84,8 +86,10 @@ app.post('/', async (req,res) => {
         req.session.userName = req.body.username
         req.session.save()
         res.redirect('/private/homepage.html');
+    } else if (await GetUserIdWithName(poolData,req.body.username) == false){
+      res.status(401).send('Invalid username');
     } else {
-        // Handle failed authentication here...  
+          res.status(401).send('Invalid password');
     }
 });
 
