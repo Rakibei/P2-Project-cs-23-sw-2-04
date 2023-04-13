@@ -1,4 +1,6 @@
 let projects 
+
+
 window.addEventListener('load', () => {
     fetch('/sesionData')
         .then(response => response.json())
@@ -12,24 +14,59 @@ window.addEventListener('load', () => {
             PopulateDropdownProjects(newid); 
             LinkingDropdowns(newid,projects);
             }
+            
             SumOfCollum();
             SumOffTotalHoursRow();
             SumOfAbsenceHoursRow();
-            hideColumns(3,4,5,6,7,8);
+            if(window.outerWidth < 500){
+              hideColumns([3,4,5,6,7,8]);
+            }
         });
   });
+  
+
+
+  let array_of_weekdayfunctions =[
+    {"monday":[3,4,5,6,7,8]},
+    {"tuesday":[2,4,5,6,7,8]},
+    {"wednesday":[2,3,5,6,7,8]},
+    {"thursday":[2,3,4,6,7,8]},
+    {"friday":[2,3,4,5,7,8]},
+    {"saturday":[2,3,4,5,6,8]},
+    {"sunday":[2,3,4,5,6,7,]},
+    ]
+    
+    
+    let firstday = 0;
+    let lastday =  6;
+    let currentday = 0;
+
+
+
+
 
 /*When the button with the id="AddRow" is clicked, the function CreateNewRow is
  executed resulting in the creation of a new row*/
 const AddRowBtn = document.getElementById("AddRow");
 AddRowBtn.addEventListener("click", CreateNewRow);
 
+function showAllColumns() {
+  const table = document.getElementById('timesheet');
+  const rows = table.rows;
+
+  for (let i = 0; i <= rows.length - 1; i++) {
+    const cells = rows[i].cells;
+
+    for (let j = 0; j <= cells.length - 1; j++) {
+      cells[j].style.display = '';
+    }
+  }
+}
 
 
 function hideColumns(columns) {
   const table = document.getElementById('timesheet');
   const rows = table.rows;
-  console.log(table);
   
 
   for (let i = 0; i <= rows.length - 1; i++) {
@@ -123,6 +160,10 @@ function rendertimesheettable(projects) {
         timesheettable+=`<td><input type="number" id="SundayTotalhours"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
         timesheettable+=`<td><input type="number" id="WeekTotalhours"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
         timesheettable += `</tbody></table></div></body>`
+
+        
+
+
         return timesheettable;
       }
 
@@ -198,6 +239,12 @@ function rendertimesheettable(projects) {
         PopulateDropdownProjects(newid);
         LinkingDropdowns(newid,projects);
         SumOfCollum();
+        if(window.outerWidth < 500){
+        console.log("Dette er current" +JSON.stringify(currentday));
+        let columns = Object.values(array_of_weekdayfunctions[currentday])[0];
+        console.log("Dette er columns til newrow" +columns);
+        showAllColumns();
+        hideColumns(columns);}
       }
       
 
@@ -331,5 +378,56 @@ function rendertimesheettable(projects) {
           table.rows[totalrows-3].cells[rowlength-1].querySelector("input[type='number']").value = totalRowValue;
           totalRowValue=0;
       }
+
+      // Start of swipe effect
+let touchstartX = 0;
+let touchendX = 0;
+
+
+function checkSwipe() {
+  console.log("detter er tocuhstart" +touchstartX);
+  console.log("detter er touchend" +touchendX);
+  console.log(touchendX-touchstartX);
+  if ( touchendX - touchstartX > 60){
     
+    if(currentday==0){
+      return;
+    }
+    else{
+      currentday--;
+      console.log(currentday);
+      let columns = Object.values(array_of_weekdayfunctions[currentday])[0];
+      console.log(columns);
+      showAllColumns();
+      hideColumns(columns);
+    }
+  }
+  
+  if (touchendX - touchstartX < -60){
     
+    if(currentday==lastday){
+      return;
+    }
+    else{
+      currentday++;
+      console.log(currentday);
+  
+      let columns = Object.values(array_of_weekdayfunctions[currentday])[0];
+      console.log(columns);
+      showAllColumns();
+      hideColumns(columns);
+    }
+  }
+}
+
+var area = document.getElementById("timesheetcontainer");
+
+area.addEventListener("touchstart", (e) => {
+  touchstartX = e.changedTouches[0].screenX;
+});
+
+area.addEventListener("touchend", (e) => {
+  touchendX = e.changedTouches[0].screenX;
+  checkSwipe();
+});
+// End of swipe effect
