@@ -131,6 +131,26 @@ app.get('/profileData',async(req,res)=>{
 
 
 
+app.post('/userRequests', async (req,res) => {
+
+  switch (req.body.functionName) {
+    case "Logout":
+      req.session.isAuthenticated = false;  
+      res.redirect('/index.html');
+      break;
+  
+    default:
+      break;
+  }
+
+});
+
+
+
+
+
+
+
 
 // handle the manager function
 
@@ -163,29 +183,6 @@ app.get('/managerRequests', isAuthenticated, async (req, res) => {
   console.log(managerProjects);
   res.send(managerProjects);
 });
-
-
-
-
-
-
-
-
-
-
-// Get a list of all projects that the manager is linked too
-
-// let req.session.userName
-
-
-
-
-
-
-
-
-
-
 
 
 

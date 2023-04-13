@@ -1,3 +1,4 @@
+// import { response } from "express";
 
 
 
@@ -18,6 +19,32 @@ fetch('/profileData')
     // Do something with session data here
     console.log(data);
 });
+
+
+});
+
+
+
+document.getElementById("logoutButton").addEventListener("click",() => {
+
+    const data = {
+        functionName: "Logout"
+    }
+
+    fetch('/userRequests', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+          }
+    
+      })
+      .catch(error => console.error(error));
 
 
 });

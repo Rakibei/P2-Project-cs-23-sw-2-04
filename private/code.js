@@ -401,7 +401,7 @@ function rendertimesheettable(projects) {
         console.log(timeData);
 
 
-        fetch('http://127.0.0.1:3000/submitTime', {
+        fetch('http://127.0.0.1:3000/submitTime½', {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json'
