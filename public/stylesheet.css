@@ -1,0 +1,89 @@
+/* det her er universal selector for den complete general indstillinger*/
+*{
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   font-family: 'Nunito', sans-serif;
+}
+ /* her laver jeg modifikationer på bodys outer udseende */
+html{
+   overflow: hidden;
+   background: linear-gradient(to bottom, rgba(16, 78, 178, 0.8), rgba(16, 78, 178, 0.25));
+   background-repeat: no-repeat;
+   background-size: cover !important;
+   min-height: 100%;
+}
+ /* her laver jeg en container der holder hele box for at gøre det responsiv */
+.container{
+   max-width: 440px;
+   padding: 0 25px;
+   margin: 180px auto;
+}
+ /* her redigere jeg den box som indolder alt fra titlen til submit knap */
+.motherBox{
+   width: 100%;
+   background: whitesmoke;
+   border-radius: 5px;
+}
+ /* her redigere jeg på titlen indenfor hvor der står NORDUnet Login */
+.motherBox .login-title{
+   line-height: 80px;
+   background: rgb(16, 78, 178);
+   padding-left: 0;
+   text-align: center;
+   border-radius: 5px 5px 0 0;
+   color: whitesmoke;
+   font-size: 25px;
+   font-weight: 600;
+}
+/* her justere jeg lige mellemrummet i login formen mellem felterne og og teksten*/
+.motherBox form{
+   padding: 30px 25px 25px 25px;
+}
+
+/* her justere jeg placeringen for hver linje ind i formen*/
+.motherBox form .linje{
+   height: 45px ;
+   margin-bottom: 15px;
+   position: relative;
+}
+
+/* her justere jeg skrive felterne*/
+.motherBox form .linje input{
+   height: 100%;
+   width: 100%;
+   border-radius: 5px;
+   border: 1px solid lightgray;
+   font-size: 16px;
+   padding-left: 20px;
+}
+
+/* her justere jeg login knappen*/
+.motherBox form .btn input {
+   cursor: pointer;
+   font-weight: 600;
+   font-size: 20px;
+   padding-left: 0px ;
+   background: rgb(16, 78, 178);
+   color: whitesmoke;
+   border: 1px solid rgb(16, 78, 178);
+}
+form .btn input:hover {
+   background: rgb(7, 60, 147);
+}
+
+
+/* her justere jeg placeringen for forgot password linket*/
+.motherBox form .pass-word{
+   margin: -10px 0 15px 0;
+}
+
+/* her styler jeg forgot password linket*/
+.motherBox form .pass-word a {
+   color: rgb(16, 78, 178);
+   text-decoration: none;
+   font-size: 16px;
+}
+form .pass-word a:hover{
+   text-decoration: underline;
+}

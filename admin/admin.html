@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="adminStylesheet.css">
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-title"><span>Welcome Admin</span></div>
+        <div class="menu">
+            <button id="userButton">Create user</button>
+            <button id="projectButton">Create project</button>
+            <button id="userLevelButton">Set user level</button>
+            <button id="createManagerButton">Create Manager</button>
+        </div>
+<br>
+
+    <div id="userCreation">
+        <form id="userCreationForm">
+            <label for="createUsername">New Username:</label>
+            <input type="text" id="createUsername" name="createUsername" placeholder="UserName" required><br><br>
+            <label for="createPassword">New Password:</label>
+            <input type="text" id="createPassword" name="createPassword" placeholder="PassWord" required><br><br>
+            <input type="submit" class="sbmt" value="Create">
+        </form>
+    </div>
+
+
+    <div id="projectCreation">
+        <form id="projectCreationForm">
+            <label for="projectName">Project name</label>
+            <input type="text" id="projectName" name="projectName" placeholder="ProjectName" required> <br><br>
+
+            <label for="projectStartDate">Start Date</label>
+            <input type="date" id="projectStartDate" name="projectStartDate"  required> <br><br>
+
+            <label for="projectEndDate">End Date</label>
+            <input type="date" id="projectEndDate" name="projectEndDate"  required> <br><br>
+
+            <label for="projectHoursSpent">Total Hours</label>
+            <input type="number" id="projectHoursSpent" name="projectHoursSpent" placeholder="0" required> <br><br>
+
+            <input type="submit" class="sbmt" value="Create">
+
+        </form>
+
+    </div>
+
+    <div id="setUserLevel">
+        <form id="searchUserLevel">
+        <label for="seeUserLevel">Search Level</label>
+        <input type="text" id="seeUserLevel" name="seeUserLevel" placeholder="UserLevel" required> <br>
+        <input type="submit" class="sbmt" value="Submit"> <br><br>
+        </form>
+        <div id="SeeUserInfo"></div>
+
+        <form id="setUserLevelForm">
+            <label for="setUserLevelName">Username</label>
+            <input type="text" id="setUserLevelName" name="setUserLevelName" placeholder="UserName" required> <br>
+
+            <label for="setUserLevelValue">UserLevel</label>
+            <input type="number" id="setUserLevelValue" name="setUserLevelValue" placeholder="0" required><br><br>
+
+            <input type="submit" class="sbmt" value="Submit">
+            </form>
+        
+        
+
+    </div>
+
+    
+    <div id="createManagerForProject">
+        <form id="createManagerForProjectForm">
+            <label for="createManager">Upgrade User to Manager</label>
+            <input type="text" name="createManager" id="createManager" placeholder="UserName" required> <br> <br>
+            <label for="projectToLinkForManager">link Project</label>
+            <input type="text" name="projectToLinkForManager" id="projectToLinkForManager" placeholder="ProjectName" required> <br> <br>
+            <input type="submit" class="sbmt" value="Submit">
+        </form>
+    </div>
+
+    <div id="createTaskForProject">
+        <form id="createTaskForProjectForm">
+            <label for="projectToLinkFortask">Project name</label>
+            <input type="text" name="projectToLinkFortask" id="projectToLinkFortask"> <br> <br>
+            <label for="taskName">Task name</label>
+            <input type="text" name="taskName" id="taskName"> <br> <br>
+            <label for="taskDescription">Task description</label>
+            <input type="text" name="taskDescription" id="taskDescription" placeholder="taskDescription" required> <br> <br>
+            <label for="estimate">estimate</label>
+            <input type="number" name="estimate" id="estimate" placeholder="0" required> <br> <br>
+            <input type="submit" class="sbmt" value="Submit">            
+        </form>
+    </div>
+
+
+<br>
+    <div class="pdf">
+        <button id="exportButton">Get PDF</button>
+        <button id="exportButtonXlsx">Get xlsx file</button>
+    </div>
+</div>
+<script src="adminCode.js"></script> 
+
+</body>
+</html>
