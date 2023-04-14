@@ -2,6 +2,8 @@
 let projects;
 let userId;
 let userName;
+
+
 window.addEventListener("load", () => {
   fetch("/sesionData")
     .then((response) => response.json())
@@ -18,16 +20,73 @@ window.addEventListener("load", () => {
         PopulateDropdownProjects(newid);
         LinkingDropdowns(newid, projects);
       }
+            
       SumOfCollum();
       SumOffTotalHoursRow();
       SumOfAbsenceHoursRow();
+            if(window.outerWidth < 500){
+              hideColumns([3,4,5,6,7,8]);
+            }
     });
 });
+  
+
+
+  let array_of_weekdayfunctions =[
+    {"monday":[3,4,5,6,7,8]},
+    {"tuesday":[2,4,5,6,7,8]},
+    {"wednesday":[2,3,5,6,7,8]},
+    {"thursday":[2,3,4,6,7,8]},
+    {"friday":[2,3,4,5,7,8]},
+    {"saturday":[2,3,4,5,6,8]},
+    {"sunday":[2,3,4,5,6,7,]},
+    ]
+    
+    
+    let firstday = 0;
+    let lastday =  6;
+    let currentday = 0;
+
+
+
+
 
 /*When the button with the id="AddRow" is clicked, the function CreateNewRow is
  executed resulting in the creation of a new row*/
 const AddRowBtn = document.getElementById("AddRow");
 AddRowBtn.addEventListener("click", CreateNewRow);
+
+function showAllColumns() {
+  const table = document.getElementById('timesheet');
+  const rows = table.rows;
+
+  for (let i = 0; i <= rows.length - 1; i++) {
+    const cells = rows[i].cells;
+
+    for (let j = 0; j <= cells.length - 1; j++) {
+      cells[j].style.display = '';
+    }
+  }
+}
+
+
+function hideColumns(columns) {
+  const table = document.getElementById('timesheet');
+  const rows = table.rows;
+  
+
+  for (let i = 0; i <= rows.length - 1; i++) {
+    const cells = rows[i].cells;
+
+    for (let j = columns.length - 1; j >= 0; j--) {
+      const index = columns[j];
+
+      if (index >= 0 && index <= cells.length - 1) {
+        cells[index].style.display = 'none';
+      }
+    }
+  }
+}
 
 //A fucntion that dynamicly renders a timesheettable for the given Username
 function rendertimesheettable(projects) {
@@ -42,17 +101,17 @@ function rendertimesheettable(projects) {
                 <tbody>`;
   for (let i = 0; i < projects.length; i++) {
     timesheettable += `<tr>
-                <td> <select name="ProjectsDropdown${i}"  id="ProjectsDropdown${i}">
+                <td> <select name="ProjectsDropdown${i}" class="ProjectsDropdown" id="ProjectsDropdown${i}">
                 <option value="Default">Select a project</option> 
                 </select></td>
                 
-                <td> <select name="TasksDropdown${i}" id="TasksDropdown${i}"></select></td>`;
+                <td> <select name="TasksDropdown${i}"class="TasksDropdown" id="TasksDropdown${i}"></select></td>`;
 
-    timesheettable += `<td><input class="inputfield" type="number" placeholder="0" id="monday${i}" value="0" oninput="validity.valid||(value='0');" step="0.5" name="monday${i}" min="0" max="20"></td>`;
-    timesheettable += `<td><input class="inputfield" type="number" placeholder="0" id="tuesday${i}" value="0" oninput="validity.valid||(value='0');" step="0.5" name="tuesday${i}" min="0" max="20"></td>`;
-    timesheettable += `<td><input class="inputfield" type="number" placeholder="0" id="wednesday${i}" value="0" oninput="validity.valid||(value='0');" step="0.5" name="wednesday${i}" min="0" max="20"></td>`;
+    timesheettable += `<td><input class="inputfield" type="number" placeholder="0" id="monday${i}"value="0" oninput="validity.valid||(value='0');" step="0.5" name="monday${i}" min="0" max="20"></td>`;
+    timesheettable += `<td><input class="inputfield" type="number" placeholder="0" id="tuesday${i}"value="0" oninput="validity.valid||(value='0');" step="0.5" name="tuesday${i}" min="0" max="20"></td>`;
+    timesheettable += `<td><input class="inputfield" type="number" placeholder="0" id="wednesday${i}"value="0" oninput="validity.valid||(value='0');" step="0.5" name="wednesday${i}" min="0" max="20"></td>`;
     timesheettable += `<td><input class="inputfield" type="number" placeholder="0" id="thursday${i}" value="0" oninput="validity.valid||(value='0');" step="0.5" name="thursday${i}" min="0" max="20"></td>`;
-    timesheettable += `<td><input class="inputfield" type="number" placeholder="0" id="friday${i}"value="0" oninput="validity.valid||(value='0');" step="0.5" name="friday" min="0" max="20"></td>`;
+    timesheettable += `<td><input class="inputfield" type="number" placeholder="0" id="friday${i}"value="0" oninput="validity.valid||(value='0');" step="0.5" name="friday${i}" min="0" max="20"></td>`;
     timesheettable += `<td><input class="inputfield" type="number" placeholder="0" id="saturday${i}"value="0" oninput="validity.valid||(value='0');" step="0.5" name="saturday${i}" min="0" max="20"></td>`;
     timesheettable += `<td><input class="inputfield" type="number" placeholder="0" id="sunday${i}"value="0" oninput="validity.valid||(value='0');" step="0.5" name="Sunday${i}" min="0" max="20"></td>`;
   }
@@ -89,15 +148,21 @@ function rendertimesheettable(projects) {
   timesheettable += `<td><input class="inputfield" type="number" placeholder="0" id="saturdayVacation"value="0" oninput="validity.valid||(value='0');"  step="0.5" name="saturdayVacation" min="0" max="20" ></td>`;
   timesheettable += `<td><input class="inputfield" type="number" placeholder="0" id="sundayVacation"value="0" oninput="validity.valid||(value='0');" step="0.5" name="sundayVacation" min="0" max="20"></td>`;
   timesheettable += `<tr>
-            <td></td>
-            <td>Total Hours</td>`;
-  timesheettable += `<td><input type="number" id="tuesdaymeeting" value="0" step="0.5" name="tuesday" min="0" max="20" readonly></td>`;
-  timesheettable += `<td><input type="number" id="tuesdaymeeting" value="0" step="0.5" name="tuesday" min="0" max="20" readonly></td>`;
-  timesheettable += `<td><input type="number" id="wednesdaymeeting" value="0" step="0.5" name="wednesday" min="0" max="20" readonly></td>`;
-  timesheettable += `<td><input type="number" id="thursdaymeeting" value="0" step="0.5" name="thursday" min="0" max="20" readonly></td>`;
-  timesheettable += `<td><input type="number" id="fridaymeeting"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
-  timesheettable += `<td><input type="number" id="fridaymeeting"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
+            <td>Total Hours</td>
+            <td></td>`;
+  timesheettable += `<td><input type="number" id="mondayTotalhours" value="0" step="0.5" name="tuesday" min="0" max="20" readonly></td>`;
+  timesheettable += `<td><input type="number" id="tuesdayTotalhours" value="0" step="0.5" name="tuesday" min="0" max="20" readonly></td>`;
+  timesheettable += `<td><input type="number" id="wednesdayTotalhours" value="0" step="0.5" name="wednesday" min="0" max="20" readonly></td>`;
+  timesheettable += `<td><input type="number" id="thursdayTotalhours" value="0" step="0.5" name="thursday" min="0" max="20" readonly></td>`;
+  timesheettable += `<td><input type="number" id="fridayTotalhours"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="SaturdayTotalhours"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
+  timesheettable += `<td><input type="number" id="SundayTotalhours"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
+        timesheettable+=`<td><input type="number" id="WeekTotalhours"value="0" step="0.5" name="friday" min="0" max="20" readonly></td>`;
   timesheettable += `</tbody></table></div></body>`;
+
+        
+
+
   return timesheettable;
 }
 
@@ -145,7 +210,7 @@ function CreateNewRow() {
   cell1.innerHTML = `<select name="ProjectsDropdown${newid}" class="ProjectsDropdown" id="ProjectsDropdown${newid}">
                           <option value="Default">Select a project</option> 
                           </select>`;
-  cell2.innerHTML = ` <select name="TasksDropdown${newid}" id="TasksDropdown${newid}"> </select>`;
+  cell2.innerHTML = ` <select name="TasksDropdown${newid}" class="TasksDropdown" id="TasksDropdown${newid}"> </select>`;
   cell3.innerHTML = `<input type="number" id="monday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
   cell4.innerHTML = `<input type="number" id="tuesday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
   cell5.innerHTML = `<input type="number" id="wednesday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
@@ -153,11 +218,17 @@ function CreateNewRow() {
   cell7.innerHTML = `<input type="number" id="friday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
   cell8.innerHTML = `<input type="number" id="saturday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
   cell9.innerHTML = `<input type="number" id="sunday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
-  cell10.innerHTML = `<input type="button" value="Delete Row" onclick="DeleteRow()">`;
+  cell10.innerHTML = `<input type="button"class="DeleteRowButton" value="Delete Row" onclick="DeleteRow()">`;
 
   PopulateDropdownProjects(newid);
   LinkingDropdowns(newid, projects);
   SumOfCollum();
+        if(window.outerWidth < 500){
+        console.log("Dette er current" +JSON.stringify(currentday));
+        let columns = Object.values(array_of_weekdayfunctions[currentday])[0];
+        console.log("Dette er columns til newrow" +columns);
+        showAllColumns();
+        hideColumns(columns);}
 }
 
 function LinkingDropdowns(newid, projects) {
@@ -444,3 +515,57 @@ document
       .then((response) => {})
       .catch((error) => console.error(error));
   });
+
+
+      // Start of swipe effect
+let touchstartX = 0;
+let touchendX = 0;
+
+
+function checkSwipe() {
+  console.log("detter er tocuhstart" +touchstartX);
+  console.log("detter er touchend" +touchendX);
+  console.log(touchendX-touchstartX);
+  if ( touchendX - touchstartX > 60){
+    
+    if(currentday==0){
+      return;
+    }
+    else{
+      currentday--;
+      console.log(currentday);
+      let columns = Object.values(array_of_weekdayfunctions[currentday])[0];
+      console.log(columns);
+      showAllColumns();
+      hideColumns(columns);
+    }
+  }
+  
+  if (touchendX - touchstartX < -60){
+    
+    if(currentday==lastday){
+      return;
+    }
+    else{
+      currentday++;
+      console.log(currentday);
+  
+      let columns = Object.values(array_of_weekdayfunctions[currentday])[0];
+      console.log(columns);
+      showAllColumns();
+      hideColumns(columns);
+    }
+  }
+}
+
+var area = document.getElementById("timesheetcontainer");
+
+area.addEventListener("touchstart", (e) => {
+  touchstartX = e.changedTouches[0].screenX;
+});
+
+area.addEventListener("touchend", (e) => {
+  touchendX = e.changedTouches[0].screenX;
+  checkSwipe();
+});
+// End of swipe effect
