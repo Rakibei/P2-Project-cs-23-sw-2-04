@@ -130,6 +130,20 @@ app.get("/sesionData", async (req, res) => {
   console.log("Data Sent");
 });
 
+app.post('/userRequests', async (req,res) => {
+
+  switch (req.body.functionName) {
+    case "Logout":
+      req.session.isAuthenticated = false;
+      res.redirect('/index.html');
+      break;
+
+    default:
+      break;
+  }
+
+}); 
+
 app.get("/profileData", async (req, res) => {
   // spørg server om data
   let userID = await GetUserIdWithName(poolData, req.session.userName);
