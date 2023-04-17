@@ -249,7 +249,7 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
       break;
     case "seeUserLevel":
       let userID1 = await GetUserIdWithName(poolData, req.body.seeUserLevel);
-      let seeUserLevelData = await GetUserLevel(poolData, userID1);
+      let seeUserLevelData = await GetUserLevel(poolData, userID1).isAdmin;
       console.log(seeUserLevelData);
       res.json(seeUserLevelData);
       break;
