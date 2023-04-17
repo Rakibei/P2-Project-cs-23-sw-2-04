@@ -26,6 +26,8 @@ import {
   CreateTimeSheet,
   CreateStaticTaskEntry,
   IsTimeSheetFound,
+  DeleteAllTaskEntryForATimeSheet,
+  UpdateTimeSheet,
 } from "./database.js";
 import { CreatePDF } from "./pdf/pdfTest.js";
 import { ConvertJsonToExcel } from "./xlsx/xlsxTest.js";
@@ -319,23 +321,24 @@ app.post("/submitTime", isAuthenticated, async (req, res) => {
     week,
     year
   );
+  let timeSheetId;
   if (isThereATimeSheet) {
-    //Skal lave update sheet
     console.log("Update sheet");
+    timeSheetId = await UpdateTimeSheet(poolData, userId, week, year);
+    DeleteAllTaskEntryForATimeSheet(poolData, timeSheetId);
   } else {
-    console.log(req.body);
-    const timeSheetId = await CreateTimeSheet(poolData, userId, week, year);
-    //1 = Vaction, 2 = absance, 3 = meeting
-    const vaction = req.body.vaction;
-    createTaskEntry(poolData, 1, timeSheetId, vaction);
-    const absance = req.body.absance;
-    createTaskEntry(poolData, 2, timeSheetId, absance);
-    const meeting = req.body.meeting;
-    createTaskEntry(poolData, 3, timeSheetId, meeting);
-    for (const project in req.body.projects) {
-      for (const task in req.body.projects[project]) {
-        const taskEntry = req.body.projects[project][task];
-        CreateTaskEntry(
+    timeSheetId = await CreateTimeSheet(poolData, userId, week, year);
+  }
+  const vaction = req.body.vaction;
+  PrepareStaticTaskEntry(poolData, 1, timeSheetId, vaction);
+  const absance = req.body.absance;
+  PrepareStaticTaskEntry(poolData, 2, timeSheetId, absance);
+  const meeting = req.body.meeting;
+  PrepareStaticTaskEntry(poolData, 3, timeSheetId, meeting);
+  for (const project in req.body.projects) {
+    for (const task in req.body.projects[project]) {
+      const taskEntry = req.body.projects[project][task];
+      CreateTaskEntry(
           poolData,
           taskEntry.taskId,
           timeSheetId,
@@ -347,12 +350,11 @@ app.post("/submitTime", isAuthenticated, async (req, res) => {
           taskEntry.days.saturdayHours,
           taskEntry.days.sundayHours
         );
-      }
     }
   }
 });
 
-function createTaskEntry(poolData, taskId, timeSheetId, hours) {
+function PrepareStaticTaskEntry(poolData, taskId, timeSheetId, hours) {
   CreateStaticTaskEntry(
     poolData,
     taskId,
