@@ -10,20 +10,30 @@ document.getElementById("projectButton").addEventListener("click", ()=> {
     document.getElementById("projectCreation").style.display = "block";
     document.getElementById("setUserLevel").style.display = "none";
     document.getElementById("createManagerForProject").style.display = "none";
+    document.getElementById("createTaskForProject").style.display = "none";
+
 });
 document.getElementById("userLevelButton").addEventListener("click", ()=> {
   document.getElementById("userCreation").style.display = "none";
   document.getElementById("projectCreation").style.display = "none";
   document.getElementById("setUserLevel").style.display = "block";
   document.getElementById("createManagerForProject").style.display = "none";
+  document.getElementById("createTaskForProject").style.display = "none";
 });
 document.getElementById("createManagerButton").addEventListener("click", ()=> {
   document.getElementById("userCreation").style.display = "none";
   document.getElementById("projectCreation").style.display = "none";
   document.getElementById("setUserLevel").style.display = "none";
   document.getElementById("createManagerForProject").style.display = "block";
+  document.getElementById("createTaskForProject").style.display = "none";
 });
-
+document.getElementById("CreateTaskButton").addEventListener("click", ()=> {
+  document.getElementById("userCreation").style.display = "none";
+  document.getElementById("projectCreation").style.display = "none";
+  document.getElementById("setUserLevel").style.display = "none";
+  document.getElementById("createManagerForProject").style.display = "none";
+  document.getElementById("createTaskForProject").style.display = "block";
+});
 
 
 
@@ -34,6 +44,9 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
     const data = {
         createUsername: event.target.createUsername.value,
         createPassword: event.target.createPassword.value,
+        FullName: event.target.FullName.value,
+        PhoneNumber: event.target.PhoneNumber.value,
+        Email: event.target.Email.value,
         functionName: "CreateUser"
     };
    fetch('http://127.0.0.1:3000/adminRequests', {
@@ -44,7 +57,12 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
     body: JSON.stringify(data)
   })
   .then(response => {
-
+    if (response.status === 201) {
+      response.text().then(data => {
+        alert(data);
+        document.querySelector('#userCreationForm').reset();
+      });
+    }
   })
   .catch(error => console.error(error));
   });
@@ -66,7 +84,12 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
     body: JSON.stringify(data)
   })
   .then(response => {
- 
+    if (response.status === 201) {
+      response.text().then(data => {
+        alert(data);
+        document.querySelector('#projectCreationForm').reset();
+      });
+    }
   })
   .catch(error => console.error(error));
   });

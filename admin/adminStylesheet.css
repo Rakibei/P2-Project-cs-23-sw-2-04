@@ -126,3 +126,6 @@ input{
 #createManagerForProject{
     display: none;
 }
+#createTaskForProject{
+    display: none;
+}

@@ -91,24 +91,26 @@ app.get("/", (req, res) => {
 app.use(serveStatic("public"));
 
 // When the server recives a post requst to the server directly
-app.post('/', async (req,res) => {
-
-
-// For error handling to let the user know they typped wrong
-  const comp = await ComparePassword(poolData,req.body.username, req.body.password)
-    console.log(req.body);
-    if (comp) {
-      // If the user is authenticated then the server redirects them and saves their cookie to show that they are
-        console.log(req.body.username + " is here");
-        req.session.isAuthenticated = true;
-        req.session.userName = req.body.username
-        req.session.save()
-        res.redirect('/private/homepage.html');
-    } else if (await GetUserIdWithName(poolData,req.body.username) == false){
-      res.status(401).send('Invalid username');
-    } else {
-          res.status(401).send('Invalid password');
-    }
+app.post("/", async (req, res) => {
+  // For error handling to let the user know they typped wrong
+  const comp = await ComparePassword(
+    poolData,
+    req.body.username,
+    req.body.password
+  );
+  console.log(req.body);
+  if (comp) {
+    // If the user is authenticated then the server redirects them and saves their cookie to show that they are
+    console.log(req.body.username + " is here");
+    req.session.isAuthenticated = true;
+    req.session.userName = req.body.username;
+    req.session.save();
+    res.redirect("/private/homepage.html");
+  } else if ((await GetUserIdWithName(poolData, req.body.username)) == false) {
+    res.status(401).send("Invalid username");
+  } else {
+    res.status(401).send("Invalid password");
+  }
 });
 
 // for when the user needs their userdata on the next page
@@ -130,19 +132,17 @@ app.get("/sesionData", async (req, res) => {
   console.log("Data Sent");
 });
 
-app.post('/userRequests', async (req,res) => {
-
+app.post("/userRequests", async (req, res) => {
   switch (req.body.functionName) {
     case "Logout":
       req.session.isAuthenticated = false;
-      res.redirect('/index.html');
+      res.redirect("/index.html");
       break;
 
     default:
       break;
   }
-
-}); 
+});
 
 app.get("/profileData", async (req, res) => {
   // spørg server om data
@@ -154,9 +154,6 @@ app.get("/profileData", async (req, res) => {
 
   res.json(req.session);
 });
-
-
-
 
 // handle the manager function
 
@@ -194,31 +191,9 @@ app.get("/managerRequests", isAuthenticated, async (req, res) => {
   res.send(managerProjects);
 });
 
-
-
-
-
-
-
-
-
-
 // Get a list of all projects that the manager is linked too
 
 // let req.session.userName
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // handle Admin functions
 
@@ -233,9 +208,13 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
         poolData,
         req.body.createUsername,
         req.body.createPassword,
-        0
+        0,
+        req.body.FullName,
+        req.body.PhoneNumber,
+        req.body.Email
       );
       console.log(CreateUserData);
+      res.status(201).send("User: " + req.body.createUsername + " has been created");
       break;
     case "CreateProject":
       let CreateProjectData = await CreateProject(
@@ -246,6 +225,7 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
         req.body.projectHoursSpent
       );
       console.log(CreateProjectData);
+      res.status(201).send("Project: " + req.body.projectName + " has been created");
       break;
     case "seeUserLevel":
       let userID1 = await GetUserIdWithName(poolData, req.body.seeUserLevel);
@@ -337,8 +317,13 @@ app.post("/submitTime", isAuthenticated, async (req, res) => {
   const userId = req.body.userId;
   const week = req.body.week;
   const year = req.body.year;
-  const  isThereATimeSheet = await IsTimeSheetFound(poolData, userId, week, year);
-  if(isThereATimeSheet) {
+  const isThereATimeSheet = await IsTimeSheetFound(
+    poolData,
+    userId,
+    week,
+    year
+  );
+  if (isThereATimeSheet) {
     //Skal lave update sheet
     console.log("Update sheet");
   } else {
@@ -351,17 +336,39 @@ app.post("/submitTime", isAuthenticated, async (req, res) => {
     createTaskEntry(poolData, 2, timeSheetId, absance);
     const meeting = req.body.meeting;
     createTaskEntry(poolData, 3, timeSheetId, meeting);
-    for(const project in req.body.projects) {
-      for(const task in req.body.projects[project]) {
+    for (const project in req.body.projects) {
+      for (const task in req.body.projects[project]) {
         const taskEntry = req.body.projects[project][task];
-        CreateTaskEntry(poolData, taskEntry.taskId, timeSheetId, taskEntry.days.mondayHours, taskEntry.days.tuesdayHours, taskEntry.days.wednesdayHours, taskEntry.days.thursdayHours, taskEntry.days.fridayHours, taskEntry.days.saturdayHours, taskEntry.days.sundayHours)
+        CreateTaskEntry(
+          poolData,
+          taskEntry.taskId,
+          timeSheetId,
+          taskEntry.days.mondayHours,
+          taskEntry.days.tuesdayHours,
+          taskEntry.days.wednesdayHours,
+          taskEntry.days.thursdayHours,
+          taskEntry.days.fridayHours,
+          taskEntry.days.saturdayHours,
+          taskEntry.days.sundayHours
+        );
       }
     }
   }
 });
 
 function createTaskEntry(poolData, taskId, timeSheetId, hours) {
-  CreateStaticTaskEntry(poolData, taskId, timeSheetId, hours.mondayHours, hours.tuesdayHours, hours.wednesdayHours, hours.thursdayHours, hours.fridayHours, hours.saturdayHours, hours.sundayHours);
+  CreateStaticTaskEntry(
+    poolData,
+    taskId,
+    timeSheetId,
+    hours.mondayHours,
+    hours.tuesdayHours,
+    hours.wednesdayHours,
+    hours.thursdayHours,
+    hours.fridayHours,
+    hours.saturdayHours,
+    hours.sundayHours
+  );
 }
 
 // Handle 404 errors
