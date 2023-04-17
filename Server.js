@@ -241,8 +241,10 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
         req.body.setUserLevelName
       );
       console.log(userID2);
-      let seeUserNewLevelData = await SetUserLevel(poolData,userID2,req.body.setUserIsAdmin,);
+      let seeUserNewLevelData = await SetUserLevel(poolData,userID2,  req.body.setUserIsAdmin,req.body.SetUserIsManager);
       console.log(seeUserNewLevelData);
+      let check1 = req.body.setUserIsAdmin; let check2 = req.body.SetUserIsManager;
+      res.status(201).send("User: " + req.body.setUserLevelName + " Is Now " + (check1 ? "Admin, " : "") + (check2 ? "Manager, " : ""));
       break;
     case "CreateUserProjectLink":
       let managerID = await GetUserIdWithName(poolData, req.body.createManager);
@@ -257,6 +259,7 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
         1
       );
       console.log(newLinkData);
+      res.status(201).send("Mangager: " + req.body.createManager + " Is Now linked to: " + req.body.projectToLink);
       break;
     case "ExportPDF":
       let userID3 = req.session.userName;
@@ -302,7 +305,7 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
         req.body.estimate
       );
       console.log(task);
-
+      res.status(201).send("Task: " + req.body.taskName + " Has now been created for " + req.body.projectToLink);
     default:
       break;
   }
