@@ -214,7 +214,17 @@ export async function GetUserLevel(pool, userId) {
     const [user] = await pool.query("SELECT * FROM users WHERE id = ?", [
       userId,
     ]);
-    return user[0].isAdmin; // success
+    let userLevel = {
+      isAdmin: 0,
+      isManager: 0,
+      isProjectManager: 0,
+    };
+    userLevel.isAdmin	= user[0].isAdmin;
+    userLevel.isManager = user[0].isManager;
+    if(GetmanagerProjects(pool, userId).length != 0) {
+      userLevel.isProjectManager = 1;
+    }
+    return userLevel; // success
   } catch (error) {
     console.log(error);
     return false; // error occurred
