@@ -201,7 +201,7 @@ export async function CreateUserProjectLink(
 export async function SetUserLevel(pool, userId, isNowAdmin, isNowManager) {
   try {
     const values = [isNowAdmin, isNowManager, userId];
-    pool.query('UPDATE users SET isAdmin = "?", SET isManager = "?" WHERE id = "?"', values);
+    pool.query('UPDATE users SET isAdmin = ?, isManager = ? WHERE id = ?', values);
     return true; // success
   } catch (error) {
     console.log(error);
@@ -359,15 +359,17 @@ export async function CreateTimeSheet(pool, userId, week, year) {
         return false; // error occurred 
     }
 }
-export async function UpdateTimeSheet(pool, userId, week, year) {
+export async function GetTimeSheetId(pool, userId, week, year) {
   try {
-    const updateSql = 'UPDATE timeSheet SET week = ?, year = ? WHERE userId = ?';
-    const updateValues = [week, year, userId];
-    const [updateResult] = await pool.query(updateSql, updateValues);
-    return updateResult.insertId;
+    const [result] = await pool.query(
+      `SELECT id FROM timeSheet
+      WHERE userId = ? AND week = ? AND year = ?`,
+      [userId, week, year]
+    );
+    return result[0].id
   } catch (error) {
     console.log(error);
-    return false;
+    return false; // error occurred 
   }
 }
 

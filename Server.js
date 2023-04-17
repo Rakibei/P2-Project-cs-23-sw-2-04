@@ -27,7 +27,7 @@ import {
   CreateStaticTaskEntry,
   IsTimeSheetFound,
   DeleteAllTaskEntryForATimeSheet,
-  UpdateTimeSheet,
+  GetTimeSheetId,
 } from "./database.js";
 import { CreatePDF } from "./pdf/pdfTest.js";
 import { ConvertJsonToExcel } from "./xlsx/xlsxTest.js";
@@ -328,7 +328,7 @@ app.post("/submitTime", isAuthenticated, async (req, res) => {
   let timeSheetId;
   if (isThereATimeSheet) {
     console.log("Update sheet");
-    timeSheetId = await UpdateTimeSheet(poolData, userId, week, year);
+    timeSheetId = await GetTimeSheetId(poolData, userId, week, year);
     DeleteAllTaskEntryForATimeSheet(poolData, timeSheetId);
   } else {
     timeSheetId = await CreateTimeSheet(poolData, userId, week, year);
