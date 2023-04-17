@@ -229,7 +229,7 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
       break;
     case "seeUserLevel":
       let userID1 = await GetUserIdWithName(poolData, req.body.seeUserLevel);
-      let seeUserLevelData = await GetUserLevel(poolData, userID1).isAdmin;
+      let seeUserLevelData = await GetUserLevel(poolData, userID1);
       console.log(seeUserLevelData);
       res.json(seeUserLevelData);
       break;
@@ -239,11 +239,7 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
         req.body.setUserLevelName
       );
       console.log(userID2);
-      let seeUserNewLevelData = await SetUserLevel(
-        poolData,
-        userID2,
-        parseInt(req.body.setUserLevelValue)
-      );
+      let seeUserNewLevelData = await SetUserLevel(poolData,userID2,req.body.setUserIsAdmin,);
       console.log(seeUserNewLevelData);
       break;
     case "CreateUserProjectLink":
