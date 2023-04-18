@@ -6,29 +6,37 @@ import express from "express";
 
 import {
   ConnectToDatabase,
-  CreateTasks,
-  GetUsers,
-  GetUser,
-  CreateUser,
-  GetmanagerProjects,
-  ComparePassword,
-  CreateProject,
-  GetUserProjects,
-  GetUserIdWithName,
-  GetUserLevel,
-  SetUserLevel,
+  
+} from "./database/databaseSetup.js";
+import {
   GetProjects,
-  CreateUserManagerLink,
+  CreateUserProjectManagerlink,
   CreateUserProjectLink,
   GetProjectIdWithName,
   GetProjectTasks,
+  CreateProject,
+  GetUserProjects,
+  GetManagerProjects,
+} from "./database/databaseProject.js";
+import {
+  GetUsers,
+  GetUser,
+  CreateUser,
+  ComparePassword,
+  GetUserIdWithName,
+  GetUserLevel,
+  SetUserLevel,
+} from "./database/databaseUser.js";
+import {
+  CreateTasks,
   CreateTaskEntry,
   CreateTimeSheet,
   CreateStaticTaskEntry,
   IsTimeSheetFound,
   DeleteAllTaskEntryForATimeSheet,
   GetTimeSheetId,
-} from "./database.js";
+} from "./database/databaseTimeSheet.js";
+
 import { CreatePDF } from "./pdf/pdfTest.js";
 import { ConvertJsonToExcel } from "./xlsx/xlsxTest.js";
 import path from "node:path";
@@ -176,7 +184,7 @@ app.post("/managerRequests", isAuthenticated, async (req, res) => {
       poolData,
       req.body.projectToLink
     );
-    let newLinkData = await CreateUserManagerLink(
+    let newLinkData = await CreateUserProjectManagerlink(
       poolData,
       userID,
       managerID,
@@ -192,7 +200,7 @@ app.get("/managerRequests", isAuthenticated, async (req, res) => {
   // Se hvad deres ID er
   // Få alle projetor
   let managerID = await GetUserIdWithName(poolData, req.session.userName);
-  let managerProjects = await GetmanagerProjects(poolData, managerID);
+  let managerProjects = await GetManagerProjects(poolData, managerID);
   console.log(managerProjects);
   res.send(managerProjects);
 });
