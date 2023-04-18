@@ -30,7 +30,7 @@ window.addEventListener("load", () => {
     });
 });
   
-
+  
 
   let array_of_weekdayfunctions =[
     {"monday":[3,4,5,6,7,8]},
@@ -47,9 +47,7 @@ window.addEventListener("load", () => {
     let lastday =  6;
     let currentday = 0;
 
-
-
-
+  
 
 /*When the button with the id="AddRow" is clicked, the function CreateNewRow is
  executed resulting in the creation of a new row*/

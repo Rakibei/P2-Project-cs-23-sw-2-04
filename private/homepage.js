@@ -7,11 +7,21 @@ let profileInfo = document.getElementById("profileInfo");
 
 window.addEventListener('load', () => {
 
-// spørge server om bruger info
+  fetch("/sesionData")
+  .then((response) => response.json())
+  .then((data) => {
+    UserLevel = data.UserLevel;
+    console.log(UserLevel);
+    
 
-// fullName
-// eMail 
-// phoneNumber
+    if(UserLevel.isAdmin){
+    AdminButton= document.getElementById("AdminButton").style.display = "flex";
+    }
+    if(UserLevel.isManager){
+      AdminButton= document.getElementById("ManagerButton").style.display = "flex";
+    }
+  });
+
 
 fetch('/profileData')
 .then(response => response.json())

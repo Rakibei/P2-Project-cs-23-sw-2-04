@@ -115,19 +115,23 @@ app.post('/', async (req,res) => {
 app.get("/sesionData", async (req, res) => {
   let userID = await GetUserIdWithName(poolData, req.session.userName);
   let userProjects = await GetUserProjects(poolData, userID);
+  let UserLevel = await GetUserLevel(poolData, userID);
   for (let i = 0; i < userProjects.length; i++) {
     userProjects[i].tasks = await GetProjectTasks(poolData, userProjects[i].id);
   }
   //let userTasks = await userProjects.map(project => GetProjectTasks(poolData, project.projectID));
   console.log(userProjects);
+  console.log(UserLevel);
 
   // The info is stored in session and is sent to the client
   req.session.projects = userProjects;
   req.session.userID = userID;
+  req.session.UserLevel = UserLevel
   req.session.save();
   res.json(req.session);
 
   console.log("Data Sent");
+  
 });
 
 app.post('/userRequests', async (req,res) => {
@@ -160,7 +164,7 @@ app.get("/profileData", async (req, res) => {
 
 // handle the manager function
 
-app.use("/manager", isAuthenticated, serveStatic(join(__dirname, "manager")));
+app.use("/manager",IsManager, serveStatic(join(__dirname, "manager")));
 
 //Maneger skal kunne se brugere under sig og hvilke projekter der er under sig
 
@@ -200,9 +204,6 @@ app.get("/managerRequests", isAuthenticated, async (req, res) => {
 
 
 
-
-
-
 // Get a list of all projects that the manager is linked too
 
 // let req.session.userName
@@ -223,7 +224,7 @@ app.get("/managerRequests", isAuthenticated, async (req, res) => {
 // handle Admin functions
 
 // This folder is only accelisble after the user is confirmed to be an admin
-app.use("/admin", isAuthenticated, serveStatic(join(__dirname, "admin")));
+app.use("/admin", IsAdmin, serveStatic(join(__dirname, "admin")));
 
 // Handle the Admins requsts
 app.post("/adminRequests", isAuthenticated, async (req, res) => {
@@ -371,6 +372,24 @@ app.use((req, res) => {
 
 function isAuthenticated(req, res, next) {
   if (req.session.isAuthenticated) {
+    next();
+  } else {
+    // send error message
+    res.status(401).send("Acces not granted");
+  }
+}
+
+function IsAdmin(req, res, next) {
+  if (req.session.UserLevel.isAdmin) {
+    next();
+  } else {
+    // send error message
+    res.status(401).send("Acces not granted");
+  }
+}
+
+function IsManager(req, res, next) {
+  if (req.session.UserLevel.isManager) {
     next();
   } else {
     // send error message
