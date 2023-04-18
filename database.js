@@ -198,10 +198,10 @@ export async function CreateUserProjectLink(
   }
 }
 
-export async function SetUserLevel(pool, userId, isNowAdmin) {
+export async function SetUserLevel(pool, userId, isNowAdmin, isNowManager) {
   try {
-    const values = [isNowAdmin, userId];
-    pool.query('UPDATE users SET isAdmin = "?" WHERE id = "?"', values);
+    const values = [isNowAdmin, isNowManager, userId];
+    pool.query('UPDATE users SET isAdmin = ?, isManager = ? WHERE id = ?', values);
     return true; // success
   } catch (error) {
     console.log(error);
@@ -320,16 +320,29 @@ export async function CreateStaticTaskEntry(pool, staticTaskType, timeSheetId, m
 }
 
 export async function CreateTaskEntry(pool, taskId, timeSheetId, mondayHours, tuesdayHours, wednesdayHours, thursdayHours, fridayHours, saturdayHours, sundayHours) {
-    try {
-        const values = [taskId, timeSheetId, mondayHours, tuesdayHours, wednesdayHours, thursdayHours, fridayHours, saturdayHours, sundayHours];
-        await pool.query(
-            "INSERT INTO taskEntry (taskId, timeSheetId, mondayHours, tuesdayHours, wednesdayHours, thursdayHours, fridayHours, saturdayHours, sundayHours) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            values
-        );
-    } catch (error) {
-        console.log(error);
-        return false; // error occurred
-    }
+  try {
+      const values = [taskId, timeSheetId, mondayHours, tuesdayHours, wednesdayHours, thursdayHours, fridayHours, saturdayHours, sundayHours];
+      await pool.query(
+        "INSERT INTO taskEntry (taskId, timeSheetId, mondayHours, tuesdayHours, wednesdayHours, thursdayHours, fridayHours, saturdayHours, sundayHours) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        values
+      );
+  } catch (error) {
+      console.log(error);
+      return false; // error occurred
+  }
+}
+export async function DeleteAllTaskEntryForATimeSheet(pool, timeSheetId) {
+  try {
+    await pool.query(
+      'DELETE FROM taskEntry WHERE timeSheetId = ?', timeSheetId
+    )
+    await pool.query(
+      'DELETE FROM staticTaskEntry WHERE timeSheetId = ?', timeSheetId
+    )
+  } catch (error) {
+    console.log(error);
+    return false; // error occurred
+  }
 }
 
 export async function CreateTimeSheet(pool, userId, week, year) {
@@ -346,6 +359,20 @@ export async function CreateTimeSheet(pool, userId, week, year) {
         return false; // error occurred 
     }
 }
+export async function GetTimeSheetId(pool, userId, week, year) {
+  try {
+    const [result] = await pool.query(
+      `SELECT id FROM timeSheet
+      WHERE userId = ? AND week = ? AND year = ?`,
+      [userId, week, year]
+    );
+    return result[0].id
+  } catch (error) {
+    console.log(error);
+    return false; // error occurred 
+  }
+}
+
 export async function IsTimeSheetFound(pool, userId, week, year) {
     try {
         // Check if a timesheet with the given userId, week, and year already exists
