@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { GetManagerProjects } from "./databaseProject";
+import { GetManagerProjects } from "./databaseProject.js";
 
 export async function GetUsers(pool) {
     try {
@@ -86,6 +86,23 @@ export async function GetUsers(pool) {
     }
   }
 
+
+
+  export async function GetUsernameWithID(pool, UserID) {
+    try {
+      const [username] = await pool.query(
+        "SELECT * FROM users WHERE id = ?",
+        [UserID]
+      );
+      return username[0].username;
+    } catch (error) {
+      console.log(error);
+      return false; // error occurred
+    }
+  }
+
+
+
   export async function GetUserLevel(pool, userId) {
     try {
       const [user] = await pool.query("SELECT * FROM users WHERE id = ?", [
@@ -113,8 +130,11 @@ export async function GetUsers(pool) {
   
   export async function GetUsersUnderManager(pool, managerId) {
     try {
-      const [userManagerLinks] = await pool.query("SELECT * FROM user userManagerLinks WHERE managerId = ?", [managerId]);
+      const [userManagerLinks] = await pool.query("SELECT * FROM userManagerLinks WHERE managerId = ?", [managerId]);
+      console.log(userManagerLinks)
       const users = userManagerLinks.map((link) => link.userId);
+      console.log(users)
+      
       return users;
     } catch (error) {
       console.log(error);
