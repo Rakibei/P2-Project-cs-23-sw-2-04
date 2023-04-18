@@ -4,6 +4,8 @@ document.getElementById("userButton").addEventListener("click", () => {
     document.getElementById("projectCreation").style.display = "none";
     document.getElementById("setUserLevel").style.display = "none";
     document.getElementById("createManagerForProject").style.display = "none";
+    document.getElementById("createTaskForProject").style.display = "none";
+    document.getElementById("SetTimeForEmailNotification").style.display = "none";
 });
 document.getElementById("projectButton").addEventListener("click", ()=> {
     document.getElementById("userCreation").style.display = "none";
@@ -11,6 +13,7 @@ document.getElementById("projectButton").addEventListener("click", ()=> {
     document.getElementById("setUserLevel").style.display = "none";
     document.getElementById("createManagerForProject").style.display = "none";
     document.getElementById("createTaskForProject").style.display = "none";
+    document.getElementById("SetTimeForEmailNotification").style.display = "none";
 
 });
 document.getElementById("userLevelButton").addEventListener("click", ()=> {
@@ -19,6 +22,7 @@ document.getElementById("userLevelButton").addEventListener("click", ()=> {
   document.getElementById("setUserLevel").style.display = "block";
   document.getElementById("createManagerForProject").style.display = "none";
   document.getElementById("createTaskForProject").style.display = "none";
+  document.getElementById("SetTimeForEmailNotification").style.display = "none";
 });
 document.getElementById("createManagerButton").addEventListener("click", ()=> {
   document.getElementById("userCreation").style.display = "none";
@@ -26,6 +30,7 @@ document.getElementById("createManagerButton").addEventListener("click", ()=> {
   document.getElementById("setUserLevel").style.display = "none";
   document.getElementById("createManagerForProject").style.display = "block";
   document.getElementById("createTaskForProject").style.display = "none";
+  document.getElementById("SetTimeForEmailNotification").style.display = "none";
 });
 document.getElementById("CreateTaskButton").addEventListener("click", ()=> {
   document.getElementById("userCreation").style.display = "none";
@@ -33,6 +38,16 @@ document.getElementById("CreateTaskButton").addEventListener("click", ()=> {
   document.getElementById("setUserLevel").style.display = "none";
   document.getElementById("createManagerForProject").style.display = "none";
   document.getElementById("createTaskForProject").style.display = "block";
+  document.getElementById("SetTimeForEmailNotification").style.display = "none";
+});
+document.getElementById("EmailNotificationButton").addEventListener("click", ()=> {
+  document.getElementById("userCreation").style.display = "none";
+  document.getElementById("projectCreation").style.display = "none";
+  document.getElementById("setUserLevel").style.display = "none";
+  document.getElementById("createManagerForProject").style.display = "none";
+  document.getElementById("createTaskForProject").style.display = "none";
+  document.getElementById("SetTimeForEmailNotification").style.display = "block";
+
 });
 
 

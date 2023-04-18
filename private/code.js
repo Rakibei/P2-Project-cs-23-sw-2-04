@@ -79,7 +79,8 @@ function hideColumns(columns) {
 }
 
 //A fucntion that dynamicly renders a timesheettable for the given Username
-function rendertimesheettable(projects, timeSheetData) {
+function rendertimesheettable(projects, timeSheetData,) {
+  console.log(userName);
   let timesheettable = `<body><div id="container">
   <table id="timesheet">
     <caption>Time sheet for week 14 for </caption>

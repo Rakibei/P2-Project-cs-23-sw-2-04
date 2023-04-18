@@ -104,9 +104,21 @@ export async function IsTimeSheetFound(pool, userId, week, year) {
     }
 }
 
-export async function GetFilledOutTimeSheetForUser(pool, userId) {
+export async function GetFilledOutTimeSheetForUser(pool, userId, week, year) {
     try {
+        const [timeSheetReference] = await pool.query('SELECT * FROM timeSheet WHERE userId = ? AND week = ? AND year = ?', [userId, week, year]);
+        console.log(timeSheetReference[0].id);
+        const [rows] = await pool.query('SELECT * FROM taskEntry WHERE timeSheetId = ?', [timeSheetReference[0].id]);
+        console.log(rows);
+        const [rows2] = await pool.query('SELECT * FROM staticTaskEntry WHERE timeSheetId = ?', [timeSheetReference[0].id]);
+        console.log(rows2);
+        const tasks = rows.concat(rows2)
         
+        const timeSheet = {
+            timeSheetId: timeSheetReference[0].id,
+            tasks: tasks,
+        }
+        return timeSheet;
     } catch (error) {
         console.log(error);
         return false; // error occurred
