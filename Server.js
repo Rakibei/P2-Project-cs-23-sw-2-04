@@ -203,6 +203,15 @@ app.get("/managerRequests", isAuthenticated, async (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
+
 // Get a list of all projects that the manager is linked too
 
 // let req.session.userName
