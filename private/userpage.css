@@ -64,6 +64,24 @@ input{
     width: 40%;
     height: 30%;
 }
+
+#timeSheetButton{
+    display: block;
+    margin-right: 20px;
+    margin-left: auto;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 17px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    background: rgb(16, 78, 178);
+    color: white;
+    border: 1px solid rgb(16, 78, 178);
+    border-radius: 5px;
+    align-items: center;
+}
 .btn{
     text-align: center;
     margin-top: 5px;
@@ -71,4 +89,7 @@ input{
 /* her justere jeg hovering over  knappen*/
 #AddRow:hover {
     background: rgb(54, 120, 228);
-}   
+}  
+#timeSheetButton:hover{
+    background: rgb(54, 120, 228);    
+} 

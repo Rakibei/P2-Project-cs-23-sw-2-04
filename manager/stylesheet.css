@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Nunito', sans-serif;
 }
 
 /* her redigere jeg baggrund indstillinger*/
@@ -32,14 +32,16 @@ html {
     cursor: pointer;
     font-weight: 600;
     font-size: 20px;
-    padding-left: 0px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
     background: rgb(238, 240, 230);
     color: black;
     border: 1px solid rgb(238, 240, 230);
+    border: 1px solid rgb(238, 240, 230);
     border-radius: 5px;
-    align-items: center;
-    display: inline-block;
-    margin: 0 auto;
+    margin: 3px;
 }
 .menu {
     text-align: center;

@@ -1,10 +1,12 @@
 /* det her er universal selector for den complete general indstillinger*/
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Times New Roman', Times, serif;
-}
+    font-family: 'Nunito', sans-serif;
+ }
+
 /* her redigere jeg baggrund indstillinger*/
 html {
     overflow: hidden;
@@ -28,18 +30,20 @@ html {
 
 
 /* her justere jeg knapperne i navigation bar*/
-#userButton, #projectButton,#userLevelButton, #createManagerButton,#exportButtonXlsx,#exportButton{
+#userButton, #projectButton,#userLevelButton, #createManagerButton,#exportButtonXlsx,#exportButton,#CreateTaskButton{
     cursor: pointer;
     font-weight: 600;
     font-size: 20px;
-    padding-left: 0px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
     background: rgb(238, 240, 230);
     color: black;
     border: 1px solid rgb(238, 240, 230);
+    border: 1px solid rgb(238, 240, 230);
     border-radius: 5px;
-    align-items: center;
-    display: inline-block;
-    margin: 0 auto;
+    margin: 3px;
 }
 form,.menu, .pdf{
     text-align: center;
@@ -64,6 +68,9 @@ form,.menu, .pdf{
     background: rgb(112, 155, 223);
 }
 #exportButtonXlsx:hover {
+    background: rgb(112, 155, 223);
+}
+#CreateTaskButton:hover{
     background: rgb(112, 155, 223);
 }
 
