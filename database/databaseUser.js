@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { GetManagerProjects } from "./databaseProject";
+import { GetManagerProjects } from "./databaseProject.js";
 
 export async function GetUsers(pool) {
     try {

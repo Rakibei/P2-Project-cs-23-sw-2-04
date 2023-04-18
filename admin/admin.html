@@ -20,6 +20,7 @@
             <button id="userLevelButton">Set user level</button>
             <button id="createManagerButton">Create Manager</button>
             <button id="CreateTaskButton">Create Task</button>
+            <button id="EmailNotificationButton">Email Notification</button>
         </div>
 <br>
 
@@ -106,6 +107,25 @@
             <input type="text" name="taskDescription" id="taskDescription" placeholder="taskDescription" required> <br> <br>
             <label for="estimate">estimate</label>
             <input type="number" name="estimate" id="estimate" placeholder="0" required> <br> <br>
+            <input type="submit" class="sbmt" value="Submit">            
+        </form>
+    </div>
+
+    <div id="SetTimeForEmailNotification">
+        <form id="SetTimeForEmailNotificationFrom">
+            <label for="TimeOfDay">Time of day:</label>
+            <input type="time" name="TimeOfDay" id="TimeOfDay"><br> <br>
+            <label for="WeekDay">Choose the Weekday:</label>
+            <select name="WeekDay" id="WeekDay">
+            <option value="1">Monday</option>
+            <option value="2">Tuesday</option>
+            <option value="3">Wednesday</option>
+            <option value="4">Thursday</option>
+            <option value="5">Friday</option>
+            <option value="6">Saturday</option>
+            <option value="7">Sunday</option>
+            </select>
+            <br> <br>
             <input type="submit" class="sbmt" value="Submit">            
         </form>
     </div>
