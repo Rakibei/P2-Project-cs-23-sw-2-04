@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import { GetManagerProjects } from "./databaseProject";
 
 export async function GetUsers(pool) {
     try {
@@ -97,7 +98,7 @@ export async function GetUsers(pool) {
       };
       userLevel.isAdmin	= user[0].isAdmin;
       userLevel.isManager = user[0].isManager;
-      if(GetmanagerProjects(pool, userId).length != 0) {
+      if(GetManagerProjects(pool, userId).length != 0) {
         userLevel.isProjectManager = 1;
       }
       return userLevel; // success

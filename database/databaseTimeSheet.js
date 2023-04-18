@@ -103,3 +103,12 @@ export async function IsTimeSheetFound(pool, userId, week, year) {
         return false; // error occurred 
     }
 }
+
+export async function GetFilledOutTimeSheetForUser(pool, userId) {
+    try {
+        
+    } catch (error) {
+        console.log(error);
+        return false; // error occurred
+    }
+}
