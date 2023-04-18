@@ -35,6 +35,7 @@ import {
   IsTimeSheetFound,
   DeleteAllTaskEntryForATimeSheet,
   GetTimeSheetId,
+  GetFilledOutTimeSheetForUser,
 } from "./database/databaseTimeSheet.js";
 
 import { CreatePDF } from "./pdf/pdfTest.js";
@@ -128,17 +129,29 @@ app.get("/sesionData", async (req, res) => {
   let userID = await GetUserIdWithName(poolData, req.session.userName);
   let userProjects = await GetUserProjects(poolData, userID);
   let UserLevel = await GetUserLevel(poolData, userID);
+
+  const week = Math.floor(
+    (new Date() - new Date(new Date().getFullYear(), 0, 0)) / 604800000
+  );
+  const year = new Date().getFullYear();
+  let timeSheetForUser = await GetFilledOutTimeSheetForUser(poolData, userID, week, year)
+  //console.log(timeSheetForUser)
+  timeSheetForUser.week = week;
+  timeSheetForUser.year = year;
   for (let i = 0; i < userProjects.length; i++) {
     userProjects[i].tasks = await GetProjectTasks(poolData, userProjects[i].id);
   }
   //let userTasks = await userProjects.map(project => GetProjectTasks(poolData, project.projectID));
   console.log(userProjects);
   console.log(UserLevel);
+  console.log(timeSheetForUser);
+  // console.log(timeSheetForUser);
 
   // The info is stored in session and is sent to the client
   req.session.projects = userProjects;
   req.session.userID = userID;
-  req.session.UserLevel = UserLevel
+  req.session.UserLevel = UserLevel;
+  req.session.timeSheetForUser = timeSheetForUser;
   req.session.save();
   res.json(req.session);
 
