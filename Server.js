@@ -24,8 +24,10 @@ import {
   CreateUser,
   ComparePassword,
   GetUserIdWithName,
+  GetUsersUnderManager,
   GetUserLevel,
   SetUserLevel,
+  GetUsernameWithID,
 } from "./database/databaseUser.js";
 import {
   CreateTasks,
@@ -35,6 +37,7 @@ import {
   IsTimeSheetFound,
   DeleteAllTaskEntryForATimeSheet,
   GetTimeSheetId,
+  GetFilledOutTimeSheetForUser,
 } from "./database/databaseTimeSheet.js";
 
 import { CreatePDF } from "./pdf/pdfTest.js";
@@ -128,17 +131,29 @@ app.get("/sesionData", async (req, res) => {
   let userID = await GetUserIdWithName(poolData, req.session.userName);
   let userProjects = await GetUserProjects(poolData, userID);
   let UserLevel = await GetUserLevel(poolData, userID);
+
+  const week = Math.floor(
+    (new Date() - new Date(new Date().getFullYear(), 0, 0)) / 604800000
+  );
+  const year = new Date().getFullYear();
+  let timeSheetForUser = await GetFilledOutTimeSheetForUser(poolData, userID, week, year)
+  //console.log(timeSheetForUser)
+  timeSheetForUser.week = week;
+  timeSheetForUser.year = year;
   for (let i = 0; i < userProjects.length; i++) {
     userProjects[i].tasks = await GetProjectTasks(poolData, userProjects[i].id);
   }
   //let userTasks = await userProjects.map(project => GetProjectTasks(poolData, project.projectID));
   console.log(userProjects);
   console.log(UserLevel);
+  console.log(timeSheetForUser);
+  // console.log(timeSheetForUser);
 
   // The info is stored in session and is sent to the client
   req.session.projects = userProjects;
   req.session.userID = userID;
-  req.session.UserLevel = UserLevel
+  req.session.UserLevel = UserLevel;
+  req.session.timeSheetForUser = timeSheetForUser;
   req.session.save();
   res.json(req.session);
 
@@ -169,6 +184,24 @@ app.get("/profileData", async (req, res) => {
   res.json(req.session);
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // handle the manager function
 
 app.use("/manager",IsManager, serveStatic(join(__dirname, "manager")));
@@ -177,33 +210,59 @@ app.use("/manager",IsManager, serveStatic(join(__dirname, "manager")));
 
 app.post("/managerRequests", isAuthenticated, async (req, res) => {
   console.log(req.body);
-  if (req.body.function == "LinkUsers") {
-    let managerID = await GetUserIdWithName(poolData, req.body.managerToLink);
-    let userID = await GetUserIdWithName(poolData, req.body.userToLink);
+
+
+switch (req.body.functionName) {
+  case "LinkUsers":
+    let managerID1 = await GetUserIdWithName(poolData, req.body.managerToLink);
+    let userID1 = await GetUserIdWithName(poolData, req.body.userToLink);
     let projectID = await GetProjectIdWithName(
       poolData,
       req.body.projectToLink
     );
     let newLinkData = await CreateUserProjectManagerlink(
       poolData,
-      userID,
-      managerID,
+      userID1,
+      managerID1,
       projectID
     );
     console.log(newLinkData);
-  }
+    break;
+
+    case "GetProjectManagerProjects":
+      let managerID2 = await GetUserIdWithName(poolData, req.session.userName);
+      let managerProjects = await GetManagerProjects(poolData, managerID2);
+      console.log(managerProjects);
+      res.send(managerProjects);
+      break;
+    
+    case "GetUsersUnderManager":
+    let managerID3 = await GetUserIdWithName(poolData, req.session.userName);
+    let Users = await GetUsersUnderManager(poolData,managerID3);
+    console.log(Users);
+    res.send(Users);
+    break;
+    
+    case "GetUserInfo":
+    let usernames = [];
+    for (let i = 0; i < req.body.users.length; i++) {
+        usernames[i] = await GetUsernameWithID(poolData,req.body.users[i])
+    }
+    res.send(usernames)
+    break;
+    case "GetTimeSheet":
+
+    GetTimeSheetId(poolData,req.body.UserID,)
+    
+    GetTimeSheet()
+    break;
+    
+  default:
+    break;
+}
+
 });
 
-app.get("/managerRequests", isAuthenticated, async (req, res) => {
-  console.log("Someone wants projects");
-
-  // Se hvad deres ID er
-  // Få alle projetor
-  let managerID = await GetUserIdWithName(poolData, req.session.userName);
-  let managerProjects = await GetManagerProjects(poolData, managerID);
-  console.log(managerProjects);
-  res.send(managerProjects);
-});
 
 
 
