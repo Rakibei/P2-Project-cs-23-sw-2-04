@@ -2,7 +2,9 @@ import fs from "fs";
 // The servers parameters are set up so that it works with express
 import http from "http";
 import { join } from "path";
-import express from "express";
+import express, { query } from "express";
+import moment from "moment";
+
 
 import {
   ConnectToDatabase,
@@ -228,41 +230,50 @@ switch (req.body.functionName) {
     );
     console.log(newLinkData);
     break;
-
-    case "GetProjectManagerProjects":
-      let managerID2 = await GetUserIdWithName(poolData, req.session.userName);
-      let managerProjects = await GetManagerProjects(poolData, managerID2);
-      console.log(managerProjects);
-      res.send(managerProjects);
-      break;
-    
-    case "GetUsersUnderManager":
-    let managerID3 = await GetUserIdWithName(poolData, req.session.userName);
-    let Users = await GetUsersUnderManager(poolData,managerID3);
-    console.log(Users);
-    res.send(Users);
-    break;
-    
-    case "GetUserInfo":
-    let usernames = [];
-    for (let i = 0; i < req.body.users.length; i++) {
-        usernames[i] = await GetUsernameWithID(poolData,req.body.users[i])
-    }
-    res.send(usernames)
-    break;
-    case "GetTimeSheet":
-
-    GetTimeSheetId(poolData,req.body.UserID,)
-    
-    GetTimeSheet()
-    break;
-    
   default:
     break;
 }
 
 });
 
+app.get("/managerRequests",IsManager, async (req, res)=>{
+   console.log(req.query);
+  switch (req.query.functionName) {
+
+    case "GetProjectManagerProjects":
+      let managerID2 = await GetUserIdWithName(poolData, req.session.userName);
+      let managerProjects = await GetManagerProjects(poolData, managerID2);
+      console.log(managerProjects);
+      res.send(managerProjects);
+      break; 
+
+    case "GetUsersUnderManager":
+      let managerID3 = await GetUserIdWithName(poolData, req.session.userName);
+      let Users = await GetUsersUnderManager(poolData,managerID3);
+      console.log(Users);
+      res.send(Users);
+    break;
+
+    case "GetUserInfo":
+
+    let usernames = [];
+    let users = req.query.users.split(","); // split the string by comma
+    console.log(users[0]+users.length); // should log 82
+    for (let i = 0; i < users.length; i++) {
+      usernames[i] = await GetUsernameWithID(poolData,users[i]);
+    }
+    res.send(usernames)
+    break;
+    
+    case "GetTimeSheet":
+    let TimeSheetData = await GetFilledOutTimeSheetForUser(poolData,req.query.UserID,moment().isoWeek(),moment().year());
+    res.send(TimeSheetData);
+    break;
+  
+    default:
+      break;
+  }
+})
 
 
 
