@@ -28,16 +28,11 @@ document.querySelector('#createUserManagerLink').addEventListener('submit', (eve
 
 
 document.getElementById("showProjectsButton").addEventListener("click", () => {
-
-  const data = {
-    functionName: "GetProjectManagerProjects"
-  }
-  fetch('http://127.0.0.1:3000/managerRequests', {
-    method: 'POST',
+  fetch('/managerRequests?functionName=GetProjectManagerProjects', {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(data)
   })
   .then(response => response.json())
   .then(jsonData => {
