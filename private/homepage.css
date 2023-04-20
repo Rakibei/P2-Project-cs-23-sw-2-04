@@ -76,7 +76,12 @@ margin-right: auto;
 /* her justere jeg links indenfor */
 button a {
    text-decoration: none;
-   color: black;
+   color: black
+   
+}
+
+button a:hover{
+color: rgb(38, 144, 210);
 }
 
 /* her justere jeg hovering over navbar og knapperne*/
