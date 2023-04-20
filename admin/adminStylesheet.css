@@ -78,7 +78,7 @@ form,.menu, .pdf{
 }
 
 /* her justere jeg de forskellig former*/
-#userCreation,#projectCreation,#setUserLevel,#createManagerForProject{
+#userCreation,#projectCreation,#setUserLevel,#createManagerForProject, #createTaskForProject, #SetTimeForEmailNotification{
     font-weight: 600;
     font-size: 20px;
     padding-left: 0px;
