@@ -23,7 +23,7 @@ html {
    background-size: cover;
    min-height: 100%;
 }
- /* her redigere jeg på titlen indenfor hvor der står welcome Manager */
+ /* her redigere jeg på titlen indenfor hvor der står welcome  */
 .welcome-title {
    line-height: 50px;
    background: rgb(16, 78, 178);
@@ -69,8 +69,8 @@ margin-right: auto;
 
 
 #logoutButton {
-    margin-left:auto;
-    margin-right:0;
+   margin-left:auto;
+   margin-right:0;
 }
 
 /* her justere jeg links indenfor */
@@ -85,4 +85,27 @@ Button:hover {
    background: rgb(208, 209, 210);
 }
 
+@media all and (max-width: 500px ) {
 
+   button {
+         cursor: pointer;
+         font-weight: 600;
+         font-size: 13px;
+         padding-top: 7px;
+         padding-bottom: 7px;
+         padding-left: 10px;
+         padding-right: 10px;
+         background: rgb(238, 240, 230);
+         color: black;
+         border: 1px solid rgb(238, 240, 230);
+         border: 1px solid rgb(238, 240, 230);
+         border-radius: 5px;
+         margin: 3px;
+      }
+
+      .container {
+         margin-left: auto ;
+         display: flex;
+         width: auto;
+      }
+}

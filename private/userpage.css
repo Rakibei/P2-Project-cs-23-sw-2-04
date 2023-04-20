@@ -86,10 +86,20 @@ input{
     text-align: center;
     margin-top: 5px;
 }
-/* her justere jeg hovering over  knappen*/
+/* her justere jeg hovering over knappen*/
 #AddRow:hover {
     background: rgb(54, 120, 228);
 }  
 #timeSheetButton:hover{
     background: rgb(54, 120, 228);    
 } 
+
+@media all and (max-width: 500px ){
+
+    #timeSheetButton{
+        align-items: center;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 5px;
+    }
+}
