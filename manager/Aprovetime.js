@@ -4,7 +4,7 @@
 // Requst users under the manager
 window.addEventListener("load", () => {
     
-    fetch("/managerRequests?functionName=GetUsersUnderManager",{
+    fetch("https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/managerRequests?functionName=GetUsersUnderManager",{
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ window.addEventListener("load", () => {
 
     async function GetUserInfo (UserIds){
         try {
-          const response = await fetch('/managerRequests?functionName=GetUserInfo&users='+UserIds, {
+          const response = await fetch('https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/managerRequests?functionName=GetUserInfo&users='+UserIds, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
@@ -88,19 +88,13 @@ window.addEventListener("load", () => {
           let Cell6 = document.createElement("td"); 
           let Cell7 = document.createElement("td"); 
 
-
-          for (let j = 0; j < array.length; j++) {
-            
-           // Cell${j}.id = "Row${i}Cell{j}"
-            
+          for (let j = 0; j < 7; j++) {
+            eval(`Cell${j}`).id = `Row${i}Cell${j}`;    
+            eval(`Cell${j}`).name = `Row${i}Cell${j}`;            
+        
           }
 
-
-
-          cell1.textContent = id
-
-
-
+          Cell1.textContent = TimeSheetHolder.task[i].mondayhours
 
 
 
@@ -124,7 +118,7 @@ window.addEventListener("load", () => {
     
 
       try {
-        const response = await fetch("/managerRequests?functionName=GetTimeSheet&UserID="+UserID,{
+        const response = await fetch("https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/managerRequests?functionName=GetTimeSheet&UserID="+UserID,{
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'

@@ -7,7 +7,7 @@ let profileInfo = document.getElementById("profileInfo");
 
 window.addEventListener('load', () => {
 
-  fetch("/sesionData")
+  fetch("https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/sesionData")
   .then((response) => response.json())
   .then((data) => {
     UserLevel = data.UserLevel;
@@ -23,7 +23,7 @@ window.addEventListener('load', () => {
   });
 
 
-fetch('/profileData')
+fetch('https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/profileData')
 .then(response => response.json())
 .then(data => {
     // Do something with session data here
@@ -41,7 +41,7 @@ document.getElementById("logoutButton").addEventListener("click",() => {
         functionName: "Logout"
     }
 
-    fetch('/userRequests', {
+    fetch('https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/userRequests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

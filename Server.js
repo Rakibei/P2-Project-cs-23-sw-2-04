@@ -59,8 +59,8 @@ import { Console, log } from "console";
 // The server is given the name app and calls from the express function
 const app = express();
 
-//The server listens on port 3000 localhost so the ip is 127.0.0.1:3000
-app.listen(3000);
+//The server listens on port 3110 localhost so the ip is 127.0.0.1:3110
+app.listen(3110);
 
 // Database connection
 const poolData = ConnectToDatabase();
@@ -96,10 +96,10 @@ app.get("/", (req, res) => {
   // We check if the user has accesed the site before
   if (req.session.isAuthenticated == true) {
     // If they are authenticated then redirect them to the next site
-    res.redirect("/private/homepage.html");
+    res.redirect("/node0/private/homepage.html");
   } else {
     // If not send them to the login page
-    res.redirect("index.html");
+    res.redirect("/node0/index.html");
   }
 });
 // we now say that the client can acces the public folder otherwise the client dosent send a get requst
@@ -120,7 +120,7 @@ app.post("/", async (req, res) => {
     req.session.isAuthenticated = true;
     req.session.userName = req.body.username;
     req.session.save();
-    res.redirect("/private/homepage.html");
+    res.redirect("https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/private/homepage.html");
   } else if ((await GetUserIdWithName(poolData, req.body.username)) == false) {
     res.status(401).send("Invalid username");
   } else {
@@ -138,24 +138,23 @@ app.get("/sesionData", async (req, res) => {
     (new Date() - new Date(new Date().getFullYear(), 0, 0)) / 604800000
   );
   const year = new Date().getFullYear();
-  let timeSheetForUser = await GetFilledOutTimeSheetForUser(poolData, userID, week, year)
-  //console.log(timeSheetForUser)
-  timeSheetForUser.week = week;
-  timeSheetForUser.year = year;
+  if (await IsTimeSheetFound(poolData, userID, week, year)) {
+    let timeSheetForUser = await GetFilledOutTimeSheetForUser(poolData, userID, week, year)
+    //console.log(timeSheetForUser)
+    timeSheetForUser.week = week;
+    timeSheetForUser.year = year;
+    req.session.timeSheetForUser = timeSheetForUser;
+  }
+  
   for (let i = 0; i < userProjects.length; i++) {
     userProjects[i].tasks = await GetProjectTasks(poolData, userProjects[i].id);
   }
-  //let userTasks = await userProjects.map(project => GetProjectTasks(poolData, project.projectID));
-  console.log(userProjects);
-  console.log(UserLevel);
-  console.log(timeSheetForUser);
-  // console.log(timeSheetForUser);
+  
 
   // The info is stored in session and is sent to the client
   req.session.projects = userProjects;
   req.session.userID = userID;
   req.session.UserLevel = UserLevel;
-  req.session.timeSheetForUser = timeSheetForUser;
   req.session.save();
   res.json(req.session);
 
@@ -167,7 +166,7 @@ app.post("/userRequests", async (req, res) => {
   switch (req.body.functionName) {
     case "Logout":
       req.session.isAuthenticated = false;
-      res.redirect("/index.html");
+      res.redirect("https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/index.html");
       break;
 
     default:
@@ -455,6 +454,7 @@ app.post("/submitTime", isAuthenticated, async (req, res) => {
 });
 
 function PrepareStaticTaskEntry(poolData, taskId, timeSheetId, hours) {
+  console.log("The input data was "+poolData, taskId, timeSheetId, hours);
   CreateStaticTaskEntry(
     poolData,
     taskId,

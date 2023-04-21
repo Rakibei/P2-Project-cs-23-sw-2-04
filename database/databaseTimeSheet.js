@@ -20,6 +20,7 @@ export async function CreateTasks(
   }
 
   export async function CreateStaticTaskEntry(pool, staticTaskType, timeSheetId, mondayHours, tuesdayHours, wednesdayHours, thursdayHours, fridayHours, saturdayHours, sundayHours) {
+    console.log("Values "+pool, staticTaskType, timeSheetId, mondayHours, tuesdayHours, wednesdayHours, thursdayHours, fridayHours, saturdayHours, sundayHours);
     try {
         const values = [staticTaskType, timeSheetId, mondayHours, tuesdayHours, wednesdayHours, thursdayHours, fridayHours, saturdayHours, sundayHours];
         await pool.query(

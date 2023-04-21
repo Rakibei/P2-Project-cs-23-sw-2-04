@@ -12,7 +12,7 @@ document.querySelector('#createUserManagerLink').addEventListener('submit', (eve
     projectToLink: event.target.projectToLinkForUser.value,
     function: "LinkUsers"
   };
- fetch('http://127.0.0.1:3000/managerRequests', {
+ fetch('https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/managerRequests', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -28,7 +28,7 @@ document.querySelector('#createUserManagerLink').addEventListener('submit', (eve
 
 
 document.getElementById("showProjectsButton").addEventListener("click", () => {
-  fetch('/managerRequests?functionName=GetProjectManagerProjects', {
+  fetch('https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/managerRequests?functionName=GetProjectManagerProjects', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'

@@ -4,7 +4,7 @@ let userId;
 let userName;
 
 window.addEventListener("load", () => {
-  fetch("/sesionData")
+  fetch("https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/sesionData")
     .then((response) => response.json())
     .then((data) => {
       // Do something with session data here
@@ -504,7 +504,7 @@ document
 
     console.log(timeSheet);
 
-    fetch("http://127.0.0.1:3000/submitTime", {
+    fetch("https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/submitTime", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
