@@ -125,9 +125,6 @@ export async function GetUsers(pool) {
     }
   }
 
-  
-
-  
   export async function GetUsersUnderManager(pool, managerId) {
     try {
       const [userManagerLinks] = await pool.query("SELECT * FROM userManagerLinks WHERE managerId = ?", [managerId]);
@@ -153,3 +150,5 @@ export async function GetUsers(pool) {
       return false; // error occurred
     }
   }
+
+

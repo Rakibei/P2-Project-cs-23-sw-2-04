@@ -113,7 +113,11 @@ export async function GetFilledOutTimeSheetForUser(pool, userId, week, year) {
         const [rows2] = await pool.query('SELECT * FROM staticTaskEntry WHERE timeSheetId = ?', [timeSheetReference[0].id]);
         console.log(rows2);
         const tasks = rows.concat(rows2)
-        
+        if(tasks.length <= 0) {
+            console.log("no timeSheet");
+            return false;
+        }
+
         const timeSheet = {
             timeSheetId: timeSheetReference[0].id,
             tasks: tasks,
