@@ -5,8 +5,6 @@ import { join } from "path";
 import express, { query } from "express";
 import moment from "moment";
 
-import moment from "moment/moment.js";
-
 import {
   ConnectToDatabase,
   
@@ -136,7 +134,6 @@ app.get("/sesionData", async (req, res) => {
   let UserLevel = await GetUserLevel(poolData, userID);
   const week = moment().isoWeek();
   const year = new Date().getFullYear();
-  if (await IsTimeSheetFound(poolData, userID, week, year)) {
     
   if (await IsTimeSheetFound(poolData, userID, week, year)) {
     let timeSheetForUser = await GetFilledOutTimeSheetForUser(poolData, userID, week, year)
@@ -146,8 +143,7 @@ app.get("/sesionData", async (req, res) => {
     req.session.timeSheetForUser = timeSheetForUser;
   }
   
-    req.session.timeSheetForUser = timeSheetForUser;
-  }
+  
   
   for (let i = 0; i < userProjects.length; i++) {
     userProjects[i].tasks = await GetProjectTasks(poolData, userProjects[i].id);
