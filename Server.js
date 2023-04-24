@@ -5,6 +5,7 @@ import { join } from "path";
 import express, { query } from "express";
 import moment from "moment";
 
+import moment from "moment/moment.js";
 
 import {
   ConnectToDatabase,
@@ -133,16 +134,18 @@ app.get("/sesionData", async (req, res) => {
   let userID = await GetUserIdWithName(poolData, req.session.userName);
   let userProjects = await GetUserProjects(poolData, userID);
   let UserLevel = await GetUserLevel(poolData, userID);
-
-  const week = Math.floor(
-    (new Date() - new Date(new Date().getFullYear(), 0, 0)) / 604800000
-  );
+  const week = moment().isoWeek();
   const year = new Date().getFullYear();
   if (await IsTimeSheetFound(poolData, userID, week, year)) {
+    
+  if (await IsTimeSheetFound(poolData, userID, week, year)) {
     let timeSheetForUser = await GetFilledOutTimeSheetForUser(poolData, userID, week, year)
-    //console.log(timeSheetForUser)
-    timeSheetForUser.week = week;
-    timeSheetForUser.year = year;
+      //console.log(timeSheetForUser)
+      timeSheetForUser.week = week;
+      timeSheetForUser.year = year;
+    req.session.timeSheetForUser = timeSheetForUser;
+  }
+  
     req.session.timeSheetForUser = timeSheetForUser;
   }
   
@@ -155,12 +158,14 @@ app.get("/sesionData", async (req, res) => {
   req.session.projects = userProjects;
   req.session.userID = userID;
   req.session.UserLevel = UserLevel;
+  req.session.week = week;
   req.session.save();
   res.json(req.session);
 
   console.log("Data Sent");
   
 });
+
 
 app.post("/userRequests", async (req, res) => {
   switch (req.body.functionName) {
@@ -409,11 +414,30 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
   console.log(req.body);
 });
 
+
+
 // Handle timesheet submition
 app.post("/submitTime", isAuthenticated, async (req, res) => {
   const userId = req.body.userId;
   const week = req.body.week;
   const year = req.body.year;
+  const timeSheetId = await makeNewTimeSheet(poolData, userId, week, year);
+  const vacation = req.body.vacation;
+  await PrepareStaticTaskEntry(poolData, 1, timeSheetId, vacation);
+  const absence = req.body.absence;
+  await PrepareStaticTaskEntry(poolData, 2, timeSheetId, absence);
+  const meeting = req.body.meeting;
+  await PrepareStaticTaskEntry(poolData, 3, timeSheetId, meeting);
+
+  for (const project in req.body.projects) {
+    for (const task in req.body.projects[project]) {
+      const taskEntry = req.body.projects[project][task];
+      await PrepareTaskEntry(poolData, taskEntry, timeSheetId);
+    }
+  }
+});
+
+async function makeNewTimeSheet(poolData, userId, week, year) {
   const isThereATimeSheet = await IsTimeSheetFound(
     poolData,
     userId,
@@ -424,38 +448,31 @@ app.post("/submitTime", isAuthenticated, async (req, res) => {
   if (isThereATimeSheet) {
     console.log("Update sheet");
     timeSheetId = await GetTimeSheetId(poolData, userId, week, year);
-    DeleteAllTaskEntryForATimeSheet(poolData, timeSheetId);
+    await DeleteAllTaskEntryForATimeSheet(poolData, timeSheetId);
   } else {
+    console.log("Make new sheet");
     timeSheetId = await CreateTimeSheet(poolData, userId, week, year);
   }
-  const vaction = req.body.vaction;
-  PrepareStaticTaskEntry(poolData, 1, timeSheetId, vaction);
-  const absance = req.body.absance;
-  PrepareStaticTaskEntry(poolData, 2, timeSheetId, absance);
-  const meeting = req.body.meeting;
-  PrepareStaticTaskEntry(poolData, 3, timeSheetId, meeting);
-  for (const project in req.body.projects) {
-    for (const task in req.body.projects[project]) {
-      const taskEntry = req.body.projects[project][task];
-      CreateTaskEntry(
-          poolData,
-          taskEntry.taskId,
-          timeSheetId,
-          taskEntry.days.mondayHours,
-          taskEntry.days.tuesdayHours,
-          taskEntry.days.wednesdayHours,
-          taskEntry.days.thursdayHours,
-          taskEntry.days.fridayHours,
-          taskEntry.days.saturdayHours,
-          taskEntry.days.sundayHours
-        );
-    }
-  }
-});
+  return timeSheetId;
+}
 
-function PrepareStaticTaskEntry(poolData, taskId, timeSheetId, hours) {
-  console.log("The input data was "+poolData, taskId, timeSheetId, hours);
-  CreateStaticTaskEntry(
+async function PrepareTaskEntry(poolData, taskEntry, timeSheetId) {
+  await CreateTaskEntry(
+    poolData,
+    taskEntry.taskId,
+    timeSheetId,
+    taskEntry.days.mondayHours,
+    taskEntry.days.tuesdayHours,
+    taskEntry.days.wednesdayHours,
+    taskEntry.days.thursdayHours,
+    taskEntry.days.fridayHours,
+    taskEntry.days.saturdayHours,
+    taskEntry.days.sundayHours
+  );
+}
+
+async function PrepareStaticTaskEntry(poolData, taskId, timeSheetId, hours) {
+  const retult = await CreateStaticTaskEntry(
     poolData,
     taskId,
     timeSheetId,
@@ -467,6 +484,7 @@ function PrepareStaticTaskEntry(poolData, taskId, timeSheetId, hours) {
     hours.saturdayHours,
     hours.sundayHours
   );
+  console.log(retult);
 }
 
 // Handle 404 errors
