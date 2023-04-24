@@ -4,7 +4,7 @@
 // Requst users under the manager
 window.addEventListener("load", () => {
     
-    fetch("https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/managerRequests?functionName=GetUsersUnderManager",{
+    fetch("/managerRequests?functionName=GetUsersUnderManager",{
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ window.addEventListener("load", () => {
 
     async function GetUserInfo (UserIds){
         try {
-          const response = await fetch('https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/managerRequests?functionName=GetUserInfo&users='+UserIds, {
+          const response = await fetch('/managerRequests?functionName=GetUserInfo&users='+UserIds, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
@@ -73,28 +73,50 @@ window.addEventListener("load", () => {
         console.log(CurrentTimeSheet);
         let TimeSheetHolder = document.getElementById("CurrentTimeSheet");
 
-        TimeSheetHolder.innerHTML = JSON.stringify(CurrentTimeSheet);
-
-
         for (let i = 0; i < CurrentTimeSheet.tasks.length; i++) {
 
-          TimeSheetHolder.createElement("tr")
           let Row = document.createElement("tr"); 
-          let Cell1 = document.createElement("td"); 
-          let Cell2 = document.createElement("td");
+          let Cell0 = document.createElement("td"); 
+          let Cell1 = document.createElement("td");
+          let Cell2 = document.createElement("td"); 
           let Cell3 = document.createElement("td"); 
           let Cell4 = document.createElement("td"); 
           let Cell5 = document.createElement("td"); 
           let Cell6 = document.createElement("td"); 
           let Cell7 = document.createElement("td"); 
 
-          for (let j = 0; j < 7; j++) {
+
+          for (let j = 0; j < 8; j++) {
             eval(`Cell${j}`).id = `Row${i}Cell${j}`;    
             eval(`Cell${j}`).name = `Row${i}Cell${j}`;            
         
           }
+          
+          
+          Cell0.textContent = CurrentTimeSheet.tasks[i].staticTaskType;
+          Cell1.textContent = CurrentTimeSheet.tasks[i].mondayHours;
+          Cell2.textContent = CurrentTimeSheet.tasks[i].tuesdayHours;
+          Cell3.textContent = CurrentTimeSheet.tasks[i].wednesdayHours;
+          Cell4.textContent = CurrentTimeSheet.tasks[i].thursdayHours;
+          Cell5.textContent = CurrentTimeSheet.tasks[i].fridayHours;
+          Cell6.textContent = CurrentTimeSheet.tasks[i].saturdayHours;
+          Cell7.textContent = CurrentTimeSheet.tasks[i].sundayHours;
 
-          Cell1.textContent = TimeSheetHolder.task[i].mondayhours
+
+          TimeSheetHolder.appendChild(Row);
+          TimeSheetHolder.appendChild(Cell0);
+          TimeSheetHolder.appendChild(Cell1);
+          TimeSheetHolder.appendChild(Cell2);
+          TimeSheetHolder.appendChild(Cell3);
+          TimeSheetHolder.appendChild(Cell4);
+          TimeSheetHolder.appendChild(Cell5);
+          TimeSheetHolder.appendChild(Cell6);
+          TimeSheetHolder.appendChild(Cell7);
+          
+
+
+
+
 
 
 
@@ -118,7 +140,7 @@ window.addEventListener("load", () => {
     
 
       try {
-        const response = await fetch("https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/managerRequests?functionName=GetTimeSheet&UserID="+UserID,{
+        const response = await fetch("/managerRequests?functionName=GetTimeSheet&UserID="+UserID,{
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'

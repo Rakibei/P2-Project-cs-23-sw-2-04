@@ -106,6 +106,7 @@ export async function IsTimeSheetFound(pool, userId, week, year) {
 }
 
 export async function GetFilledOutTimeSheetForUser(pool, userId, week, year) {
+
     try {
         const [timeSheetReference] = await pool.query('SELECT * FROM timeSheet WHERE userId = ? AND week = ? AND year = ?', [userId, week, year]);
         console.log(timeSheetReference);
