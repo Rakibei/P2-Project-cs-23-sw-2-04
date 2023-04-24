@@ -12,7 +12,7 @@ document.querySelector('#createUserManagerLink').addEventListener('submit', (eve
     projectToLink: event.target.projectToLinkForUser.value,
     function: "LinkUsers"
   };
- fetch('http://127.0.0.1:3000/managerRequests', {
+ fetch('/managerRequests', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -28,16 +28,11 @@ document.querySelector('#createUserManagerLink').addEventListener('submit', (eve
 
 
 document.getElementById("showProjectsButton").addEventListener("click", () => {
-
-  const data = {
-    functionName: "GetProjectManagerProjects"
-  }
-  fetch('http://127.0.0.1:3000/managerRequests', {
-    method: 'POST',
+  fetch('/node0/managerRequests?functionName=GetProjectManagerProjects', {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(data)
   })
   .then(response => response.json())
   .then(jsonData => {

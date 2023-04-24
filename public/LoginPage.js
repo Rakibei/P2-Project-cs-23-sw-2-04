@@ -4,7 +4,7 @@ document.querySelector('form').addEventListener('submit', (event) => {
     username: event.target.username.value,
     password: event.target.password.value
   };
- fetch('http://127.0.0.1:3000', {
+ fetch('/', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
