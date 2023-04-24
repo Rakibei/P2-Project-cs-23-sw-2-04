@@ -504,7 +504,7 @@ document
 
     console.log(timeSheet);
 
-    fetch("http://127.0.0.1:3000/submitTime", {
+    fetch("/submitTime", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

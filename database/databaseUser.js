@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { GetManagerProjects } from "./databaseProject.js";
+import { NULL } from "mysql/lib/protocol/constants/types.js";
 
 export async function GetUsers(pool) {
     try {
@@ -37,6 +38,7 @@ export async function GetUsers(pool) {
     phone,
     email
   ) {
+    console.log(username, isAdmin, fullname, phone, email);
     try {
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(password, salt);
@@ -48,6 +50,7 @@ export async function GetUsers(pool) {
           `,
         [username, hash, isAdmin, fullname, phone, email]
       );
+      console.log(result);
       const id = result.insertId;
       return GetUser(pool, id);
     } catch (error) {
@@ -79,6 +82,10 @@ export async function GetUsers(pool) {
         "SELECT * FROM users WHERE username = ?",
         [username]
       );
+
+      if (userId.length == 0) {
+        return false;  
+      }
       return userId[0].id;
     } catch (error) {
       console.log(error);

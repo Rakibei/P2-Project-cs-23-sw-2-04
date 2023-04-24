@@ -64,7 +64,7 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
         Email: event.target.Email.value,
         functionName: "CreateUser"
     };
-   fetch('http://127.0.0.1:3000/adminRequests', {
+   fetch('/adminRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -91,7 +91,7 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
         projectHoursSpent: event.target.projectHoursSpent.value,
         functionName: "CreateProject"
     };
-   fetch('http://127.0.0.1:3000/adminRequests', {
+   fetch('/adminRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -116,7 +116,7 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
         seeUserLevel: event.target.seeUserLevel.value,
         functionName: "seeUserLevel"
     };
-   fetch('http://127.0.0.1:3000/adminRequests', {
+   fetch('/adminRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -158,7 +158,7 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
         SetUserIsManager: isManagerChecked,
         functionName: "setUserLevel"
     };
-   fetch('http://127.0.0.1:3000/adminRequests', {
+   fetch('/adminRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -185,7 +185,7 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
       projectToLink: event.target.projectToLinkForManager.value,
       functionName: "CreateUserProjectLink"
     };
-   fetch('http://127.0.0.1:3000/adminRequests', {
+   fetch('/adminRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -209,7 +209,7 @@ document.querySelector('#exportButton').addEventListener('click', (event) => {
   const data = {
     functionName: "ExportPDF"
   };
- fetch('http://127.0.0.1:3000/adminRequests', {
+ fetch('/adminRequests', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -233,7 +233,7 @@ document.querySelector('#exportButtonXlsx').addEventListener('click', (event) =>
   const data = {
     functionName: "ExportExcel"
   };
- fetch('http://127.0.0.1:3000/adminRequests', {
+ fetch('/adminRequests', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -263,7 +263,7 @@ document.querySelector('#createTaskForProjectForm').addEventListener('submit', (
     functionName: "CreateTasks"
   };
   console.log(data);
- fetch('http://127.0.0.1:3000/adminRequests', {
+ fetch('/adminRequests', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'

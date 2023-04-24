@@ -2,7 +2,9 @@ import fs from "fs";
 // The servers parameters are set up so that it works with express
 import http from "http";
 import { join } from "path";
-import express from "express";
+import express, { query } from "express";
+import moment from "moment";
+
 
 import {
   ConnectToDatabase,
@@ -57,7 +59,7 @@ import { Console, log } from "console";
 // The server is given the name app and calls from the express function
 const app = express();
 
-//The server listens on port 3000 localhost so the ip is 127.0.0.1:3000
+//The server listens on port 3110 localhost so the ip is 127.0.0.1:3110
 app.listen(3000);
 
 // Database connection
@@ -97,7 +99,7 @@ app.get("/", (req, res) => {
     res.redirect("/private/homepage.html");
   } else {
     // If not send them to the login page
-    res.redirect("index.html");
+    res.redirect("/index.html");
   }
 });
 // we now say that the client can acces the public folder otherwise the client dosent send a get requst
@@ -136,24 +138,23 @@ app.get("/sesionData", async (req, res) => {
     (new Date() - new Date(new Date().getFullYear(), 0, 0)) / 604800000
   );
   const year = new Date().getFullYear();
-  let timeSheetForUser = await GetFilledOutTimeSheetForUser(poolData, userID, week, year)
-  //console.log(timeSheetForUser)
-  timeSheetForUser.week = week;
-  timeSheetForUser.year = year;
+  if (await IsTimeSheetFound(poolData, userID, week, year)) {
+    let timeSheetForUser = await GetFilledOutTimeSheetForUser(poolData, userID, week, year)
+    //console.log(timeSheetForUser)
+    timeSheetForUser.week = week;
+    timeSheetForUser.year = year;
+    req.session.timeSheetForUser = timeSheetForUser;
+  }
+  
   for (let i = 0; i < userProjects.length; i++) {
     userProjects[i].tasks = await GetProjectTasks(poolData, userProjects[i].id);
   }
-  //let userTasks = await userProjects.map(project => GetProjectTasks(poolData, project.projectID));
-  console.log(userProjects);
-  console.log(UserLevel);
-  console.log(timeSheetForUser);
-  // console.log(timeSheetForUser);
+  
 
   // The info is stored in session and is sent to the client
   req.session.projects = userProjects;
   req.session.userID = userID;
   req.session.UserLevel = UserLevel;
-  req.session.timeSheetForUser = timeSheetForUser;
   req.session.save();
   res.json(req.session);
 
@@ -228,41 +229,50 @@ switch (req.body.functionName) {
     );
     console.log(newLinkData);
     break;
-
-    case "GetProjectManagerProjects":
-      let managerID2 = await GetUserIdWithName(poolData, req.session.userName);
-      let managerProjects = await GetManagerProjects(poolData, managerID2);
-      console.log(managerProjects);
-      res.send(managerProjects);
-      break;
-    
-    case "GetUsersUnderManager":
-    let managerID3 = await GetUserIdWithName(poolData, req.session.userName);
-    let Users = await GetUsersUnderManager(poolData,managerID3);
-    console.log(Users);
-    res.send(Users);
-    break;
-    
-    case "GetUserInfo":
-    let usernames = [];
-    for (let i = 0; i < req.body.users.length; i++) {
-        usernames[i] = await GetUsernameWithID(poolData,req.body.users[i])
-    }
-    res.send(usernames)
-    break;
-    case "GetTimeSheet":
-
-    GetTimeSheetId(poolData,req.body.UserID,)
-    
-    GetTimeSheet()
-    break;
-    
   default:
     break;
 }
 
 });
 
+app.get("/managerRequests",IsManager, async (req, res)=>{
+   console.log(req.query);
+  switch (req.query.functionName) {
+
+    case "GetProjectManagerProjects":
+      let managerID2 = await GetUserIdWithName(poolData, req.session.userName);
+      let managerProjects = await GetManagerProjects(poolData, managerID2);
+      console.log(managerProjects);
+      res.send(managerProjects);
+      break; 
+
+    case "GetUsersUnderManager":
+      let managerID3 = await GetUserIdWithName(poolData, req.session.userName);
+      let Users = await GetUsersUnderManager(poolData,managerID3);
+      console.log(Users);
+      res.send(Users);
+    break;
+
+    case "GetUserInfo":
+
+    let usernames = [];
+    let users = req.query.users.split(","); // split the string by comma
+    console.log(users[0]+users.length); // should log 82
+    for (let i = 0; i < users.length; i++) {
+      usernames[i] = await GetUsernameWithID(poolData,users[i]);
+    }
+    res.send(usernames)
+    break;
+    
+    case "GetTimeSheet":
+    let TimeSheetData = await GetFilledOutTimeSheetForUser(poolData,req.query.UserID,moment().isoWeek(),moment().year());
+    res.send(TimeSheetData);
+    break;
+  
+    default:
+      break;
+  }
+})
 
 
 
@@ -444,6 +454,7 @@ app.post("/submitTime", isAuthenticated, async (req, res) => {
 });
 
 function PrepareStaticTaskEntry(poolData, taskId, timeSheetId, hours) {
+  console.log("The input data was "+poolData, taskId, timeSheetId, hours);
   CreateStaticTaskEntry(
     poolData,
     taskId,
