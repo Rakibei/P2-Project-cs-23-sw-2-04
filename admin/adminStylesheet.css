@@ -79,18 +79,24 @@ form,.menu, .pdf{
 
 /* her justere jeg de forskellig former*/
 #userCreation,#projectCreation,#setUserLevel,#createManagerForProject, #createTaskForProject, #SetTimeForEmailNotification{
-    font-weight: 600;
     font-size: 20px;
-    padding-left: 0px;
-    background: rgb(238, 240, 230);
-    color: black;
-    border: 1px solid rgb(238, 240, 230);
-    border-radius: 15px;
-    align-items: center;
-    display: inline-block;
+    font-weight: 400;
+    border-radius: 10px;
     margin: 0 auto;
     width: 80%;
-    height: 180%;
+    padding: 50px;
+    background: rgb(238, 240, 230);
+}
+
+/* her justere jeg form felterne */
+input[type=text],input[type=number],input[type=date],input[type=time],input[type=checkbox] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 /* her rediger jeg submit knapperne*/

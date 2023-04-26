@@ -413,9 +413,13 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
 
 
     case "ExportPDF":
-      let userID3 = req.session.userName;
-      GetProjects(poolData).then((projects) => {
-        CreatePDF(userID3, projects).then((pdfPath) => {
+      let userID3 = await GetUserIdWithName(
+        poolData,
+        req.session.userName
+      );
+      GetUserProjects(poolData, userID3).then((projects) => {
+        console.log(projects);
+        CreatePDF(req.session.userName, projects).then((pdfPath) => {
           const stream = fs.createReadStream(pdfPath);
           stream.on("open", () => {
             stream.pipe(res);
