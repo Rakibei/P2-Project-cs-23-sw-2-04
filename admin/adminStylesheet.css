@@ -30,7 +30,7 @@ html {
 
 
 /* her justere jeg knapperne i navigation bar*/
-#userButton, #projectButton,#userLevelButton, #createManagerButton,#exportButtonXlsx,#exportButton,#CreateTaskButton,#EmailNotificationButton{
+#userButton, #projectButton,#userLevelButton, #ProjectManagerButton,#exportButtonXlsx,#exportButton,#CreateTaskButton,#EmailNotificationButton{
     cursor: pointer;
     font-weight: 600;
     font-size: 20px;
@@ -59,7 +59,7 @@ form,.menu, .pdf{
 #userLevelButton:hover {
     background: rgb(112, 155, 223);
 }
-#createManagerButton:hover {
+#ProjectManagerButton:hover {
     background: rgb(112, 155, 223);}
 .sbmt:hover{
     background: rgb(112, 155, 223);
@@ -133,12 +133,15 @@ input{
     display: none;
 }
 
-#createManagerForProject{
+#CreateProjectManagerContainer{
     display: none;
 }
 #createTaskForProject{
     display: none;
 }
 #SetTimeForEmailNotification{
+    display: none;
+}
+#LinkUserToManagerContainer{
     display: none;
 }

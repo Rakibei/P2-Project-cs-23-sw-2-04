@@ -72,8 +72,40 @@ window.addEventListener("load", () => {
         let CurrentTimeSheet = await GetTimeSheet(UserID);
         console.log(CurrentTimeSheet);
         let TimeSheetHolder = document.getElementById("CurrentTimeSheet");
+        let CurrentPath;
+        let k = 0;
+        
 
-        for (let i = 0; i < CurrentTimeSheet.tasks.length; i++) {
+      const TopInfo = ["Project","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+      for (let Info of TopInfo) {
+      const td = document.createElement("td");
+      const text = document.createTextNode(Info);
+      td.appendChild(text);
+      TimeSheetHolder.appendChild(td);
+}
+
+
+
+        for (let i = 0; i < Object.keys(CurrentTimeSheet.tasks).length ; i++) {
+
+
+          switch (i) {
+            case 0:
+              CurrentPath = CurrentTimeSheet.tasks.absance;
+              break;
+            case 1:
+              CurrentPath = CurrentTimeSheet.tasks.meeting;
+              break;
+            case 2:
+              CurrentPath = CurrentTimeSheet.tasks.vaction;
+              break;
+            case 3:
+              CurrentPath = CurrentTimeSheet.tasks.projects[k];
+              break;
+            default:
+              CurrentPath = CurrentTimeSheet.tasks.projects[++k];
+              break;
+          }
 
           let Row = document.createElement("tr"); 
           let Cell0 = document.createElement("td"); 
@@ -92,15 +124,35 @@ window.addEventListener("load", () => {
         
           }
           
-          
-          Cell0.textContent = CurrentTimeSheet.tasks[i].staticTaskType;
-          Cell1.textContent = CurrentTimeSheet.tasks[i].mondayHours;
-          Cell2.textContent = CurrentTimeSheet.tasks[i].tuesdayHours;
-          Cell3.textContent = CurrentTimeSheet.tasks[i].wednesdayHours;
-          Cell4.textContent = CurrentTimeSheet.tasks[i].thursdayHours;
-          Cell5.textContent = CurrentTimeSheet.tasks[i].fridayHours;
-          Cell6.textContent = CurrentTimeSheet.tasks[i].saturdayHours;
-          Cell7.textContent = CurrentTimeSheet.tasks[i].sundayHours;
+          console.log(CurrentPath.hours.monday);
+
+
+          // Call Project Info
+
+          if (i < 3){
+
+            switch (CurrentPath.staticTaskType) {
+              case 1:
+                Cell0.textContent = "Vacation";  
+                break;
+              case 2:
+                Cell0.textContent =  "Absence"
+                break;
+              case 3:
+                Cell0.textContent = "Meeting"
+                break;
+              }}
+          else{
+            Cell0.textContent = await GetProjectInfo(CurrentPath.taskId)
+          }
+
+          Cell1.textContent = CurrentPath.hours.monday;
+          Cell2.textContent = CurrentPath.hours.tuesday;
+          Cell3.textContent = CurrentPath.hours.wednesday;
+          Cell4.textContent = CurrentPath.hours.thursday;
+          Cell5.textContent = CurrentPath.hours.friday;
+          Cell6.textContent = CurrentPath.hours.saturday;
+          Cell7.textContent = CurrentPath.hours.sunday;
 
 
           TimeSheetHolder.appendChild(Row);
@@ -115,22 +167,7 @@ window.addEventListener("load", () => {
           
 
 
-
-
-
-
-
-
-
-
         }
-
-
-
-
-
-
-
 
 
     }
@@ -153,3 +190,24 @@ window.addEventListener("load", () => {
     } 
         
       
+
+   async function GetProjectInfo(TaskId) {
+      
+      try {
+        const response = await fetch('/managerRequests?functionName=GetProjectInfo&TaskId='+TaskId, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+        return await response.json();
+      } catch(error) {
+        console.error(error);
+      }
+
+    }
+
+
+
+
+   

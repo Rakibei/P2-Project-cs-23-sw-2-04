@@ -18,6 +18,8 @@ import {
   CreateProject,
   GetUserProjects,
   GetManagerProjects,
+  CreateUserManagerlink,
+  GetTaskNameAndProjectName,
 } from "./database/databaseProject.js";
 import {
   GetUsers,
@@ -216,7 +218,7 @@ app.post("/managerRequests", isAuthenticated, async (req, res) => {
 
 switch (req.body.functionName) {
   case "LinkUsers":
-    let managerID1 = await GetUserIdWithName(poolData, req.body.managerToLink);
+    let ProjectManagerID1 = await GetUserIdWithName(poolData, req.body.managerToLink);
     let userID1 = await GetUserIdWithName(poolData, req.body.userToLink);
     let projectID = await GetProjectIdWithName(
       poolData,
@@ -225,7 +227,7 @@ switch (req.body.functionName) {
     let newLinkData = await CreateUserProjectManagerlink(
       poolData,
       userID1,
-      managerID1,
+      ProjectManagerID1,
       projectID
     );
     console.log(newLinkData);
@@ -241,15 +243,15 @@ app.get("/managerRequests",IsManager, async (req, res)=>{
   switch (req.query.functionName) {
 
     case "GetProjectManagerProjects":
-      let managerID2 = await GetUserIdWithName(poolData, req.session.userName);
-      let managerProjects = await GetManagerProjects(poolData, managerID2);
+      let ProjectManagerID2 = await GetUserIdWithName(poolData, req.session.userName);
+      let managerProjects = await GetManagerProjects(poolData, ProjectManagerID2);
       console.log(managerProjects);
       res.send(managerProjects);
       break; 
 
     case "GetUsersUnderManager":
-      let managerID3 = await GetUserIdWithName(poolData, req.session.userName);
-      let Users = await GetUsersUnderManager(poolData,managerID3);
+      let ManagerID3 = await GetUserIdWithName(poolData, req.session.userName);
+      let Users = await GetUsersUnderManager(poolData,ManagerID3);
       console.log(Users);
       res.send(Users);
     break;
@@ -268,6 +270,21 @@ app.get("/managerRequests",IsManager, async (req, res)=>{
     case "GetTimeSheet":
     let TimeSheetData = await GetFilledOutTimeSheetForUser(poolData,req.query.UserID,moment().isoWeek(),moment().year());
     res.send(TimeSheetData);
+    break;
+
+    case "GetProjectInfo":
+
+    console.log(req.query.TaskId);
+
+    // Get Task name and project name
+    let TasknameAndProjectName = await GetTaskNameAndProjectName(poolData,req.query.TaskId);
+
+    console.log(TasknameAndProjectName);
+
+    res.send(TasknameAndProjectName);
+
+
+
     break;
   
     default:
@@ -343,21 +360,58 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
       let check1 = req.body.setUserIsAdmin; let check2 = req.body.SetUserIsManager;
       res.status(201).send("User: " + req.body.setUserLevelName + " Is Now " + (check1 ? "Admin, " : "") + (check2 ? "Manager, " : ""));
       break;
-    case "CreateUserProjectLink":
-      let managerID = await GetUserIdWithName(poolData, req.body.createManager);
+      
+    case "CreateProjectManager":
+      let ProjectManagerID = await GetUserIdWithName(poolData, req.body.ProjectManager);
       let projectID1 = await GetProjectIdWithName(
         poolData,
-        req.body.projectToLink
+        req.body.ProjectForProjectManager
       );
       let newLinkData = await CreateUserProjectLink(
         poolData,
-        managerID,
+        ProjectManagerID,
         projectID1,
         1
       );
       console.log(newLinkData);
-      res.status(201).send("Mangager: " + req.body.createManager + " Is Now linked to: " + req.body.projectToLink);
+      res.status(201).send("User: " + req.body.ProjectManager + " has been made project managaer for " + req.body.ProjectForProjectManager);
+
       break;
+
+
+      case "LinkUserToManagerForm":
+
+      let ManagerID = await GetUserIdWithName(poolData, req.body.Manager);
+
+      if (ManagerID == false) {
+        res.status(400).send("User: "+ req.body.Manager + " does not exist");
+        break;
+      }
+      
+      let UserID5 = await GetUserIdWithName(poolData, req.body.User);
+
+      if (UserID5 == false) {
+        res.status(400).send("User: "+ req.body.User + " does not exist");
+        break;
+      }
+
+
+
+      console.log(ManagerID);
+
+      let usermanagerlink = await CreateUserManagerlink(poolData, UserID5, ManagerID );
+      
+      if (usermanagerlink == true) {
+        res.status(201).send("User: " + req.body.User + " is now under manager: " + req.body.Manager);
+      }else{
+        res.status(500).send("Error has occured and changes have not been made")
+      }
+
+      break;
+
+
+
+
     case "ExportPDF":
       let userID3 = req.session.userName;
       GetProjects(poolData).then((projects) => {

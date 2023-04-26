@@ -137,6 +137,7 @@ function sortTaskRows(tasks) {
     if(Object.hasOwn(task, "staticTaskType")) {
       const structuredTask = {
         id: task.id,
+        taskID: task.taskId,
         staticTaskType: task.staticTaskType,
         timeSheetId: task.timeSheetId,
         hours: {
