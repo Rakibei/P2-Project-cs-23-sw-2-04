@@ -88,10 +88,12 @@ input{
 }
 /* her justere jeg hovering over knappen*/
 #AddRow:hover {
-    background: rgb(54, 120, 228);
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
 }  
 #timeSheetButton:hover{
-    background: rgb(54, 120, 228);    
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
 } 
 
 @media all and (max-width: 500px ){

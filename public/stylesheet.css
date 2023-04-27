@@ -69,7 +69,8 @@ html{
    border: 1px solid rgb(16, 78, 178);
 }
 form .btn input:hover {
-   background: rgb(7, 60, 147);
+   color: rgb(38, 144, 210);
+   background: rgb(208, 209, 210);
 }
 
 
