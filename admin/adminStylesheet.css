@@ -51,33 +51,43 @@ form,.menu, .pdf{
 
 /* her justere jeg hovering over navbar og knapperne*/
 #userButton:hover {
-    background: rgb(112, 155, 223);
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
 }
 #projectButton:hover {
-    background: rgb(112, 155, 223);
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
 }
 #userLevelButton:hover {
-    background: rgb(112, 155, 223);
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
 }
 #ProjectManagerButton:hover {
-    background: rgb(112, 155, 223);}
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);}
 .sbmt:hover{
-    background: rgb(112, 155, 223);
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
 } 
 #exportButton:hover {
-    background: rgb(112, 155, 223);
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
 }
 #exportButtonXlsx:hover {
-    background: rgb(112, 155, 223);
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
 }
 #CreateTaskButton:hover{
-    background: rgb(112, 155, 223);
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
 }
 #EmailNotificationButton:hover{
-    background: rgb(112, 155, 223);
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
 }
 #LinkUserToManagerButton:hover {
-    background: rgb(112, 155, 223);
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
 }
 /* her justere jeg de forskellig former*/
 #userCreation,#projectCreation,#setUserLevel,#createManagerForProject, #createTaskForProject, #SetTimeForEmailNotification,#CreateProjectManagerContainer,#LinkUserToManagerContainer{
