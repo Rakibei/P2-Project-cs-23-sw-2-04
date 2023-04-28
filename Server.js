@@ -41,6 +41,7 @@ import {
   DeleteAllTaskEntryForATimeSheet,
   GetTimeSheetId,
   GetFilledOutTimeSheetForUser,
+  ApproveTimeSheet
 } from "./database/databaseTimeSheet.js";
 
 import { CreatePDF } from "./pdf/pdfTest.js";
@@ -235,9 +236,10 @@ switch (req.body.functionName) {
 
 
   case "ApproveTimeSheet":
-      console.log(req.body);
-
+   
+      let TimeSheetApprove = await ApproveTimeSheet(poolData,req.body.TimeSheetId);
       
+      console.log(TimeSheetApprove);    
 
   break;
   default:
@@ -341,12 +343,18 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
       res.status(201).send("User: " + req.body.createUsername + " has been created");
       break;
     case "CreateProject":
+
+        console.log(req.body);
+
+      let ProjectManagerID5 = await GetUserIdWithName(poolData,req.body.projectmanager);
+
       let CreateProjectData = await CreateProject(
         poolData,
         req.body.projectName,
         req.body.projectStartDate,
         req.body.projectEndDate,
-        req.body.projectHoursSpent
+        req.body.projectHoursSpent,
+        ProjectManagerID5,
       );
       console.log(CreateProjectData);
       res.status(201).send("Project: " + req.body.projectName + " has been created");
@@ -381,24 +389,6 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
       res.status(201).send("User: " + req.body.setUserLevelName + " Is Now " + (check1 ? "Admin, " : "") + (check2 ? "Manager, " : ""));
       break;
       
-    case "CreateProjectManager":
-      let ProjectManagerID = await GetUserIdWithName(poolData, req.body.ProjectManager);
-      let projectID1 = await GetProjectIdWithName(
-        poolData,
-        req.body.ProjectForProjectManager
-      );
-      let newLinkData = await CreateUserProjectLink(
-        poolData,
-        ProjectManagerID,
-        projectID1,
-        1
-      );
-      console.log(newLinkData);
-      res.status(201).send("User: " + req.body.ProjectManager + " has been made project managaer for " + req.body.ProjectForProjectManager);
-
-      break;
-
-
       case "LinkUserToManagerForm":
 
       let ManagerID = await GetUserIdWithName(poolData, req.body.Manager);

@@ -77,6 +77,10 @@ window.addEventListener("load", () => {
 
         console.log(CurrentTimeSheet);
         let TimeSheetHolder = document.getElementById("CurrentTimeSheet");
+
+
+        TimeSheetHolder.innerHTML="";
+
         let CurrentPath;
         let k = 0;
         
@@ -171,6 +175,9 @@ window.addEventListener("load", () => {
         }
 
         let ButtonHolder = document.getElementById("ButtonHolder");
+
+        ButtonHolder.innerHTML = "";
+
         let ApproveButton = document.createElement("button");
         let DeclineButton = document.createElement("button");
         

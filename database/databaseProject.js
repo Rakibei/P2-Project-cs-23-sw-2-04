@@ -4,12 +4,13 @@ export async function CreateProject(
     name,
     startDate,
     endDate,
-    hoursSpent
+    hoursSpent,
+    ProjectManagerID,
   ) {
     try {
-      const values = [name, startDate, endDate, hoursSpent];
+      const values = [name, startDate, endDate, hoursSpent,ProjectManagerID];
       await pool.query(
-        "INSERT INTO projects (name, startDate, endDate, hoursSpent) VALUES (?, ?, ?, ?)",
+        "INSERT INTO projects (name, startDate, endDate, hoursSpent, projectmanagerid) VALUES (?, ?, ?, ?,?)",
         values
       );
       return true; // success

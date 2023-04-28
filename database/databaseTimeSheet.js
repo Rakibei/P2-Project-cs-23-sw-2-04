@@ -185,14 +185,13 @@ function sortTaskRows(tasks) {
   return sortedTasks;
 }
 
-export async function ApproveTimeSheet(pool, TimeSheetId, UserId) {
+export async function ApproveTimeSheet(pool, TimeSheetId) {
   try {
       const [insertResult] = await pool.query(
-          'INSERT INTO timesheetsubmit (userId, week, year) VALUES (?, ?, ?)',
-          [userId, week, year]
+          'UPDATE timesheet SET submitstatus = 1 WHERE id = ?',
+          [TimeSheetId]
       );
-      const timesheetId = insertResult.insertId;
-      return timesheetId;
+      return insertResult;
   } catch (error) {
       console.log(error);
       return false; // error occurred 

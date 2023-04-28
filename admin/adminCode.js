@@ -3,7 +3,7 @@ document.getElementById("userButton").addEventListener("click", () => {
     document.getElementById("userCreation").style.display = "block";
     document.getElementById("projectCreation").style.display = "none";
     document.getElementById("setUserLevel").style.display = "none";
-    document.getElementById("CreateProjectManagerContainer").style.display = "none";
+
     document.getElementById("LinkUserToManagerContainer").style.display = "none";
     document.getElementById("createTaskForProject").style.display = "none";
     document.getElementById("SetTimeForEmailNotification").style.display = "none";
@@ -12,7 +12,7 @@ document.getElementById("projectButton").addEventListener("click", ()=> {
     document.getElementById("userCreation").style.display = "none";
     document.getElementById("projectCreation").style.display = "block";
     document.getElementById("setUserLevel").style.display = "none";
-    document.getElementById("CreateProjectManagerContainer").style.display = "none";
+
     document.getElementById("LinkUserToManagerContainer").style.display = "none";
     document.getElementById("createTaskForProject").style.display = "none";
     document.getElementById("SetTimeForEmailNotification").style.display = "none";
@@ -22,16 +22,6 @@ document.getElementById("userLevelButton").addEventListener("click", ()=> {
   document.getElementById("userCreation").style.display = "none";
   document.getElementById("projectCreation").style.display = "none";
   document.getElementById("setUserLevel").style.display = "block";
-  document.getElementById("CreateProjectManagerContainer").style.display = "none";
-  document.getElementById("LinkUserToManagerContainer").style.display = "none";
-  document.getElementById("createTaskForProject").style.display = "none";
-  document.getElementById("SetTimeForEmailNotification").style.display = "none";
-});
-document.getElementById("ProjectManagerButton").addEventListener("click", ()=> {
-  document.getElementById("userCreation").style.display = "none";
-  document.getElementById("projectCreation").style.display = "none";
-  document.getElementById("setUserLevel").style.display = "none";
-  document.getElementById("CreateProjectManagerContainer").style.display = "block";
   document.getElementById("LinkUserToManagerContainer").style.display = "none";
   document.getElementById("createTaskForProject").style.display = "none";
   document.getElementById("SetTimeForEmailNotification").style.display = "none";
@@ -40,7 +30,6 @@ document.getElementById("LinkUserToManagerButton").addEventListener("click", ()=
   document.getElementById("userCreation").style.display = "none";
   document.getElementById("projectCreation").style.display = "none";
   document.getElementById("setUserLevel").style.display = "none";
-  document.getElementById("CreateProjectManagerContainer").style.display = "none";
   document.getElementById("LinkUserToManagerContainer").style.display = "block";
   document.getElementById("createTaskForProject").style.display = "none";
   document.getElementById("SetTimeForEmailNotification").style.display = "none";
@@ -49,7 +38,6 @@ document.getElementById("CreateTaskButton").addEventListener("click", ()=> {
   document.getElementById("userCreation").style.display = "none";
   document.getElementById("projectCreation").style.display = "none";
   document.getElementById("setUserLevel").style.display = "none";
-  document.getElementById("CreateProjectManagerContainer").style.display = "none";
   document.getElementById("LinkUserToManagerContainer").style.display = "none";
   document.getElementById("createTaskForProject").style.display = "block";
   document.getElementById("SetTimeForEmailNotification").style.display = "none";
@@ -58,7 +46,6 @@ document.getElementById("EmailNotificationButton").addEventListener("click", ()=
   document.getElementById("userCreation").style.display = "none";
   document.getElementById("projectCreation").style.display = "none";
   document.getElementById("setUserLevel").style.display = "none";
-  document.getElementById("CreateProjectManagerContainer").style.display = "none";
   document.getElementById("LinkUserToManagerContainer").style.display = "none";
   document.getElementById("createTaskForProject").style.display = "none";
   document.getElementById("SetTimeForEmailNotification").style.display = "block";
@@ -107,6 +94,7 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
         projectName: event.target.projectName.value,
         projectStartDate: event.target.projectStartDate.value,
         projectEndDate: event.target.projectEndDate.value,
+        projectmanager: event.target.ProjectManager.value,
         projectHoursSpent: event.target.projectHoursSpent.value,
         functionName: "CreateProject"
     };
@@ -217,30 +205,7 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
 
 
 
-  document.querySelector('#CreateProjectManagerForm').addEventListener('submit', (event) => {
-    event.preventDefault();
-    const data = {
-      CreateProjectManager: event.target.ProjectManager.value,
-      ProjectForProjectManager: event.target.ProjectForProjectManager.value,
-      functionName: "CreateProjectManager"
-    };
-   fetch('/adminRequests', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  })
-  .then(response => {
-    if (response.status === 201) {
-      response.text().then(data => {
-        alert(data);
-        document.querySelector('#CreateProjectManagerForm').reset();
-      });
-    }
-  })
-  .catch(error => console.error(error));
-});
+
 
 
 document.querySelector('#LinkUserToManagerForm').addEventListener('submit', (event) => {
