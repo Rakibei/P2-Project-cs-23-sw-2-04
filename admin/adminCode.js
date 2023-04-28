@@ -1,4 +1,5 @@
 
+
 document.getElementById("userButton").addEventListener("click", () => {
     document.getElementById("userCreation").style.display = "block";
     document.getElementById("projectCreation").style.display = "none";
@@ -329,11 +330,43 @@ document.querySelector('#createTaskForProjectForm').addEventListener('submit', (
 .catch(error => console.error(error));
 });
 
+document.querySelector('#SetTimeForEmailNotificationForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  TimeOfDay = event.target.TimeOfDay.value;               
+  let[hours,mins] = TimeOfDay.split(":");
+  
+  const data ={
+    functionName: "AutoMailer",
+    mins: mins,
+    hours: hours,
+    Weekday: document.getElementById("WeekDay").value,
+    functionName: "AutoMailer",
+  }
+
+  fetch('/adminRequests', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => {
+    if (response.status === 201) {
+      response.text("lortelort").then(data => {
+        alert(data);
+        document.querySelector('#SetTimeForEmailNotificationForm').reset();
+      });
+    }
+  })
+  .catch(error => console.error(error));
+  });
 
 
 
 
 
 
+ 
 
 console.log(document.cookie);
