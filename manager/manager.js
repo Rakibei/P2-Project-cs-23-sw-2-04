@@ -28,7 +28,7 @@ document.querySelector('#createUserManagerLink').addEventListener('submit', (eve
 
 
 document.getElementById("showProjectsButton").addEventListener("click", () => {
-  fetch('/node0/managerRequests?functionName=GetProjectManagerProjects', {
+  fetch('/managerRequests?functionName=GetProjectManagerProjects', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'

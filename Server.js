@@ -5,7 +5,6 @@ import { join } from "path";
 import express, { query } from "express";
 import moment from "moment";
 
-
 import {
   ConnectToDatabase,
   
@@ -19,6 +18,8 @@ import {
   CreateProject,
   GetUserProjects,
   GetManagerProjects,
+  CreateUserManagerlink,
+  GetTaskNameAndProjectName,
 } from "./database/databaseProject.js";
 import {
   GetUsers,
@@ -134,18 +135,18 @@ app.get("/sesionData", async (req, res) => {
   let userID = await GetUserIdWithName(poolData, req.session.userName);
   let userProjects = await GetUserProjects(poolData, userID);
   let UserLevel = await GetUserLevel(poolData, userID);
-
-  const week = Math.floor(
-    (new Date() - new Date(new Date().getFullYear(), 0, 0)) / 604800000
-  );
+  const week = moment().isoWeek();
   const year = new Date().getFullYear();
+    
   if (await IsTimeSheetFound(poolData, userID, week, year)) {
     let timeSheetForUser = await GetFilledOutTimeSheetForUser(poolData, userID, week, year)
-    //console.log(timeSheetForUser)
-    timeSheetForUser.week = week;
-    timeSheetForUser.year = year;
+      //console.log(timeSheetForUser)
+      timeSheetForUser.week = week;
+      timeSheetForUser.year = year;
     req.session.timeSheetForUser = timeSheetForUser;
   }
+  
+  
   
   for (let i = 0; i < userProjects.length; i++) {
     userProjects[i].tasks = await GetProjectTasks(poolData, userProjects[i].id);
@@ -156,12 +157,14 @@ app.get("/sesionData", async (req, res) => {
   req.session.projects = userProjects;
   req.session.userID = userID;
   req.session.UserLevel = UserLevel;
+  req.session.week = week;
   req.session.save();
   res.json(req.session);
 
   console.log("Data Sent");
   
 });
+
 
 app.post("/userRequests", async (req, res) => {
   switch (req.body.functionName) {
@@ -216,7 +219,7 @@ app.post("/managerRequests", isAuthenticated, async (req, res) => {
 
 switch (req.body.functionName) {
   case "LinkUsers":
-    let managerID1 = await GetUserIdWithName(poolData, req.body.managerToLink);
+    let ProjectManagerID1 = await GetUserIdWithName(poolData, req.body.managerToLink);
     let userID1 = await GetUserIdWithName(poolData, req.body.userToLink);
     let projectID = await GetProjectIdWithName(
       poolData,
@@ -225,7 +228,7 @@ switch (req.body.functionName) {
     let newLinkData = await CreateUserProjectManagerlink(
       poolData,
       userID1,
-      managerID1,
+      ProjectManagerID1,
       projectID
     );
     console.log(newLinkData);
@@ -241,15 +244,15 @@ app.get("/managerRequests",IsManager, async (req, res)=>{
   switch (req.query.functionName) {
 
     case "GetProjectManagerProjects":
-      let managerID2 = await GetUserIdWithName(poolData, req.session.userName);
-      let managerProjects = await GetManagerProjects(poolData, managerID2);
+      let ProjectManagerID2 = await GetUserIdWithName(poolData, req.session.userName);
+      let managerProjects = await GetManagerProjects(poolData, ProjectManagerID2);
       console.log(managerProjects);
       res.send(managerProjects);
       break; 
 
     case "GetUsersUnderManager":
-      let managerID3 = await GetUserIdWithName(poolData, req.session.userName);
-      let Users = await GetUsersUnderManager(poolData,managerID3);
+      let ManagerID3 = await GetUserIdWithName(poolData, req.session.userName);
+      let Users = await GetUsersUnderManager(poolData,ManagerID3);
       console.log(Users);
       res.send(Users);
     break;
@@ -268,6 +271,21 @@ app.get("/managerRequests",IsManager, async (req, res)=>{
     case "GetTimeSheet":
     let TimeSheetData = await GetFilledOutTimeSheetForUser(poolData,req.query.UserID,moment().isoWeek(),moment().year());
     res.send(TimeSheetData);
+    break;
+
+    case "GetProjectInfo":
+
+    console.log(req.query.TaskId);
+
+    // Get Task name and project name
+    let TasknameAndProjectName = await GetTaskNameAndProjectName(poolData,req.query.TaskId);
+
+    console.log(TasknameAndProjectName);
+
+    res.send(TasknameAndProjectName);
+
+
+
     break;
   
     default:
@@ -343,25 +361,66 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
       let check1 = req.body.setUserIsAdmin; let check2 = req.body.SetUserIsManager;
       res.status(201).send("User: " + req.body.setUserLevelName + " Is Now " + (check1 ? "Admin, " : "") + (check2 ? "Manager, " : ""));
       break;
-    case "CreateUserProjectLink":
-      let managerID = await GetUserIdWithName(poolData, req.body.createManager);
+      
+    case "CreateProjectManager":
+      let ProjectManagerID = await GetUserIdWithName(poolData, req.body.ProjectManager);
       let projectID1 = await GetProjectIdWithName(
         poolData,
-        req.body.projectToLink
+        req.body.ProjectForProjectManager
       );
       let newLinkData = await CreateUserProjectLink(
         poolData,
-        managerID,
+        ProjectManagerID,
         projectID1,
         1
       );
       console.log(newLinkData);
-      res.status(201).send("Mangager: " + req.body.createManager + " Is Now linked to: " + req.body.projectToLink);
+      res.status(201).send("User: " + req.body.ProjectManager + " has been made project managaer for " + req.body.ProjectForProjectManager);
+
       break;
+
+
+      case "LinkUserToManagerForm":
+
+      let ManagerID = await GetUserIdWithName(poolData, req.body.Manager);
+
+      if (ManagerID == false) {
+        res.status(400).send("User: "+ req.body.Manager + " does not exist");
+        break;
+      }
+      
+      let UserID5 = await GetUserIdWithName(poolData, req.body.User);
+
+      if (UserID5 == false) {
+        res.status(400).send("User: "+ req.body.User + " does not exist");
+        break;
+      }
+
+
+
+      console.log(ManagerID);
+
+      let usermanagerlink = await CreateUserManagerlink(poolData, UserID5, ManagerID );
+      
+      if (usermanagerlink == true) {
+        res.status(201).send("User: " + req.body.User + " is now under manager: " + req.body.Manager);
+      }else{
+        res.status(500).send("Error has occured and changes have not been made")
+      }
+
+      break;
+
+
+
+
     case "ExportPDF":
-      let userID3 = req.session.userName;
-      GetProjects(poolData).then((projects) => {
-        CreatePDF(userID3, projects).then((pdfPath) => {
+      let userID3 = await GetUserIdWithName(
+        poolData,
+        req.session.userName
+      );
+      GetUserProjects(poolData, userID3).then((projects) => {
+        console.log(projects);
+        CreatePDF(req.session.userName, projects).then((pdfPath) => {
           const stream = fs.createReadStream(pdfPath);
           stream.on("open", () => {
             stream.pipe(res);
@@ -417,11 +476,30 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
   console.log(req.body);
 });
 
+
+
 // Handle timesheet submition
 app.post("/submitTime", isAuthenticated, async (req, res) => {
   const userId = req.body.userId;
   const week = req.body.week;
   const year = req.body.year;
+  const timeSheetId = await makeNewTimeSheet(poolData, userId, week, year);
+  const vacation = req.body.vacation;
+  await PrepareStaticTaskEntry(poolData, 1, timeSheetId, vacation);
+  const absence = req.body.absence;
+  await PrepareStaticTaskEntry(poolData, 2, timeSheetId, absence);
+  const meeting = req.body.meeting;
+  await PrepareStaticTaskEntry(poolData, 3, timeSheetId, meeting);
+
+  for (const project in req.body.projects) {
+    for (const task in req.body.projects[project]) {
+      const taskEntry = req.body.projects[project][task];
+      await PrepareTaskEntry(poolData, taskEntry, timeSheetId);
+    }
+  }
+});
+
+async function makeNewTimeSheet(poolData, userId, week, year) {
   const isThereATimeSheet = await IsTimeSheetFound(
     poolData,
     userId,
@@ -432,38 +510,31 @@ app.post("/submitTime", isAuthenticated, async (req, res) => {
   if (isThereATimeSheet) {
     console.log("Update sheet");
     timeSheetId = await GetTimeSheetId(poolData, userId, week, year);
-    DeleteAllTaskEntryForATimeSheet(poolData, timeSheetId);
+    await DeleteAllTaskEntryForATimeSheet(poolData, timeSheetId);
   } else {
+    console.log("Make new sheet");
     timeSheetId = await CreateTimeSheet(poolData, userId, week, year);
   }
-  const vaction = req.body.vaction;
-  PrepareStaticTaskEntry(poolData, 1, timeSheetId, vaction);
-  const absance = req.body.absance;
-  PrepareStaticTaskEntry(poolData, 2, timeSheetId, absance);
-  const meeting = req.body.meeting;
-  PrepareStaticTaskEntry(poolData, 3, timeSheetId, meeting);
-  for (const project in req.body.projects) {
-    for (const task in req.body.projects[project]) {
-      const taskEntry = req.body.projects[project][task];
-      CreateTaskEntry(
-          poolData,
-          taskEntry.taskId,
-          timeSheetId,
-          taskEntry.days.mondayHours,
-          taskEntry.days.tuesdayHours,
-          taskEntry.days.wednesdayHours,
-          taskEntry.days.thursdayHours,
-          taskEntry.days.fridayHours,
-          taskEntry.days.saturdayHours,
-          taskEntry.days.sundayHours
-        );
-    }
-  }
-});
+  return timeSheetId;
+}
 
-function PrepareStaticTaskEntry(poolData, taskId, timeSheetId, hours) {
-  console.log("The input data was "+poolData, taskId, timeSheetId, hours);
-  CreateStaticTaskEntry(
+async function PrepareTaskEntry(poolData, taskEntry, timeSheetId) {
+  await CreateTaskEntry(
+    poolData,
+    taskEntry.taskId,
+    timeSheetId,
+    taskEntry.days.mondayHours,
+    taskEntry.days.tuesdayHours,
+    taskEntry.days.wednesdayHours,
+    taskEntry.days.thursdayHours,
+    taskEntry.days.fridayHours,
+    taskEntry.days.saturdayHours,
+    taskEntry.days.sundayHours
+  );
+}
+
+async function PrepareStaticTaskEntry(poolData, taskId, timeSheetId, hours) {
+  const retult = await CreateStaticTaskEntry(
     poolData,
     taskId,
     timeSheetId,
@@ -475,6 +546,7 @@ function PrepareStaticTaskEntry(poolData, taskId, timeSheetId, hours) {
     hours.saturdayHours,
     hours.sundayHours
   );
+  console.log(retult);
 }
 
 // Handle 404 errors

@@ -137,7 +137,7 @@ export async function GetUsers(pool) {
   
   export async function GetUsersUnderManager(pool, managerId) {
     try {
-      const [userManagerLinks] = await pool.query("SELECT * FROM userManagerLinks WHERE managerId = ?", [managerId]);
+      const [userManagerLinks] = await pool.query("SELECT * FROM usermanagerlinks WHERE managerId = ?", [managerId]);
       console.log(userManagerLinks)
       const users = userManagerLinks.map((link) => link.userId);
       console.log(users)

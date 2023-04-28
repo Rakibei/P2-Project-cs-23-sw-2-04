@@ -1,0 +1,18 @@
+table{
+	width: 100%;
+	border-collapse: collapse;
+    border-radius: 1px;
+}
+
+/*her rediger jeg de forskellige rows and collumns*/
+table td,table th{
+  border-collapse: collapse;  
+  text-align: center;
+  font: size 15px;
+  padding:2px 2px;
+  border: 1px solid rgb(0, 0, 0)
+}
+table th{
+	background-color: rgb(16, 78, 178);
+	color:#000000;
+}
