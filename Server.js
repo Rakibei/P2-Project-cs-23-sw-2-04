@@ -476,12 +476,13 @@ app.post("/submitTime", isAuthenticated, async (req, res) => {
   const week = req.body.week;
   const year = req.body.year;
   const timeSheetId = await makeNewTimeSheet(poolData, userId, week, year);
-  const vacation = req.body.vacation;
-  await PrepareStaticTaskEntry(poolData, 1, timeSheetId, vacation);
-  const absence = req.body.absence;
-  await PrepareStaticTaskEntry(poolData, 2, timeSheetId, absence);
+
   const meeting = req.body.meeting;
-  await PrepareStaticTaskEntry(poolData, 3, timeSheetId, meeting);
+  await PrepareStaticTaskEntry(poolData, 1, timeSheetId, meeting.days);
+  const absence = req.body.absence;
+  await PrepareStaticTaskEntry(poolData, 2, timeSheetId, absence.days);
+  const vacation = req.body.vacation;
+  await PrepareStaticTaskEntry(poolData, 3, timeSheetId, vacation.days);
 
   for (const project in req.body.projects) {
     for (const task in req.body.projects[project]) {
@@ -511,7 +512,7 @@ async function makeNewTimeSheet(poolData, userId, week, year) {
 }
 
 async function PrepareTaskEntry(poolData, taskEntry, timeSheetId) {
-  await CreateTaskEntry(
+  const retult = await CreateTaskEntry(
     poolData,
     taskEntry.taskId,
     timeSheetId,
@@ -538,7 +539,6 @@ async function PrepareStaticTaskEntry(poolData, taskId, timeSheetId, hours) {
     hours.saturdayHours,
     hours.sundayHours
   );
-  console.log(retult);
 }
 
 // Handle 404 errors
