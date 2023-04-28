@@ -54,6 +54,7 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 import session from "express-session";
 import { stringify } from "querystring";
 import { Console, log } from "console";
+import { autoMailer } from "./e-mail_notification/mail.js";
 //import { autoMailer } from './e-mail_notification/mail.js';
 
 // The server is given the name app and calls from the express function
@@ -402,6 +403,13 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
       );
       console.log(task);
       res.status(201).send("Task: " + req.body.taskName + " Has now been created for " + req.body.projectToLink);
+    case "AutoMailer":
+
+    autoMailer(req.body.hours,req.body.mins,req.body.Weekday);
+
+    res.status(201).send("Email Notification time has been updated");
+
+    break;
     default:
       break;
   }
