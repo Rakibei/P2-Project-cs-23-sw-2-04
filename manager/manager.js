@@ -10,7 +10,7 @@ document.querySelector('#createUserManagerLink').addEventListener('submit', (eve
     managerToLink: event.target.managerToLink.value,
     userToLink: event.target.userToLink.value,
     projectToLink: event.target.projectToLinkForUser.value,
-    function: "LinkUsers"
+    functionName: "LinkUsers"
   };
  fetch('/managerRequests', {
   method: 'POST',
