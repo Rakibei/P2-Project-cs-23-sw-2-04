@@ -241,14 +241,14 @@ function CreateNewRow() {
   cell1.innerHTML = `<select name="ProjectsDropdown${newid}" class="ProjectsDropdown" id="ProjectsDropdown${newid}">
                           <option value="Default">Select a project</option> 
                           </select>`;
-  cell2.innerHTML = ` <select name="TasksDropdown${newid}" class="TasksDropdown" id="TasksDropdown${newid}"> </select>`;
-  cell3.innerHTML = `<input type="number" id="monday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
-  cell4.innerHTML = `<input type="number" id="tuesday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
-  cell5.innerHTML = `<input type="number" id="wednesday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
-  cell6.innerHTML = `<input type="number" id="thursday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
-  cell7.innerHTML = `<input type="number" id="friday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
-  cell8.innerHTML = `<input type="number" id="saturday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
-  cell9.innerHTML = `<input type="number" id="sunday${newid}" value="0" step="0.5" name="monday${newid}" min="0" max="20">`;
+  cell2.innerHTML = ` <select name="TasksDropdown${newid}" class="TasksDropdown" id="TasksDropdown${newid}" > </select>`;
+  cell3.innerHTML = `<input type="number" id="monday${newid}" value="0" step="0.5" name="monday${newid}" value="0" oninput="validity.valid||(value='0');" step="0.5" min="0" max="20">`;
+  cell4.innerHTML = `<input type="number" id="tuesday${newid}" value="0" step="0.5" name="monday${newid}" value="0" oninput="validity.valid||(value='0');" step="0.5" min="0" max="20">`;
+  cell5.innerHTML = `<input type="number" id="wednesday${newid}" value="0" step="0.5" name="monday${newid}" value="0" oninput="validity.valid||(value='0');" step="0.5" min="0" max="20">`;
+  cell6.innerHTML = `<input type="number" id="thursday${newid}" value="0" step="0.5" name="monday${newid}" value="0" oninput="validity.valid||(value='0');" step="0.5" min="0" max="20">`;
+  cell7.innerHTML = `<input type="number" id="friday${newid}" value="0" step="0.5" name="monday${newid}" value="0" oninput="validity.valid||(value='0');" step="0.5" min="0" max="20">`;
+  cell8.innerHTML = `<input type="number" id="saturday${newid}" value="0" step="0.5" name="monday${newid}" value="0" oninput="validity.valid||(value='0');" step="0.5" min="0" max="20">`;
+  cell9.innerHTML = `<input type="number" id="sunday${newid}" value="0" step="0.5" name="monday${newid}" value="0" oninput="validity.valid||(value='0');" step="0.5" min="0" max="20">`;
   cell10.innerHTML = `<input type="button"class="DeleteRowButton" value="Delete Row" onclick="DeleteRow()">`;
 
   PopulateDropdownProjects(newid);

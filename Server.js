@@ -211,9 +211,11 @@ app.get("/profileData", async (req, res) => {
 
 app.use("/manager",IsManager, serveStatic(join(__dirname, "manager")));
 
+app.use("/ProjectManager",isAuthenticated, serveStatic(join(__dirname, "ProjectManager")));
+
 //Maneger skal kunne se brugere under sig og hvilke projekter der er under sig
 
-app.post("/managerRequests", isAuthenticated, async (req, res) => {
+app.post("/ProjectManagerRequests", isAuthenticated, async (req, res) => {
   console.log(req.body);
 
 
@@ -238,6 +240,31 @@ switch (req.body.functionName) {
 }
 
 });
+
+
+
+app.get("/ProjectManagerRequests",isAuthenticated,async (req, res)=>{
+  console.log(req.query);
+ switch (req.query.functionName) { 
+
+  case "GetProjectManagerProjects":
+      let ProjectManagerID2 = await GetUserIdWithName(poolData, req.session.userName);
+      let managerProjects = await GetManagerProjects(poolData, ProjectManagerID2);
+      console.log(managerProjects);
+      res.send(managerProjects);
+      break; 
+
+      default:
+        break;
+ }
+})
+
+
+
+
+
+
+
 
 app.get("/managerRequests",IsManager, async (req, res)=>{
    console.log(req.query);
