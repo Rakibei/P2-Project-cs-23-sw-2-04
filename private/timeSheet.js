@@ -5,86 +5,72 @@ function getTimeSheetData() {
     userId: 0,
     year: 0,
     vacation: {
-      mondayHours: 0,
-      tuesdayHours: 0,
-      wednesdayHours: 0,
-      thursdayHours: 0,
-      fridayHours: 0,
-      saturdayHours: 0,
-      sundayHours: 0,
+      days: {
+        mondayHours: 0,
+        tuesdayHours: 0,
+        wednesdayHours: 0,
+        thursdayHours: 0,
+        fridayHours: 0,
+        saturdayHours: 0,
+        sundayHours: 0,
+      },
     },
     absence: {
-      mondayHours: 0,
-      tuesdayHours: 0,
-      wednesdayHours: 0,
-      thursdayHours: 0,
-      fridayHours: 0,
-      saturdayHours: 0,
-      sundayHours: 0,
+      days: {
+        mondayHours: 0,
+        tuesdayHours: 0,
+        wednesdayHours: 0,
+        thursdayHours: 0,
+        fridayHours: 0,
+        saturdayHours: 0,
+        sundayHours: 0,
+      },
     },
     meeting: {
-      mondayHours: 0,
-      tuesdayHours: 0,
-      wednesdayHours: 0,
-      thursdayHours: 0,
-      fridayHours: 0,
-      saturdayHours: 0,
-      sundayHours: 0,
+      days: {
+        mondayHours: 0,
+        tuesdayHours: 0,
+        wednesdayHours: 0,
+        thursdayHours: 0,
+        fridayHours: 0,
+        saturdayHours: 0,
+        sundayHours: 0,
+      },
     },
     projects: {},
   };
 
   let table = document.getElementById("timesheet");
   let rowLength = table.rows.length;
-  let columnLength = table.rows[0].cells.length;
+  //let columnLength = table.rows[0].cells.length;
 
-  timeSheet.week = Math.ceil(Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 1)) / (24 * 60 * 60 * 1000)) / 7);
+  timeSheet.week = Math.ceil(
+    Math.floor(
+      (new Date() - new Date(new Date().getFullYear(), 0, 1)) /
+        (24 * 60 * 60 * 1000)
+    ) / 7
+  );
   timeSheet.userName = userName;
   timeSheet.userId = userId;
   timeSheet.year = new Date().getFullYear();
 
-  collectMeetingData(timeSheet, table, rowLength);
-  collectAbsenceData(timeSheet, table, rowLength);
-  collectVacationData(timeSheet, table, rowLength);
+  //collectMeetingData(timeSheet, table, rowLength);
+  collectTableData(timeSheet.meeting, table, rowLength - 4);
+  collectTableData(timeSheet.absence, table, rowLength - 3);
+  collectTableData(timeSheet.vacation, table, rowLength - 2);
   collectProjectData(timeSheet, table, rowLength);
 
   return timeSheet;
 }
 
-function collectVacationData(timeSheet, table, rowLength) {
+function collectTableData(timeSheetTaskSection, table, rowFromTable) {
   let i = 2;
-  for (const day in timeSheet.vacation) {
+  for (const day in timeSheetTaskSection.days) {
     let input =
-      table.rows[rowLength - 2].cells[i].querySelector("input[type=number]");
+      table.rows[rowFromTable].cells[i].querySelector("input[type=number]");
     let value = Number(input.value);
     if (!isNaN(value)) {
-      timeSheet.vacation[day] = value;
-    }
-    i++;
-  }
-}
-
-function collectAbsenceData(timeSheet, table, rowLength) {
-  let i = 2;
-  for (const day in timeSheet.absence) {
-    let input =
-      table.rows[rowLength - 3].cells[i].querySelector("input[type=number]");
-    let value = Number(input.value);
-    if (!isNaN(value)) {
-      timeSheet.absence[day] = value;
-    }
-    i++;
-  }
-}
-
-function collectMeetingData(timeSheet, table, rowLength) {
-  let i = 2;
-  for (const day in timeSheet.meeting) {
-    let input =
-      table.rows[rowLength - 1].cells[i].querySelector("input[type=number]");
-    let value = Number(input.value);
-    if (!isNaN(value)) {
-      timeSheet.meeting[day] = value;
+      timeSheetTaskSection.days[day] = value;
     }
     i++;
   }
@@ -92,9 +78,10 @@ function collectMeetingData(timeSheet, table, rowLength) {
 
 function collectProjectData(timeSheet, table, rowLength) {
   for (let i = rowLength - 5; i > 0; i--) {
+    //read rows of projects
     let selectProject = table.rows[i].cells[0].querySelector("select");
     let selectTask = table.rows[i].cells[1].querySelector("select");
-
+    //if project is not selected it will be skip
     if (selectProject.value == "Default" || selectTask.value == "") {
       continue;
     }
@@ -122,24 +109,26 @@ function collectProjectData(timeSheet, table, rowLength) {
     }
 
     //get task id
-    
 
-    timeSheet.projects[selectProject.value][selectTask.value].taskName = [selectTask.value];
-    targetProjectWithTasks = [projects][0].find((item) => item.name === [selectProject.value][0]).tasks;
-    targetTask = targetProjectWithTasks.find(item => item.name === timeSheet.projects[selectProject.value][selectTask.value].taskName[0]);
-    timeSheet.projects[selectProject.value][selectTask.value].taskId = targetTask.id;
+    timeSheet.projects[selectProject.value][selectTask.value].taskName = [
+      selectTask.value,
+    ];
+    targetProjectWithTasks = [projects][0].find(
+      (item) => item.name === [selectProject.value][0]
+    ).tasks;
+    targetTask = targetProjectWithTasks.find(
+      (item) =>
+        item.name ===
+        timeSheet.projects[selectProject.value][selectTask.value].taskName[0]
+    );
+    timeSheet.projects[selectProject.value][selectTask.value].taskId =
+      targetTask.id;
 
-    let j = 2;
-    for (const day in timeSheet.projects[selectProject.value][selectTask.value]
-      .days) {
-      let input = table.rows[i].cells[j].querySelector("input[type=number]");
-      let value = Number(input.value);
-      if (!isNaN(value)) {
-        timeSheet.projects[selectProject.value][selectTask.value].days[day] =
-          value;
-      }
-      j++;
-    }
+    collectTableData(
+      timeSheet.projects[selectProject.value][selectTask.value],
+      table,
+      i
+    );
   }
 }
 
