@@ -235,6 +235,14 @@ switch (req.body.functionName) {
     );
     console.log(newLinkData);
     break;
+
+
+  case "ApproveTimeSheet":
+      console.log(req.body);
+
+      
+
+  break;
   default:
     break;
 }
@@ -371,12 +379,24 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
       console.log(CreateProjectData);
       res.status(201).send("Project: " + req.body.projectName + " has been created");
       break;
+
+
     case "seeUserLevel":
       let userID1 = await GetUserIdWithName(poolData, req.body.seeUserLevel);
+      if (userID1 === false) {
+        res.status(400).send("User: "+ req.body.seeUserLevel + " does not exist");
+        break;
+      }
       let seeUserLevelData = await GetUserLevel(poolData, userID1);
-      console.log(seeUserLevelData);
-      res.json(seeUserLevelData);
+      if (seeUserLevelData === false) {
+        res.status(500).send("Internal Server Error");
+        break;
+      }
+      res.send(seeUserLevelData);
       break;
+
+
+
     case "setUserLevel":
       let userID2 = await GetUserIdWithName(
         poolData,

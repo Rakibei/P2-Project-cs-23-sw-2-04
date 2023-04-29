@@ -70,6 +70,11 @@ window.addEventListener("load", () => {
     async function ShowTimeSheet (UserID){
 
         let CurrentTimeSheet = await GetTimeSheet(UserID);
+      if (CurrentTimeSheet == false) {
+        alert("User Has not submited timesheet");
+        return;
+      }
+
         console.log(CurrentTimeSheet);
         let TimeSheetHolder = document.getElementById("CurrentTimeSheet");
         let CurrentPath;
@@ -86,9 +91,7 @@ window.addEventListener("load", () => {
 
 
 
-        for (let i = 0; i < Object.keys(CurrentTimeSheet.tasks).length ; i++) {
-
-
+        for (let i = 0; i < Object.keys(CurrentTimeSheet.tasks).length + Object.keys(CurrentTimeSheet.tasks.projects).length - 1; i++) {
           switch (i) {
             case 0:
               CurrentPath = CurrentTimeSheet.tasks.absance;
@@ -123,9 +126,7 @@ window.addEventListener("load", () => {
             eval(`Cell${j}`).name = `Row${i}Cell${j}`;            
         
           }
-          
-          console.log(CurrentPath.hours.monday);
-
+        
 
           // Call Project Info
 
@@ -169,6 +170,21 @@ window.addEventListener("load", () => {
 
         }
 
+        let ButtonHolder = document.getElementById("ButtonHolder");
+        let ApproveButton = document.createElement("button");
+        let DeclineButton = document.createElement("button");
+        
+        ApproveButton.id = "ApproveButton";
+        DeclineButton.id = "DeclineButton";
+
+        ApproveButton.textContent = "Approve";
+        DeclineButton.textContent = "Approve";
+
+        ApproveButton.addEventListener("click",ApproveTimeSheet(CurrentTimeSheet.timeSheetId))
+       // DeclineButton.addEventListener("click")
+
+       ButtonHolder.appendChild(ApproveButton);
+
 
     }
 
@@ -184,6 +200,9 @@ window.addEventListener("load", () => {
           },
         });
         return await response.json();
+
+
+        
       } catch(error) {
         console.error(error);
       }
@@ -209,5 +228,32 @@ window.addEventListener("load", () => {
 
 
 
+async function ApproveTimeSheet(TimeSheetId){
 
+  const data = {
+    functionName: "ApproveTimeSheet",
+    TimeSheetId: TimeSheetId
+  };
+
+  try {
+      const response = await fetch('/managerRequests', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    return await response.json();
+
+  } catch(error) {
+    console.error(error);
+  }
+
+
+}
+
+
+function DeclineTimeSheet(TimeSheetId){
+
+}
    

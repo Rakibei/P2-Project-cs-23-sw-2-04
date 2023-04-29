@@ -88,11 +88,15 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
     body: JSON.stringify(data)
   })
   .then(response => {
-    if (response.status === 201) {
-      response.text().then(data => {
-        alert(data);
-        document.querySelector('#userCreationForm').reset();
-      });
+    switch (response.status) {
+      case 201:
+      case 500:
+      case 400:
+        response.text().then(data => {
+          alert(data);
+          document.querySelector('#userCreationForm').reset();
+        });
+        break;
     }
   })
   .catch(error => console.error(error));
@@ -115,11 +119,14 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
     body: JSON.stringify(data)
   })
   .then(response => {
-    if (response.status === 201) {
-      response.text().then(data => {
-        alert(data);
-        document.querySelector('#projectCreationForm').reset();
-      });
+
+    switch (response.status) {
+      case 201:
+        response.text().then(data => {
+          alert(data);
+          document.querySelector('#projectCreationForm').reset();
+        });
+        break;
     }
   })
   .catch(error => console.error(error));
@@ -140,14 +147,31 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
     body: JSON.stringify(data)
   })
   .then(response => {
-    response.json()
-    .then(data => {    document.getElementById('SeeUserInfo').innerHTML = getUserLevelName(data);})
-    document.querySelector('#searchUserLevel').reset();
+    console.log(response.status);
+    switch (response.status) {
+      case 500:
+      case 400:
+      case 200:
+        response.text().then(data => {
+          console.log(data);
+        if (response.status == 200) {
+          console.log(getUserLevelName(data));
+          document.getElementById('SeeUserInfo').innerHTML = getUserLevelName(data);
+          document.querySelector('#searchUserLevel').reset();
+        }else{
+          alert(data);
+        }
+        });
+        break;
+  
+
+    }
   })
   .catch(error => console.error(error));
   });
 
   function getUserLevelName(data) {
+    console.log(data["isAdmin"]);
     let TextResponse = "";
     console.log(data);
     if (data.isAdmin) {

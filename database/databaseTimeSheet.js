@@ -184,3 +184,17 @@ function sortTaskRows(tasks) {
   })
   return sortedTasks;
 }
+
+export async function ApproveTimeSheet(pool, TimeSheetId, UserId) {
+  try {
+      const [insertResult] = await pool.query(
+          'INSERT INTO timesheetsubmit (userId, week, year) VALUES (?, ?, ?)',
+          [userId, week, year]
+      );
+      const timesheetId = insertResult.insertId;
+      return timesheetId;
+  } catch (error) {
+      console.log(error);
+      return false; // error occurred 
+  }
+  }
