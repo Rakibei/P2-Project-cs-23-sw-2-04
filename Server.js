@@ -7,7 +7,7 @@ import moment from "moment";
 
 import {
   ConnectToDatabase,
-  
+
 } from "./database/databaseSetup.js";
 import {
   GetProjects,
@@ -44,7 +44,8 @@ import {
 } from "./database/databaseTimeSheet.js";
 
 import { CreatePDF } from "./pdf/pdfTest.js";
-import { ConvertJsonToExcel } from "./xlsx/xlsxTest.js";
+import { CreateXLSX } from "./xlsx/xlsxTest.js";
+//import { ConvertJsonToExcel } from "./xlsx/xlsxTest.js";
 import path from "node:path";
 
 const { json } = express;
@@ -136,21 +137,21 @@ app.get("/sesionData", async (req, res) => {
   let UserLevel = await GetUserLevel(poolData, userID);
   const week = moment().isoWeek();
   const year = new Date().getFullYear();
-    
+
   if (await IsTimeSheetFound(poolData, userID, week, year)) {
     let timeSheetForUser = await GetFilledOutTimeSheetForUser(poolData, userID, week, year)
-      //console.log(timeSheetForUser)
-      timeSheetForUser.week = week;
-      timeSheetForUser.year = year;
+    //console.log(timeSheetForUser)
+    timeSheetForUser.week = week;
+    timeSheetForUser.year = year;
     req.session.timeSheetForUser = timeSheetForUser;
   }
-  
-  
-  
+
+
+
   for (let i = 0; i < userProjects.length; i++) {
     userProjects[i].tasks = await GetProjectTasks(poolData, userProjects[i].id);
   }
-  
+
 
   // The info is stored in session and is sent to the client
   req.session.projects = userProjects;
@@ -161,7 +162,7 @@ app.get("/sesionData", async (req, res) => {
   res.json(req.session);
 
   console.log("Data Sent");
-  
+
 });
 
 
@@ -208,7 +209,7 @@ app.get("/profileData", async (req, res) => {
 
 // handle the manager function
 
-app.use("/manager",IsManager, serveStatic(join(__dirname, "manager")));
+app.use("/manager", IsManager, serveStatic(join(__dirname, "manager")));
 
 //Maneger skal kunne se brugere under sig og hvilke projekter der er under sig
 
@@ -216,30 +217,30 @@ app.post("/managerRequests", isAuthenticated, async (req, res) => {
   console.log(req.body);
 
 
-switch (req.body.functionName) {
-  case "LinkUsers":
-    let ProjectManagerID1 = await GetUserIdWithName(poolData, req.body.managerToLink);
-    let userID1 = await GetUserIdWithName(poolData, req.body.userToLink);
-    let projectID = await GetProjectIdWithName(
-      poolData,
-      req.body.projectToLink
-    );
-    let newLinkData = await CreateUserProjectManagerlink(
-      poolData,
-      userID1,
-      ProjectManagerID1,
-      projectID
-    );
-    console.log(newLinkData);
-    break;
-  default:
-    break;
-}
+  switch (req.body.functionName) {
+    case "LinkUsers":
+      let ProjectManagerID1 = await GetUserIdWithName(poolData, req.body.managerToLink);
+      let userID1 = await GetUserIdWithName(poolData, req.body.userToLink);
+      let projectID = await GetProjectIdWithName(
+        poolData,
+        req.body.projectToLink
+      );
+      let newLinkData = await CreateUserProjectManagerlink(
+        poolData,
+        userID1,
+        ProjectManagerID1,
+        projectID
+      );
+      console.log(newLinkData);
+      break;
+    default:
+      break;
+  }
 
 });
 
-app.get("/managerRequests",IsManager, async (req, res)=>{
-   console.log(req.query);
+app.get("/managerRequests", IsManager, async (req, res) => {
+  console.log(req.query);
   switch (req.query.functionName) {
 
     case "GetProjectManagerProjects":
@@ -247,46 +248,46 @@ app.get("/managerRequests",IsManager, async (req, res)=>{
       let managerProjects = await GetManagerProjects(poolData, ProjectManagerID2);
       console.log(managerProjects);
       res.send(managerProjects);
-      break; 
+      break;
 
     case "GetUsersUnderManager":
       let ManagerID3 = await GetUserIdWithName(poolData, req.session.userName);
-      let Users = await GetUsersUnderManager(poolData,ManagerID3);
+      let Users = await GetUsersUnderManager(poolData, ManagerID3);
       console.log(Users);
       res.send(Users);
-    break;
+      break;
 
     case "GetUserInfo":
 
-    let usernames = [];
-    let users = req.query.users.split(","); // split the string by comma
-    console.log(users[0]+users.length); // should log 82
-    for (let i = 0; i < users.length; i++) {
-      usernames[i] = await GetUsernameWithID(poolData,users[i]);
-    }
-    res.send(usernames)
-    break;
-    
+      let usernames = [];
+      let users = req.query.users.split(","); // split the string by comma
+      console.log(users[0] + users.length); // should log 82
+      for (let i = 0; i < users.length; i++) {
+        usernames[i] = await GetUsernameWithID(poolData, users[i]);
+      }
+      res.send(usernames)
+      break;
+
     case "GetTimeSheet":
-    let TimeSheetData = await GetFilledOutTimeSheetForUser(poolData,req.query.UserID,moment().isoWeek(),moment().year());
-    res.send(TimeSheetData);
-    break;
+      let TimeSheetData = await GetFilledOutTimeSheetForUser(poolData, req.query.UserID, moment().isoWeek(), moment().year());
+      res.send(TimeSheetData);
+      break;
 
     case "GetProjectInfo":
 
-    console.log(req.query.TaskId);
+      console.log(req.query.TaskId);
 
-    // Get Task name and project name
-    let TasknameAndProjectName = await GetTaskNameAndProjectName(poolData,req.query.TaskId);
+      // Get Task name and project name
+      let TasknameAndProjectName = await GetTaskNameAndProjectName(poolData, req.query.TaskId);
 
-    console.log(TasknameAndProjectName);
+      console.log(TasknameAndProjectName);
 
-    res.send(TasknameAndProjectName);
+      res.send(TasknameAndProjectName);
 
 
 
-    break;
-  
+      break;
+
     default:
       break;
   }
@@ -355,12 +356,12 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
         req.body.setUserLevelName
       );
       console.log(userID2);
-      let seeUserNewLevelData = await SetUserLevel(poolData,userID2,  req.body.setUserIsAdmin,req.body.SetUserIsManager);
+      let seeUserNewLevelData = await SetUserLevel(poolData, userID2, req.body.setUserIsAdmin, req.body.SetUserIsManager);
       console.log(seeUserNewLevelData);
       let check1 = req.body.setUserIsAdmin; let check2 = req.body.SetUserIsManager;
       res.status(201).send("User: " + req.body.setUserLevelName + " Is Now " + (check1 ? "Admin, " : "") + (check2 ? "Manager, " : ""));
       break;
-      
+
     case "CreateProjectManager":
       let ProjectManagerID = await GetUserIdWithName(poolData, req.body.ProjectManager);
       let projectID1 = await GetProjectIdWithName(
@@ -379,19 +380,19 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
       break;
 
 
-      case "LinkUserToManagerForm":
+    case "LinkUserToManagerForm":
 
       let ManagerID = await GetUserIdWithName(poolData, req.body.Manager);
 
       if (ManagerID == false) {
-        res.status(400).send("User: "+ req.body.Manager + " does not exist");
+        res.status(400).send("User: " + req.body.Manager + " does not exist");
         break;
       }
-      
+
       let UserID5 = await GetUserIdWithName(poolData, req.body.User);
 
       if (UserID5 == false) {
-        res.status(400).send("User: "+ req.body.User + " does not exist");
+        res.status(400).send("User: " + req.body.User + " does not exist");
         break;
       }
 
@@ -399,11 +400,11 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
 
       console.log(ManagerID);
 
-      let usermanagerlink = await CreateUserManagerlink(poolData, UserID5, ManagerID );
-      
+      let usermanagerlink = await CreateUserManagerlink(poolData, UserID5, ManagerID);
+
       if (usermanagerlink == true) {
         res.status(201).send("User: " + req.body.User + " is now under manager: " + req.body.Manager);
-      }else{
+      } else {
         res.status(500).send("Error has occured and changes have not been made")
       }
 
@@ -417,10 +418,45 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
         poolData,
         req.session.userName
       );
+      let projectID3 = await GetProjectIdWithName(
+        poolData,
+        req.session.userName
+      );
       GetUserProjects(poolData, userID3).then((projects) => {
         console.log(projects);
-        CreatePDF(req.session.userName, projects).then((pdfPath) => {
-          const stream = fs.createReadStream(pdfPath);
+        GetProjectTasks(poolData, projects[0].id).then((TaskData) => {
+          console.log(TaskData);
+          CreatePDF(req.session.userName, projects, TaskData).then((pdfPath) => {
+            const stream = fs.createReadStream(pdfPath);
+            stream.on("open", () => {
+              stream.pipe(res);
+            });
+            stream.on("error", (err) => {
+              res.end(err);
+            });
+            res.on("finish", () => {
+              fs.unlink(pdfPath, (err) => {
+                if (err) throw err;
+                console.log("PDF file deleted");
+              });
+            });
+          });
+        });
+      });
+
+      break;
+
+    case "ExportExcel":
+      let userID4 = await GetUserIdWithName(
+        poolData,
+        req.session.userName
+      );
+    GetUserProjects(poolData, userID4).then((projects) => {
+      console.log(projects);
+      GetProjectTasks(poolData, projects[0].id).then((TaskData) => {
+        console.log(TaskData);
+        CreateXLSX(req.session.userName, projects, TaskData).then((xlsxPath) => {
+          const stream = fs.createReadStream(xlsxPath);
           stream.on("open", () => {
             stream.pipe(res);
           });
@@ -428,16 +464,18 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
             res.end(err);
           });
           res.on("finish", () => {
-            fs.unlink(pdfPath, (err) => {
+            fs.unlink(xlsxPath, (err) => {
               if (err) throw err;
-              console.log("PDF file deleted");
+              console.log("XLSX file deleted");
             });
           });
         });
       });
+    });
 
-      break;
-    case "ExportExcel":
+    break;
+
+    /*case "ExportExcel":
       let userID4 = req.session.userName;
       GetProjects(poolData).then((projects) => {
         JSON.stringify(projects);
@@ -446,7 +484,7 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
           res.download(xlsxPath);
         });
       });
-      break;
+      break;*/
     case "CreateTasks":
       let projectID2 = await GetProjectIdWithName(
         poolData,
