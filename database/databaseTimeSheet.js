@@ -197,3 +197,14 @@ export async function ApproveTimeSheet(pool, TimeSheetId) {
       return false; // error occurred 
   }
   }
+  export async function GetTimeSheetSubmit(pool, TimeSheetID) {
+    try {
+        const [SubmitStatus] = await pool.query('SELECT submitstatus FROM timesheet WHERE id = ?', [TimeSheetID]);
+        
+        return SubmitStatus[0];
+    } catch (error) {
+        console.log(error);
+        return false; // error occurred
+    }
+  }
+
