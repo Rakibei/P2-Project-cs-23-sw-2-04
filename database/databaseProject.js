@@ -110,21 +110,11 @@ export async function CreateProject(
     }
   }
 
-  export async function GetManagerProjects(pool, userId) {
+  export async function GetManagerProjectsForUser(pool, userId) {
     try {
-      const [userProjectsLinks] = await pool.query(
-        "SELECT * FROM userprojectlinks WHERE userId = ? AND isManagerForProject = true",
-        [userId]
-      );
-      const projectIds = userProjectsLinks.map((link) => link.projectId);
-  
-      if (projectIds.length === 0) {
-        return [];
-      }
-  
       const [projects] = await pool.query(
-        "SELECT * FROM projects WHERE id IN (?)",
-        [projectIds]
+        "SELECT * FROM projects WHERE projectmanagerid = ?",
+        [userId]
       );
       return projects;
     } catch (error) {

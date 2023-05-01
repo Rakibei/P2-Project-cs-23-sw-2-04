@@ -17,7 +17,6 @@ import {
   GetProjectTasks,
   CreateProject,
   GetUserProjects,
-  GetManagerProjects,
   CreateUserManagerlink,
   GetTaskNameAndProjectName,
 } from "./database/databaseProject.js";
