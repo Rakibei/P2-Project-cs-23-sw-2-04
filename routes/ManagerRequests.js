@@ -10,7 +10,7 @@ import {
   GetProjectTasks,
   CreateProject,
   GetUserProjects,
-  GetManagerProjects,
+  GetManagerProjectsForUser,
   CreateUserManagerlink,
   GetTaskNameAndProjectName,
 } from "../database/databaseProject.js";
@@ -107,7 +107,7 @@ router.post("/managerRequests", IsManager, async (req, res) => {
   
       case "GetProjectManagerProjects":
         let ProjectManagerID2 = await GetUserIdWithName(poolData, req.session.userName);
-        let managerProjects = await GetManagerProjects(poolData, ProjectManagerID2);
+        let managerProjects = await GetManagerProjectsForUser(poolData, ProjectManagerID2);
         console.log(managerProjects);
         res.send(managerProjects);
         break; 
