@@ -101,7 +101,7 @@ form,.menu, .pdf{
 }
 
 /* her justere jeg form felterne */
-input[type=text],input[type=number],input[type=date],input[type=time],input[type=checkbox] {
+input[type=text],input[type=number],input[type=date],input[type=time],input[type=checkbox],input[type=password] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
