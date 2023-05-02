@@ -156,40 +156,66 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
   
   
   
-      case "ExportPDF":
-        let userID3 = await GetUserIdWithName(
-          poolData,
-          req.session.userName
-        );
-        GetUserProjects(poolData, userID3).then((projects) => {
+        case "ExportPDF":
+          let userID3 = await GetUserIdWithName(
+            poolData,
+            req.session.userName
+          );
+          let projectID3 = await GetProjectIdWithName(
+            poolData,
+            req.session.userName
+          );
+          GetUserProjects(poolData, userID3).then((projects) => {
+            console.log(projects);
+            GetProjectTasks(poolData, projects[0].id).then((TaskData) => {
+              console.log(TaskData);
+              CreatePDF(req.session.userName, projects, TaskData).then((pdfPath) => {
+                const stream = fs.createReadStream(pdfPath);
+                stream.on("open", () => {
+                  stream.pipe(res);
+                });
+                stream.on("error", (err) => {
+                  res.end(err);
+                });
+                res.on("finish", () => {
+                  fs.unlink(pdfPath, (err) => {
+                    if (err) throw err;
+                    console.log("PDF file deleted");
+                  });
+                });
+              });
+            });
+          });
+    
+          break;
+    
+        case "ExportExcel":
+          let userID4 = await GetUserIdWithName(
+            poolData,
+            req.session.userName
+          );
+        GetUserProjects(poolData, userID4).then((projects) => {
           console.log(projects);
-          CreatePDF(req.session.userName, projects).then((pdfPath) => {
-            const stream = fs.createReadStream(pdfPath);
-            stream.on("open", () => {
-              stream.pipe(res);
-            });
-            stream.on("error", (err) => {
-              res.end(err);
-            });
-            res.on("finish", () => {
-              fs.unlink(pdfPath, (err) => {
-                if (err) throw err;
-                console.log("PDF file deleted");
+          GetProjectTasks(poolData, projects[0].id).then((TaskData) => {
+            console.log(TaskData);
+            CreateXLSX(req.session.userName, projects, TaskData).then((xlsxPath) => {
+              const stream = fs.createReadStream(xlsxPath);
+              stream.on("open", () => {
+                stream.pipe(res);
+              });
+              stream.on("error", (err) => {
+                res.end(err);
+              });
+              res.on("finish", () => {
+                fs.unlink(xlsxPath, (err) => {
+                  if (err) throw err;
+                  console.log("XLSX file deleted");
+                });
               });
             });
           });
         });
-  
-        break;
-      case "ExportExcel":
-        let userID4 = req.session.userName;
-        GetProjects(poolData).then((projects) => {
-          JSON.stringify(projects);
-          ConvertJsonToExcel(projects, userID4).then((xlsxPath) => {
-            console.log(xlsxPath);
-            res.download(xlsxPath);
-          });
-        });
+    
         break;
       case "CreateTasks":
         let projectID2 = await GetProjectIdWithName(
