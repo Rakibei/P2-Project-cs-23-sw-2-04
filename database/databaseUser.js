@@ -160,3 +160,20 @@ export async function GetUsers(pool) {
       return false; // error occurred
     }
   }
+
+  export async function GetUserInfoWithID(pool, ID) {
+    try {
+      const [UserInfo] = await pool.query(
+        "SELECT * FROM users WHERE id = ?",
+        [ID]
+      );
+
+      if (UserInfo.length == 0) {
+        return false;  
+      }
+      return UserInfo[0];
+    } catch (error) {
+      console.log(error);
+      return false; // error occurred
+    }
+  }

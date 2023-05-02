@@ -1,6 +1,6 @@
 import fs from "fs";
 // The servers parameters are set up so that it works with express
-import http from "http";
+import http, { get } from "http";
 import { join } from "path";
 import express, { query } from "express";
 import moment from "moment";
@@ -31,6 +31,7 @@ import {
   GetUserLevel,
   SetUserLevel,
   GetUsernameWithID,
+  GetUserInfoWithID,
 } from "./database/databaseUser.js";
 import {
   CreateTasks,
@@ -41,6 +42,8 @@ import {
   DeleteAllTaskEntryForATimeSheet,
   GetTimeSheetId,
   GetFilledOutTimeSheetForUser,
+  GetAllSubmitStatus,
+  GetEmailfromSubmitstaus,
 } from "./database/databaseTimeSheet.js";
 
 import { CreatePDF } from "./pdf/pdfTest.js";
@@ -56,6 +59,7 @@ import session from "express-session";
 import { stringify } from "querystring";
 import { Console, log } from "console";
 import { autoMailer } from "./e-mail_notification/mail.js";
+import { isProxy } from "util/types";
 //import { autoMailer } from './e-mail_notification/mail.js';
 
 // The server is given the name app and calls from the express function
@@ -135,6 +139,10 @@ app.get("/sesionData", async (req, res) => {
   let userID = await GetUserIdWithName(poolData, req.session.userName);
   let userProjects = await GetUserProjects(poolData, userID);
   let UserLevel = await GetUserLevel(poolData, userID);
+  
+
+  
+
   const week = moment().isoWeek();
   const year = new Date().getFullYear();
     
@@ -182,10 +190,15 @@ app.get("/profileData", async (req, res) => {
   // spørg server om data
   let userID = await GetUserIdWithName(poolData, req.session.userName);
 
-  req.session.userID = userID;
-  req.session.eMail = "Sutminpik@lort.dk";
-  req.session.phone = 15322141;
+  let UserInfo = await GetUserInfoWithID(poolData,userID);
 
+
+
+  
+  req.session.userID = userID;
+  req.session.eMail = UserInfo.email;
+  req.session.phone = UserInfo.phone;
+  console.log(req.session);
   res.json(req.session);
 });
 
@@ -211,11 +224,11 @@ app.get("/profileData", async (req, res) => {
 
 app.use("/manager",IsManager, serveStatic(join(__dirname, "manager")));
 
-app.use("/ProjectManager",isAuthenticated, serveStatic(join(__dirname, "ProjectManager")));
+app.use("/ProjectManager",IsProjectManager, serveStatic(join(__dirname, "ProjectManager")));
 
 //Maneger skal kunne se brugere under sig og hvilke projekter der er under sig
 
-app.post("/ProjectManagerRequests", isAuthenticated, async (req, res) => {
+app.post("/ProjectManagerRequests", IsProjectManager, async (req, res) => {
   console.log(req.body);
 
 
@@ -243,7 +256,7 @@ switch (req.body.functionName) {
 
 
 
-app.get("/ProjectManagerRequests",isAuthenticated,async (req, res)=>{
+app.get("/ProjectManagerRequests",IsProjectManager,async (req, res)=>{
   console.log(req.query);
  switch (req.query.functionName) { 
 
@@ -490,8 +503,11 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
       console.log(task);
       res.status(201).send("Task: " + req.body.taskName + " Has now been created for " + req.body.projectToLink);
     case "AutoMailer":
+    //get a list of all not sumbited timesheets
+    //get all emiels for all users id
 
-    autoMailer(req.body.hours,req.body.mins,req.body.Weekday);
+
+    await autoMailer(req.body.hours,req.body.mins,req.body.Weekday);
 
     res.status(201).send("Email Notification time has been updated");
 
@@ -601,6 +617,15 @@ function IsAdmin(req, res, next) {
 
 function IsManager(req, res, next) {
   if (req.session.UserLevel.isManager) {
+    next();
+  } else {
+    // send error message
+    res.status(401).send("Acces not granted");
+  }
+}
+
+function IsProjectManager(req, res, next) {
+  if (req.session.UserLevel.isProjectManager) {
     next();
   } else {
     // send error message

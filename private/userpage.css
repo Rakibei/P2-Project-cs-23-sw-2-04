@@ -14,13 +14,14 @@ html {
     min-height: 100%;
 }
 /* her rediger jeg den div der holder hele tabellen*/
-#container{
-    
-    background-color: rgb(239, 239, 239);
-    align-items: center;
-    justify-content: center;
-    font-family: 'Nunito', sans-serif;
-    
+#timesheetcontainer{
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 10px;
+    margin: 0 auto;
+    width: 80%;
+    padding:50px;
+    background: rgb(238, 240, 230);
 }
 
 

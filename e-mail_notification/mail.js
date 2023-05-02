@@ -1,7 +1,11 @@
 import nodemailer from 'nodemailer'
-import cron from 'node-cron'
+//import cron, { schedule } from 'node-cron'
+import schedule from 'node-schedule';
+import {GetAllSubmitStatus, GetEmailfromSubmitstaus} from '../database/databaseTimeSheet.js';
+import {ConnectToDatabase} from '../database/databaseSetup.js';
+const poolData = ConnectToDatabase();
 
-export async function autoMailer(hours,mins, Weekday){
+export async function autoMailer(hours,mins,Weekday){
 
 //If you need to access the email account, the username is p2projectmail@gmail.com.
 //The password is "vorespassword".
@@ -17,10 +21,18 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-// E-mail content
-const mailOptions = {
+
+let mailOptions;
+
+
+schedule.scheduleJob(mins + ' ' + hours + ' * * '+ Weekday, async () => {
+let userIds = await GetAllSubmitStatus(poolData);
+let emails = await GetEmailfromSubmitstaus(poolData,userIds);
+console.log(emails);
+
+mailOptions = {
     from: 'p2projectmail@gmail.com',
-    bcc: 'tobias.k.w.a@gmail.com, Danielkp1234@hotmail.com',
+    bcc:  emails,
     subject: 'YoYo MonnerBoy!',
     text: 'Time for another monner!',
     html: 'Time for another monner! <img src="cid:monner"/>',
@@ -32,22 +44,16 @@ const mailOptions = {
     }
 
 
-
-// Here we define a time for the mail to go out, right now it is set to every minut
-// 0 mean at minut zero.
-// 10 mean at 10 hours.
-// * is an empty parameter.
-// 1 is the day of the week, i.e. Monday. this is a function of cron.
-cron.schedule(mins + ' ' + hours + ' * * '+ Weekday, () => { 
-    console.log("cron hours"+hours);
-    console.log("cron mins"+mins);  
-    console.log("cron Weekday"+ JSON.stringify(Weekday));  
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {    
-            console.log('Email sent: ' + info.response);
-        }
-    });
+console.log("cron hours"+hours);
+console.log("cron mins"+mins);  
+console.log("cron Weekday"+ JSON.stringify(Weekday));  
+transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+        console.log(error);
+    } else {    
+        console.log('Email sent: ' + info.response);
+    }
 });
+});
+
 };
