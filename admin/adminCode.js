@@ -146,6 +146,9 @@ function getUserLevelName(data) {
   if (data.isProjectManager) {
     TextResponse += "<p>The user is a ProjectManager</p> <br>"
   }
+  if (!data.isProjectManager && !data.isManager && !data.isAdmin) {
+    TextResponse += "<p>The user is only a user</p> <br>"
+  }
   console.log(TextResponse);
   return TextResponse
 }
