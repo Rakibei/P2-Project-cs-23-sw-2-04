@@ -95,11 +95,11 @@ export async function GetUserIdWithName(pool, username) {
 
 
 
-export async function GetUsernameWithID(pool, UserID) {
+export async function GetUsernameWithID(pool, userID) {
   try {
     const [username] = await pool.query(
       "SELECT * FROM users WHERE id = ?",
-      [UserID]
+      [userID]
     );
     return username[0].username;
   } catch (error) {

@@ -225,6 +225,8 @@ app.use("", managerRequests);
 app.use("/ProjectManager",IsProjectManager, serveStatic(join(__dirname, "ProjectManager")));
 app.use("",ProjectManagerRequests);
 
+
+
 // Get a list of all projects that the manager is linked too
 
 // let req.session.userName
