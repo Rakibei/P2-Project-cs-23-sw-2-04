@@ -62,3 +62,4 @@ document.getElementById("showProjectsButton").addEventListener("click", () => {
   .catch(error => console.error(error));
 });
 
+
