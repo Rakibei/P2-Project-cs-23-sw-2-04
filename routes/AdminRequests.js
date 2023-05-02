@@ -39,6 +39,7 @@ import {
 
 import { CreatePDF } from "../pdf/pdfTest.js";
 import { CreateXLSX } from "../xlsx/xlsxTest.js";
+import { autoMailer } from "../e-mail_notification/mail.js";
 
 
 import http from "http";
@@ -244,6 +245,15 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
         );
         console.log(task);
         res.status(201).send("Task: " + req.body.taskName + " Has now been created for " + req.body.projectToLink);
+
+
+      case "AutoMailer":
+      
+      autoMailer(req.body.hours,req.body.mins,req.body.Weekday);
+
+      res.status(201).send("Email Notification time has been updated");
+
+
       default:
         break;
     }
