@@ -1,3 +1,5 @@
+import fs from "fs";
+
 import {
   ConnectToDatabase,
   
@@ -36,7 +38,8 @@ import {
   ApproveTimeSheet
 } from "../database/databaseTimeSheet.js";
 
-
+import { CreatePDF } from "../pdf/pdfTest.js";
+import { CreateXLSX } from "../xlsx/xlsxTest.js";
 
 
 import http from "http";
@@ -167,24 +170,31 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
           );
           GetUserProjects(poolData, userID3).then((projects) => {
             console.log(projects);
-            GetProjectTasks(poolData, projects[0].id).then((TaskData) => {
-              console.log(TaskData);
-              CreatePDF(req.session.userName, projects, TaskData).then((pdfPath) => {
-                const stream = fs.createReadStream(pdfPath);
-                stream.on("open", () => {
-                  stream.pipe(res);
-                });
-                stream.on("error", (err) => {
-                  res.end(err);
-                });
-                res.on("finish", () => {
-                  fs.unlink(pdfPath, (err) => {
-                    if (err) throw err;
-                    console.log("PDF file deleted");
+
+
+            if (projects != false) {
+              
+              GetProjectTasks(poolData, projects[0].id).then((TaskData) => {
+                console.log(TaskData);
+                CreatePDF(req.session.userName, projects, TaskData).then((pdfPath) => {
+                  const stream = fs.createReadStream(pdfPath);
+                  stream.on("open", () => {
+                    stream.pipe(res);
+                  });
+                  stream.on("error", (err) => {
+                    res.end(err);
+                  });
+                  res.on("finish", () => {
+                    fs.unlink(pdfPath, (err) => {
+                      if (err) throw err;
+                      console.log("PDF file deleted");
+                    });
                   });
                 });
               });
-            });
+
+
+            }
           });
     
           break;
@@ -196,24 +206,28 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
           );
         GetUserProjects(poolData, userID4).then((projects) => {
           console.log(projects);
-          GetProjectTasks(poolData, projects[0].id).then((TaskData) => {
-            console.log(TaskData);
-            CreateXLSX(req.session.userName, projects, TaskData).then((xlsxPath) => {
-              const stream = fs.createReadStream(xlsxPath);
-              stream.on("open", () => {
-                stream.pipe(res);
-              });
-              stream.on("error", (err) => {
-                res.end(err);
-              });
-              res.on("finish", () => {
-                fs.unlink(xlsxPath, (err) => {
-                  if (err) throw err;
-                  console.log("XLSX file deleted");
+
+
+          if (projects != false) {
+            GetProjectTasks(poolData, projects[0].id).then((TaskData) => {
+              console.log(TaskData);
+              CreateXLSX(req.session.userName, projects, TaskData).then((xlsxPath) => {
+                const stream = fs.createReadStream(xlsxPath);
+                stream.on("open", () => {
+                  stream.pipe(res);
+                });
+                stream.on("error", (err) => {
+                  res.end(err);
+                });
+                res.on("finish", () => {
+                  fs.unlink(xlsxPath, (err) => {
+                    if (err) throw err;
+                    console.log("XLSX file deleted");
+                  });
                 });
               });
             });
-          });
+          }
         });
     
         break;
