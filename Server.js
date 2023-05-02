@@ -17,7 +17,6 @@ import {
   GetProjectTasks,
   CreateProject,
   GetUserProjects,
-  GetManagerProjects,
   CreateUserManagerlink,
   GetTaskNameAndProjectName,
 } from "./database/databaseProject.js";
@@ -41,7 +40,17 @@ import {
   DeleteAllTaskEntryForATimeSheet,
   GetTimeSheetId,
   GetFilledOutTimeSheetForUser,
+  ApproveTimeSheet
 } from "./database/databaseTimeSheet.js";
+
+import { 
+  IsAdmin,
+  IsManager,
+  isAuthenticated, 
+} from './routes/Authentication.js';
+
+
+
 
 import { CreatePDF } from "./pdf/pdfTest.js";
 import { ConvertJsonToExcel } from "./xlsx/xlsxTest.js";
@@ -55,8 +64,11 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 import session from "express-session";
 import { stringify } from "querystring";
 import { Console, log } from "console";
+import managerRequests from './routes/ManagerRequests.js';
+import adminRequests from './routes/AdminRequests.js';
+
 import { autoMailer } from "./e-mail_notification/mail.js";
-//import { autoMailer } from './e-mail_notification/mail.js';
+
 
 // The server is given the name app and calls from the express function
 const app = express();
@@ -190,26 +202,11 @@ app.get("/profileData", async (req, res) => {
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // handle the manager function
 
 app.use("/manager",IsManager, serveStatic(join(__dirname, "manager")));
+app.use("", managerRequests);
+
 
 app.use("/ProjectManager",isAuthenticated, serveStatic(join(__dirname, "ProjectManager")));
 
@@ -302,23 +299,13 @@ app.get("/managerRequests",IsManager, async (req, res)=>{
 
     case "GetProjectInfo":
 
-    console.log(req.query.TaskId);
-
-    // Get Task name and project name
-    let TasknameAndProjectName = await GetTaskNameAndProjectName(poolData,req.query.TaskId);
-
-    console.log(TasknameAndProjectName);
-
-    res.send(TasknameAndProjectName);
 
 
 
-    break;
-  
-    default:
-      break;
-  }
-})
+
+
+
+
 
 
 
@@ -343,165 +330,12 @@ app.get("/managerRequests",IsManager, async (req, res)=>{
 
 // This folder is only accelisble after the user is confirmed to be an admin
 app.use("/admin", IsAdmin, serveStatic(join(__dirname, "admin")));
+app.use("", adminRequests);
+
 
 // Handle the Admins requsts
-app.post("/adminRequests", isAuthenticated, async (req, res) => {
-  switch (req.body.functionName) {
-    case "CreateUser":
-      let CreateUserData = await CreateUser(
-        poolData,
-        req.body.createUsername,
-        req.body.createPassword,
-        0,
-        req.body.FullName,
-        req.body.PhoneNumber,
-        req.body.Email
-      );
-      console.log(CreateUserData);
-      res.status(201).send("User: " + req.body.createUsername + " has been created");
-      break;
-    case "CreateProject":
-      let CreateProjectData = await CreateProject(
-        poolData,
-        req.body.projectName,
-        req.body.projectStartDate,
-        req.body.projectEndDate,
-        req.body.projectHoursSpent
-      );
-      console.log(CreateProjectData);
-      res.status(201).send("Project: " + req.body.projectName + " has been created");
-      break;
-    case "seeUserLevel":
-      let userID1 = await GetUserIdWithName(poolData, req.body.seeUserLevel);
-      let seeUserLevelData = await GetUserLevel(poolData, userID1);
-      console.log(seeUserLevelData);
-      res.json(seeUserLevelData);
-      break;
-    case "setUserLevel":
-      let userID2 = await GetUserIdWithName(
-        poolData,
-        req.body.setUserLevelName
-      );
-      console.log(userID2);
-      let seeUserNewLevelData = await SetUserLevel(poolData,userID2,  req.body.setUserIsAdmin,req.body.SetUserIsManager);
-      console.log(seeUserNewLevelData);
-      let check1 = req.body.setUserIsAdmin; let check2 = req.body.SetUserIsManager;
-      res.status(201).send("User: " + req.body.setUserLevelName + " Is Now " + (check1 ? "Admin, " : "") + (check2 ? "Manager, " : ""));
-      break;
-      
-    case "CreateProjectManager":
-      let ProjectManagerID = await GetUserIdWithName(poolData, req.body.ProjectManager);
-      let projectID1 = await GetProjectIdWithName(
-        poolData,
-        req.body.ProjectForProjectManager
-      );
-      let newLinkData = await CreateUserProjectLink(
-        poolData,
-        ProjectManagerID,
-        projectID1,
-        1
-      );
-      console.log(newLinkData);
-      res.status(201).send("User: " + req.body.ProjectManager + " has been made project managaer for " + req.body.ProjectForProjectManager);
-
-      break;
 
 
-      case "LinkUserToManagerForm":
-
-      let ManagerID = await GetUserIdWithName(poolData, req.body.Manager);
-
-      if (ManagerID == false) {
-        res.status(400).send("User: "+ req.body.Manager + " does not exist");
-        break;
-      }
-      
-      let UserID5 = await GetUserIdWithName(poolData, req.body.User);
-
-      if (UserID5 == false) {
-        res.status(400).send("User: "+ req.body.User + " does not exist");
-        break;
-      }
-
-
-
-      console.log(ManagerID);
-
-      let usermanagerlink = await CreateUserManagerlink(poolData, UserID5, ManagerID );
-      
-      if (usermanagerlink == true) {
-        res.status(201).send("User: " + req.body.User + " is now under manager: " + req.body.Manager);
-      }else{
-        res.status(500).send("Error has occured and changes have not been made")
-      }
-
-      break;
-
-
-
-
-    case "ExportPDF":
-      let userID3 = await GetUserIdWithName(
-        poolData,
-        req.session.userName
-      );
-      GetUserProjects(poolData, userID3).then((projects) => {
-        console.log(projects);
-        CreatePDF(req.session.userName, projects).then((pdfPath) => {
-          const stream = fs.createReadStream(pdfPath);
-          stream.on("open", () => {
-            stream.pipe(res);
-          });
-          stream.on("error", (err) => {
-            res.end(err);
-          });
-          res.on("finish", () => {
-            fs.unlink(pdfPath, (err) => {
-              if (err) throw err;
-              console.log("PDF file deleted");
-            });
-          });
-        });
-      });
-
-      break;
-    case "ExportExcel":
-      let userID4 = req.session.userName;
-      GetProjects(poolData).then((projects) => {
-        JSON.stringify(projects);
-        ConvertJsonToExcel(projects, userID4).then((xlsxPath) => {
-          console.log(xlsxPath);
-          res.download(xlsxPath);
-        });
-      });
-      break;
-    case "CreateTasks":
-      let projectID2 = await GetProjectIdWithName(
-        poolData,
-        req.body.projectToLink
-      );
-      let task = await CreateTasks(
-        poolData,
-        projectID2,
-        req.body.taskName,
-        req.body.taskDescription,
-        req.body.estimate
-      );
-      console.log(task);
-      res.status(201).send("Task: " + req.body.taskName + " Has now been created for " + req.body.projectToLink);
-    case "AutoMailer":
-
-    autoMailer(req.body.hours,req.body.mins,req.body.Weekday);
-
-    res.status(201).send("Email Notification time has been updated");
-
-    break;
-    default:
-      break;
-  }
-
-  console.log(req.body);
-});
 
 
 
@@ -581,29 +415,3 @@ app.use((req, res) => {
   res.status(404).send("404 error page does not exist");
 });
 
-function isAuthenticated(req, res, next) {
-  if (req.session.isAuthenticated) {
-    next();
-  } else {
-    // send error message
-    res.status(401).send("Acces not granted");
-  }
-}
-
-function IsAdmin(req, res, next) {
-  if (req.session.UserLevel.isAdmin) {
-    next();
-  } else {
-    // send error message
-    res.status(401).send("Acces not granted");
-  }
-}
-
-function IsManager(req, res, next) {
-  if (req.session.UserLevel.isManager) {
-    next();
-  } else {
-    // send error message
-    res.status(401).send("Acces not granted");
-  }
-}

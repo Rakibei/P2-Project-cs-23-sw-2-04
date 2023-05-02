@@ -1,21 +1,23 @@
 
 export async function CreateProject(
-  pool,
-  name,
-  startDate,
-  endDate,
-  hoursSpent
-) {
-  try {
-    const values = [name, startDate, endDate, hoursSpent];
-    await pool.query(
-      "INSERT INTO projects (name, startDate, endDate, hoursSpent) VALUES (?, ?, ?, ?)",
-      values
-    );
-    return true; // success
-  } catch (error) {
-    console.log(error);
-    return false; // error occurred
+    pool,
+    name,
+    startDate,
+    endDate,
+    hoursSpent,
+    ProjectManagerID,
+  ) {
+    try {
+      const values = [name, startDate, endDate, hoursSpent,ProjectManagerID];
+      await pool.query(
+        "INSERT INTO projects (name, startDate, endDate, hoursSpent, projectmanagerid) VALUES (?, ?, ?, ?,?)",
+        values
+      );
+      return true; // success
+    } catch (error) {
+      console.log(error);
+      return false; // error occurred
+    }
   }
 }
 
@@ -107,18 +109,18 @@ export async function GetProjectTasks(pool, projectId) {
     console.log(error);
     return false; // error occurred
   }
-}
 
-export async function GetManagerProjects(pool, userId) {
-  try {
-    const [userProjectsLinks] = await pool.query(
-      "SELECT * FROM userprojectlinks WHERE userId = ? AND isManagerForProject = 1",
-      [userId]
-    );
-    const projectIds = userProjectsLinks.map((link) => link.projectId);
+  export async function GetManagerProjectsForUser(pool, userId) {
+    try {
+      const [projects] = await pool.query(
+        "SELECT * FROM projects WHERE projectmanagerid = ?",
+        [userId]
+      );
+      return projects;
+    } catch (error) {
+      console.log(error);
+      return false; // error occurred
 
-    if (projectIds.length === 0) {
-      return [];
     }
 
     const [projects] = await pool.query(
