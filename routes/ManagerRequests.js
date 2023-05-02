@@ -68,23 +68,6 @@ router.post("/managerRequests", IsManager, async (req, res) => {
   
   
   switch (req.body.functionName) {
-    case "LinkUsers":
-      let ProjectManagerID1 = await GetUserIdWithName(poolData, req.body.managerToLink);
-      let userID1 = await GetUserIdWithName(poolData, req.body.userToLink);
-      let projectID = await GetProjectIdWithName(
-        poolData,
-        req.body.projectToLink
-      );
-      let newLinkData = await CreateUserProjectManagerlink(
-        poolData,
-        userID1,
-        ProjectManagerID1,
-        projectID
-      );
-      console.log(newLinkData);
-      break;
-  
-  
     case "ApproveTimeSheet":
      
         let TimeSheetApprove = await ApproveTimeSheet(poolData,req.body.TimeSheetId);
@@ -94,6 +77,27 @@ router.post("/managerRequests", IsManager, async (req, res) => {
         res.send("TimeSheet Has been aprroved");
   
     break;
+
+    case "CreateProject":
+  
+    console.log(req.body);
+
+  let ProjectManagerID = await GetUserIdWithName(poolData,req.body.ProjectManager);
+
+  let CreateProjectData = await CreateProject(
+    poolData,
+    req.body.projectName,
+    req.body.projectStartDate,
+    req.body.projectEndDate,
+    req.body.projectHoursSpent,
+    ProjectManagerID,
+  );
+  console.log(CreateProjectData);
+  res.status(201).send("Project: " + req.body.projectName + " has been created");
+  break;
+
+
+
     default:
       break;
   }
