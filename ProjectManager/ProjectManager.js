@@ -1,25 +1,24 @@
-document.getElementById("createUserManagerLinkButton").addEventListener("click",()=>{
+document.getElementById("LinkUserToProjectkButton").addEventListener("click",()=>{
 
-    document.getElementById("createUserManagerLink").style.display = "block";
+    document.getElementById("LinkUserToProjectContainer").style.display = "block";
     document.getElementById("showProjects").style.display = "none"
   })
   
 document.getElementById("showProjectsButton").addEventListener("click",()=>{
 
-    document.getElementById("createUserManagerLink").style.display = "none";
+    document.getElementById("LinkUserToProjectContainer").style.display = "none";
     document.getElementById("showProjects").style.display = "block"
   })
 
 
 
   
-  document.querySelector('#createUserManagerLink').addEventListener('submit', (event) => {
+  document.querySelector('#LinkUserToProjectForm').addEventListener('submit', (event) => {
     event.preventDefault();
     const data = {
-      managerToLink: event.target.managerToLink.value,
       userToLink: event.target.userToLink.value,
       projectToLink: event.target.projectToLinkForUser.value,
-      function: "LinkUsers"
+      functionName: "LinkUserToProject"
     };
    fetch('/ProjectManagerRequests', {
     method: 'POST',

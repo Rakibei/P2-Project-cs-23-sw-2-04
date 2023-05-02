@@ -83,12 +83,11 @@ export async function CreateUserProjectLink(
 pool,
 userId,
 projectId,
-isManagerForProject
 ) {
 try {
-  const values = [userId, projectId, isManagerForProject];
+  const values = [userId, projectId];
   await pool.query(
-    "INSERT INTO userprojectlinks (userId, projectId, isManagerForProject) VALUES (?, ?, ?)",
+    "INSERT INTO userprojectlinks (userId, projectId) VALUES (?, ?)",
     values
   );
   return true; // success
@@ -126,24 +125,6 @@ export async function GetManagerProjectsForUser(pool, userId) {
 }
 
 
-export async function CreateUserProjectManagerlink(
-pool,
-userId,
-managerId,
-projectId
-) {
-try {
-  const values = [userId, managerId, projectId];
-  await pool.query(
-    "INSERT INTO userprojectmanagerlinks (userId, managerId, projectId) VALUES (?, ?, ?)",
-    values
-  );
-  return true; // success
-} catch (error) {
-  console.log(error);
-  return false; // error occurred
-}
-}
 
 
 export async function CreateUserManagerlink(

@@ -4,7 +4,6 @@ import {
   } from "../database/databaseSetup.js";
   import {
     GetProjects,
-    CreateUserProjectManagerlink,
     CreateUserProjectLink,
     GetProjectIdWithName,
     GetProjectTasks,
@@ -68,17 +67,15 @@ import {
   
   
   switch (req.body.functionName) {
-    case "LinkUsers":
-      let ProjectManagerID1 = await GetUserIdWithName(poolData, req.body.managerToLink);
+    case "LinkUserToProject":
       let userID1 = await GetUserIdWithName(poolData, req.body.userToLink);
       let projectID = await GetProjectIdWithName(
         poolData,
         req.body.projectToLink
       );
-      let newLinkData = await CreateUserProjectManagerlink(
+      let newLinkData = await CreateUserProjectLink(
         poolData,
         userID1,
-        ProjectManagerID1,
         projectID
       );
       console.log(newLinkData);
