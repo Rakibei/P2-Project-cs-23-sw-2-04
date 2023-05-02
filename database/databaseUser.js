@@ -126,6 +126,8 @@ export async function GetUserLevel(pool, userId) {
     if (userProjects.length != 0) {
       userLevel.isProjectManager = 1;
     }
+    let UserOnly = userLevel.isAdmin + userLevel.isManager + userLevel.isProjectManager;
+
     return userLevel; // success
   } catch (error) {
     console.log(error);
