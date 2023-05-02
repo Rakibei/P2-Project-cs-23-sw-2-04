@@ -92,12 +92,12 @@ function rendertimesheettable(projects, timeSheetData, week) {
 
   let timesheettable = `<body><div id="container">
   <table id="timesheet">
-    <caption>Time sheet for week ${week} for </caption>
+    <caption>Time sheet for week ${week} for ${userName} </caption>
     <thead>
       <tr>
         <th> Project </th><th>Task</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th>
       </tr>
-    </thead>'
+    </thead>
     <tbody>`;
 
     for(let i = 0; i < projects.length; i++) {

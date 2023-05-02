@@ -15,11 +15,15 @@ window.addEventListener('load', () => {
     
 
     if(UserLevel.isAdmin){
-    AdminButton= document.getElementById("AdminButton").style.display = "flex";
+    AdminButton = document.getElementById("AdminButton").style.display = "flex";
     }
     if(UserLevel.isManager){
-      AdminButton= document.getElementById("ManagerButton").style.display = "flex";
+    ManagerButton = document.getElementById("ManagerButton").style.display = "flex";
     }
+    if(UserLevel.isProjectManager){
+    ProjectManagerButton = document.getElementById("ProjectManagerButton").style.display = "flex";  
+    }
+
   });
 
 
@@ -32,7 +36,6 @@ fetch('/profileData')
 
 
 });
-
 
 
 document.getElementById("logoutButton").addEventListener("click",() => {

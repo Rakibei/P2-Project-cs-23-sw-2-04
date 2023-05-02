@@ -1,5 +1,5 @@
 // The servers parameters are set up so that it works with express
-import http from "http";
+import http, { get } from "http";
 import { join } from "path";
 import express, { query } from "express";
 import moment from "moment";
@@ -28,6 +28,7 @@ import {
   GetUserLevel,
   SetUserLevel,
   GetUsernameWithID,
+  GetUserInfoWithID,
 } from "./database/databaseUser.js";
 import {
   CreateTasks,
@@ -38,7 +39,9 @@ import {
   DeleteAllTaskEntryForATimeSheet,
   GetTimeSheetId,
   GetFilledOutTimeSheetForUser,
-  ApproveTimeSheet
+  ApproveTimeSheet,
+  GetAllSubmitStatus,
+  GetEmailfromSubmitstaus,
 } from "./database/databaseTimeSheet.js";
 
 import { 
@@ -67,7 +70,8 @@ import adminRequests from './routes/AdminRequests.js';
 import ProjectManagerRequests from './routes/ProjectManagerRequests.js'
 
 import { autoMailer } from "./e-mail_notification/mail.js";
-
+import { isProxy } from "util/types";
+//import { autoMailer } from './e-mail_notification/mail.js';
 
 // The server is given the name app and calls from the express function
 const app = express();
@@ -146,6 +150,10 @@ app.get("/sesionData", async (req, res) => {
   let userID = await GetUserIdWithName(poolData, req.session.userName);
   let userProjects = await GetUserProjects(poolData, userID);
   let UserLevel = await GetUserLevel(poolData, userID);
+  
+
+  
+
   const week = moment().isoWeek();
   const year = new Date().getFullYear();
 
@@ -193,10 +201,15 @@ app.get("/profileData", async (req, res) => {
   // spørg server om data
   let userID = await GetUserIdWithName(poolData, req.session.userName);
 
-  req.session.userID = userID;
-  req.session.eMail = "Sutminpik@lort.dk";
-  req.session.phone = 15322141;
+  let UserInfo = await GetUserInfoWithID(poolData,userID);
 
+
+
+  
+  req.session.userID = userID;
+  req.session.eMail = UserInfo.email;
+  req.session.phone = UserInfo.phone;
+  console.log(req.session);
   res.json(req.session);
 });
 
@@ -208,10 +221,137 @@ app.use("/manager",IsManager, serveStatic(join(__dirname, "manager")));
 app.use("", managerRequests);
 
 
-app.use("/ProjectManager",isAuthenticated, serveStatic(join(__dirname, "ProjectManager")));
-app.use("", ProjectManagerRequests);
+app.use("/ProjectManager",IsProjectManager, serveStatic(join(__dirname, "ProjectManager")));
+
+//Maneger skal kunne se brugere under sig og hvilke projekter der er under sig
+
+app.post("/ProjectManagerRequests", IsProjectManager, async (req, res) => {
+  console.log(req.body);
 
 
+switch (req.body.functionName) {
+  case "LinkUsers":
+    let ProjectManagerID1 = await GetUserIdWithName(poolData, req.body.managerToLink);
+    let userID1 = await GetUserIdWithName(poolData, req.body.userToLink);
+    let projectID = await GetProjectIdWithName(
+      poolData,
+      req.body.projectToLink
+    );
+    let newLinkData = await CreateUserProjectManagerlink(
+      poolData,
+      userID1,
+      ProjectManagerID1,
+      projectID
+    );
+    console.log(newLinkData);
+    break;
+  default:
+    break;
+}
+
+});
+
+
+
+app.get("/ProjectManagerRequests",IsProjectManager,async (req, res)=>{
+  console.log(req.query);
+ switch (req.query.functionName) { 
+
+  case "GetProjectManagerProjects":
+      let ProjectManagerID2 = await GetUserIdWithName(poolData, req.session.userName);
+      let managerProjects = await GetManagerProjects(poolData, ProjectManagerID2);
+      console.log(managerProjects);
+      res.send(managerProjects);
+      break; 
+
+      default:
+        break;
+ }
+})
+
+
+
+
+
+
+
+
+app.get("/managerRequests",IsManager, async (req, res)=>{
+   console.log(req.query);
+  switch (req.query.functionName) {
+
+    case "GetProjectManagerProjects":
+      let ProjectManagerID2 = await GetUserIdWithName(poolData, req.session.userName);
+      let managerProjects = await GetManagerProjects(poolData, ProjectManagerID2);
+      console.log(managerProjects);
+      res.send(managerProjects);
+      break; 
+
+    case "GetUsersUnderManager":
+      let ManagerID3 = await GetUserIdWithName(poolData, req.session.userName);
+      let Users = await GetUsersUnderManager(poolData,ManagerID3);
+      console.log(Users);
+      res.send(Users);
+    break;
+
+    case "GetUserInfo":
+
+    let usernames = [];
+    let users = req.query.users.split(","); // split the string by comma
+    console.log(users[0]+users.length); // should log 82
+    for (let i = 0; i < users.length; i++) {
+      usernames[i] = await GetUsernameWithID(poolData,users[i]);
+    }
+    res.send(usernames)
+    break;
+    
+    case "GetTimeSheet":
+    let TimeSheetData = await GetFilledOutTimeSheetForUser(poolData,req.query.UserID,moment().isoWeek(),moment().year());
+    res.send(TimeSheetData);
+    break;
+
+    case "GetProjectInfo":
+
+    console.log(req.query.TaskId);
+
+    // Get Task name and project name
+    let TasknameAndProjectName = await GetTaskNameAndProjectName(poolData,req.query.TaskId);
+
+    console.log(TasknameAndProjectName);
+
+    res.send(TasknameAndProjectName);
+
+
+
+    break;
+  
+    default:
+      break;
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Get a list of all projects that the manager is linked too
+
+// let req.session.userName
+
+// handle Admin functions
+
+// This folder is only accelisble after the user is confirmed to be an admin
 app.use("/admin", IsAdmin, serveStatic(join(__dirname, "admin")));
 app.use("", adminRequests);
 
@@ -219,6 +359,89 @@ app.use("", adminRequests);
 
 // 
 
+
+
+
+      console.log(ManagerID);
+
+      let usermanagerlink = await CreateUserManagerlink(poolData, UserID5, ManagerID );
+      
+      if (usermanagerlink == true) {
+        res.status(201).send("User: " + req.body.User + " is now under manager: " + req.body.Manager);
+      }else{
+        res.status(500).send("Error has occured and changes have not been made")
+      }
+
+      break;
+
+
+
+
+    case "ExportPDF":
+      let userID3 = await GetUserIdWithName(
+        poolData,
+        req.session.userName
+      );
+      GetUserProjects(poolData, userID3).then((projects) => {
+        console.log(projects);
+        CreatePDF(req.session.userName, projects).then((pdfPath) => {
+          const stream = fs.createReadStream(pdfPath);
+          stream.on("open", () => {
+            stream.pipe(res);
+          });
+          stream.on("error", (err) => {
+            res.end(err);
+          });
+          res.on("finish", () => {
+            fs.unlink(pdfPath, (err) => {
+              if (err) throw err;
+              console.log("PDF file deleted");
+            });
+          });
+        });
+      });
+
+      break;
+    case "ExportExcel":
+      let userID4 = req.session.userName;
+      GetProjects(poolData).then((projects) => {
+        JSON.stringify(projects);
+        ConvertJsonToExcel(projects, userID4).then((xlsxPath) => {
+          console.log(xlsxPath);
+          res.download(xlsxPath);
+        });
+      });
+      break;
+    case "CreateTasks":
+      let projectID2 = await GetProjectIdWithName(
+        poolData,
+        req.body.projectToLink
+      );
+      let task = await CreateTasks(
+        poolData,
+        projectID2,
+        req.body.taskName,
+        req.body.taskDescription,
+        req.body.estimate
+      );
+      console.log(task);
+      res.status(201).send("Task: " + req.body.taskName + " Has now been created for " + req.body.projectToLink);
+    case "AutoMailer":
+    //get a list of all not sumbited timesheets
+    //get all emiels for all users id
+
+
+    await autoMailer(req.body.hours,req.body.mins,req.body.Weekday);
+
+    res.status(201).send("Email Notification time has been updated");
+
+    break;
+    default:
+      break;
+  }
+
+  console.log(req.body);
+});
 
 
 
@@ -299,3 +522,21 @@ app.use((req, res) => {
 });
   
 
+
+function IsManager(req, res, next) {
+  if (req.session.UserLevel.isManager) {
+    next();
+  } else {
+    // send error message
+    res.status(401).send("Acces not granted");
+  }
+}
+
+function IsProjectManager(req, res, next) {
+  if (req.session.UserLevel.isProjectManager) {
+    next();
+  } else {
+    // send error message
+    res.status(401).send("Acces not granted");
+  }
+}
