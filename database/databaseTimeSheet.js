@@ -184,3 +184,27 @@ function sortTaskRows(tasks) {
   })
   return sortedTasks;
 }
+
+export async function ApproveTimeSheet(pool, TimeSheetId) {
+  try {
+      const [insertResult] = await pool.query(
+          'UPDATE timesheet SET submitstatus = 1 WHERE id = ?',
+          [TimeSheetId]
+      );
+      return insertResult;
+  } catch (error) {
+      console.log(error);
+      return false; // error occurred 
+  }
+  }
+  export async function GetTimeSheetSubmit(pool, TimeSheetID) {
+    try {
+        const [SubmitStatus] = await pool.query('SELECT submitstatus FROM timesheet WHERE id = ?', [TimeSheetID]);
+        
+        return SubmitStatus[0];
+    } catch (error) {
+        console.log(error);
+        return false; // error occurred
+    }
+  }
+
