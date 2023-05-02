@@ -208,3 +208,42 @@ export async function ApproveTimeSheet(pool, TimeSheetId) {
     }
   }
 
+
+
+export async function GetAllSubmitStatus(pool) {
+  try {
+    const [submitStatusForUsers] = await pool.query(
+      `SELECT * FROM timeSheet WHERE submitstatus = 0`
+    );
+    const userIds = submitStatusForUsers.map(user => user.userId);
+    const filteredUserIds = userIds.filter(function(item, pos){
+    return userIds.indexOf(item)==pos;
+   
+    })
+    console.log(filteredUserIds);
+    return filteredUserIds
+  } catch (error) {
+    console.log(error);
+    return false; // error occurred 
+  }
+  }
+
+  export async function GetEmailfromSubmitstaus(pool, userIds) {
+    try {
+      const [users] = await pool.query(
+        `SELECT * FROM users WHERE id IN (?)`,
+        [userIds]
+      );
+      const emails = users.map(user => user.email);
+      return emails
+    } catch (error) {
+      console.log(error);
+      return false; // error occurred 
+    }
+    }
+
+
+
+
+
+  

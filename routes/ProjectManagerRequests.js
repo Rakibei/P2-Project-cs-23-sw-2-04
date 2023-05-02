@@ -4,7 +4,6 @@ import {
   } from "../database/databaseSetup.js";
   import {
     GetProjects,
-    CreateUserProjectManagerlink,
     CreateUserProjectLink,
     GetProjectIdWithName,
     GetProjectTasks,
@@ -48,7 +47,7 @@ import {
   import { join } from "path";
   import express, { query } from "express";
   import moment from "moment";
-  import { isAuthenticated } from './Authentication.js';
+  import { IsProjectManager } from './Authentication.js';
   const { json } = express;
   const { urlencoded } = express;
   const { static: serveStatic } = express;
@@ -63,22 +62,20 @@ import {
   const router = express.Router();
   
 
-  router.post("/ProjectManagerRequests", isAuthenticated, async (req, res) => {
+  router.post("/ProjectManagerRequests", IsProjectManager, async (req, res) => {
     console.log(req.body);
   
   
   switch (req.body.functionName) {
-    case "LinkUsers":
-      let ProjectManagerID1 = await GetUserIdWithName(poolData, req.body.managerToLink);
+    case "LinkUserToProject":
       let userID1 = await GetUserIdWithName(poolData, req.body.userToLink);
       let projectID = await GetProjectIdWithName(
         poolData,
         req.body.projectToLink
       );
-      let newLinkData = await CreateUserProjectManagerlink(
+      let newLinkData = await CreateUserProjectLink(
         poolData,
         userID1,
-        ProjectManagerID1,
         projectID
       );
       console.log(newLinkData);
@@ -91,7 +88,7 @@ import {
   
   
   
-  router.get("/ProjectManagerRequests",isAuthenticated,async (req, res)=>{
+  router.get("/ProjectManagerRequests",IsProjectManager,async (req, res)=>{
     console.log(req.query);
    switch (req.query.functionName) { 
   

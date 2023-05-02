@@ -30,4 +30,6 @@ yarn-error.log*
 .idea/
 .vscode/
 # Ignore env files
-.env
+.env/
+.package.json
+.package-lock.json

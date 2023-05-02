@@ -6,7 +6,6 @@ import {
 } from "../database/databaseSetup.js";
 import {
   GetProjects,
-  CreateUserProjectManagerlink,
   CreateUserProjectLink,
   GetProjectIdWithName,
   GetProjectTasks,
@@ -83,7 +82,7 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
   
           console.log(req.body);
   
-        let ProjectManagerID5 = await GetUserIdWithName(poolData,req.body.projectmanager);
+        let ProjectManagerID5 = await GetUserIdWithName(poolData,req.body.ProjectManager);
   
         let CreateProjectData = await CreateProject(
           poolData,
