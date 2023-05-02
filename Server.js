@@ -48,6 +48,7 @@ import {
   IsAdmin,
   IsManager,
   isAuthenticated, 
+  IsProjectManager,
 } from './routes/Authentication.js';
 
 
@@ -361,90 +362,6 @@ app.use("", adminRequests);
 
 
 
-
-      console.log(ManagerID);
-
-      let usermanagerlink = await CreateUserManagerlink(poolData, UserID5, ManagerID );
-      
-      if (usermanagerlink == true) {
-        res.status(201).send("User: " + req.body.User + " is now under manager: " + req.body.Manager);
-      }else{
-        res.status(500).send("Error has occured and changes have not been made")
-      }
-
-      break;
-
-
-
-
-    case "ExportPDF":
-      let userID3 = await GetUserIdWithName(
-        poolData,
-        req.session.userName
-      );
-      GetUserProjects(poolData, userID3).then((projects) => {
-        console.log(projects);
-        CreatePDF(req.session.userName, projects).then((pdfPath) => {
-          const stream = fs.createReadStream(pdfPath);
-          stream.on("open", () => {
-            stream.pipe(res);
-          });
-          stream.on("error", (err) => {
-            res.end(err);
-          });
-          res.on("finish", () => {
-            fs.unlink(pdfPath, (err) => {
-              if (err) throw err;
-              console.log("PDF file deleted");
-            });
-          });
-        });
-      });
-
-      break;
-    case "ExportExcel":
-      let userID4 = req.session.userName;
-      GetProjects(poolData).then((projects) => {
-        JSON.stringify(projects);
-        ConvertJsonToExcel(projects, userID4).then((xlsxPath) => {
-          console.log(xlsxPath);
-          res.download(xlsxPath);
-        });
-      });
-      break;
-    case "CreateTasks":
-      let projectID2 = await GetProjectIdWithName(
-        poolData,
-        req.body.projectToLink
-      );
-      let task = await CreateTasks(
-        poolData,
-        projectID2,
-        req.body.taskName,
-        req.body.taskDescription,
-        req.body.estimate
-      );
-      console.log(task);
-      res.status(201).send("Task: " + req.body.taskName + " Has now been created for " + req.body.projectToLink);
-    case "AutoMailer":
-    //get a list of all not sumbited timesheets
-    //get all emiels for all users id
-
-
-    await autoMailer(req.body.hours,req.body.mins,req.body.Weekday);
-
-    res.status(201).send("Email Notification time has been updated");
-
-    break;
-    default:
-      break;
-  }
-
-  console.log(req.body);
-});
-
-
-
 // Handle timesheet submition
 app.post("/submitTime", isAuthenticated, async (req, res) => {
   const userId = req.body.userId;
@@ -521,22 +438,3 @@ app.use((req, res) => {
   res.status(404).send("404 error page does not exist");
 });
   
-
-
-function IsManager(req, res, next) {
-  if (req.session.UserLevel.isManager) {
-    next();
-  } else {
-    // send error message
-    res.status(401).send("Acces not granted");
-  }
-}
-
-function IsProjectManager(req, res, next) {
-  if (req.session.UserLevel.isProjectManager) {
-    next();
-  } else {
-    // send error message
-    res.status(401).send("Acces not granted");
-  }
-}

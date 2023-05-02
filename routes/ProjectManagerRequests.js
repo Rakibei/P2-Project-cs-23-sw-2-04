@@ -47,7 +47,7 @@ import {
   import { join } from "path";
   import express, { query } from "express";
   import moment from "moment";
-  import { isAuthenticated } from './Authentication.js';
+  import { IsProjectManager } from './Authentication.js';
   const { json } = express;
   const { urlencoded } = express;
   const { static: serveStatic } = express;
@@ -62,7 +62,7 @@ import {
   const router = express.Router();
   
 
-  router.post("/ProjectManagerRequests", isAuthenticated, async (req, res) => {
+  router.post("/ProjectManagerRequests", IsProjectManager, async (req, res) => {
     console.log(req.body);
   
   
@@ -88,7 +88,7 @@ import {
   
   
   
-  router.get("/ProjectManagerRequests",isAuthenticated,async (req, res)=>{
+  router.get("/ProjectManagerRequests",IsProjectManager,async (req, res)=>{
     console.log(req.query);
    switch (req.query.functionName) { 
   
