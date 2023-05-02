@@ -66,6 +66,7 @@ import { stringify } from "querystring";
 import { Console, log } from "console";
 import managerRequests from './routes/ManagerRequests.js';
 import adminRequests from './routes/AdminRequests.js';
+import ProjectManagerRequests from './routes/ProjectManagerRequests.js'
 
 import { autoMailer } from "./e-mail_notification/mail.js";
 
@@ -209,116 +210,7 @@ app.use("", managerRequests);
 
 
 app.use("/ProjectManager",isAuthenticated, serveStatic(join(__dirname, "ProjectManager")));
-
-//Maneger skal kunne se brugere under sig og hvilke projekter der er under sig
-
-app.post("/ProjectManagerRequests", isAuthenticated, async (req, res) => {
-  console.log(req.body);
-
-
-switch (req.body.functionName) {
-  case "LinkUsers":
-    let ProjectManagerID1 = await GetUserIdWithName(poolData, req.body.managerToLink);
-    let userID1 = await GetUserIdWithName(poolData, req.body.userToLink);
-    let projectID = await GetProjectIdWithName(
-      poolData,
-      req.body.projectToLink
-    );
-    let newLinkData = await CreateUserProjectManagerlink(
-      poolData,
-      userID1,
-      ProjectManagerID1,
-      projectID
-    );
-    console.log(newLinkData);
-    break;
-  default:
-    break;
-}
-
-});
-
-
-
-app.get("/ProjectManagerRequests",isAuthenticated,async (req, res)=>{
-  console.log(req.query);
- switch (req.query.functionName) { 
-
-  case "GetProjectManagerProjects":
-      let ProjectManagerID2 = await GetUserIdWithName(poolData, req.session.userName);
-      let managerProjects = await GetManagerProjects(poolData, ProjectManagerID2);
-      console.log(managerProjects);
-      res.send(managerProjects);
-      break; 
-
-      default:
-        break;
- }
-})
-
-
-
-
-
-
-
-
-app.get("/managerRequests",IsManager, async (req, res)=>{
-   console.log(req.query);
-  switch (req.query.functionName) {
-
-    case "GetProjectManagerProjects":
-      let ProjectManagerID2 = await GetUserIdWithName(poolData, req.session.userName);
-      let managerProjects = await GetManagerProjects(poolData, ProjectManagerID2);
-      console.log(managerProjects);
-      res.send(managerProjects);
-      break; 
-
-    case "GetUsersUnderManager":
-      let ManagerID3 = await GetUserIdWithName(poolData, req.session.userName);
-      let Users = await GetUsersUnderManager(poolData,ManagerID3);
-      console.log(Users);
-      res.send(Users);
-    break;
-
-    case "GetUserInfo":
-
-    let usernames = [];
-    let users = req.query.users.split(","); // split the string by comma
-    console.log(users[0]+users.length); // should log 82
-    for (let i = 0; i < users.length; i++) {
-      usernames[i] = await GetUsernameWithID(poolData,users[i]);
-    }
-    res.send(usernames)
-    break;
-    
-    case "GetTimeSheet":
-    let TimeSheetData = await GetFilledOutTimeSheetForUser(poolData,req.query.UserID,moment().isoWeek(),moment().year());
-    res.send(TimeSheetData);
-    break;
-
-    case "GetProjectInfo":
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+app.use("", ProjectManagerRequests);
 
 
 
@@ -414,4 +306,5 @@ async function PrepareStaticTaskEntry(poolData, taskId, timeSheetId, hours) {
 app.use((req, res) => {
   res.status(404).send("404 error page does not exist");
 });
+  
 

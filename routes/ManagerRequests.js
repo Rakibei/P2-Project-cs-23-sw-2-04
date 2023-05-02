@@ -171,5 +171,4 @@ router.post("/managerRequests", IsManager, async (req, res) => {
     }
   })
 
-
-  export default router;
+export default router;

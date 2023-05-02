@@ -131,13 +131,9 @@ export async function GetUsernameWithID(pool, UserID) {
       console.log(error);
       return false; // error occurred
 
-    }
-    return userLevel; // success
-  } catch (error) {
-    console.log(error);
-    return false; // error occurred
-  }
-}
+    }   
+  } 
+
 
 
 
