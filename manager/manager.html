@@ -14,9 +14,31 @@
     <div class="welcome-title"><span>Welcome Manager</span></div>
     
     <div class="menu">
-        <button id="ManagerButton"><a href="./Aprovetime.html">Manager</a></button>
-        <br><br>
+    <button id="projectButton">Create project</button>   
+    <button id="ManagerButton"><a href="./Aprovetime.html">Approve TimeSheets</a></button>
     </div>
+
+
+    <div id="projectCreation">
+        <form id="projectCreationForm">
+            <label for="projectName">Project name</label>
+            <input type="text" id="projectName" name="projectName" placeholder="ProjectName" required> <br><br>
+
+            <label for="projectStartDate">Start Date</label>
+            <input type="date" id="projectStartDate" name="projectStartDate"  required> <br><br>
+
+            <label for="projectEndDate">End Date</label>
+            <input type="date" id="projectEndDate" name="projectEndDate"  required> <br><br>
+
+            <label for="ProjectManager">Manager</label>
+            <input type="text" id="ProjectManager" name="ProjectManager" placeholder="ProjectManager" required> <br><br>
+
+            <label for="projectHoursSpent">Total Hours</label>
+            <input type="number" id="projectHoursSpent" name="projectHoursSpent" placeholder="0" required> <br><br>
+
+            <input type="submit" class="sbmt" value="Create">
+
+        </form>
 
 
 
