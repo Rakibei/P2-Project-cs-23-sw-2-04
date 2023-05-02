@@ -246,16 +246,16 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
         console.log(task);
         res.status(201).send("Task: " + req.body.taskName + " Has now been created for " + req.body.projectToLink);
 
-
+      break;
       case "AutoMailer":
       
       autoMailer(req.body.hours,req.body.mins,req.body.Weekday);
 
       res.status(201).send("Email Notification time has been updated");
 
-
+      break;
       default:
-        break;
+      break;
     }
   
     console.log(req.body);
