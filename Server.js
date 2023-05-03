@@ -41,6 +41,7 @@ import {
   DeleteAllTaskEntryForATimeSheet,
   GetTimeSheetId,
   GetFilledOutTimeSheetForUser,
+  GetFilledOutTimeSheetsForUser,
 } from "./database/databaseTimeSheet.js";
 
 import { CreatePDF } from "./pdf/pdfTest.js";
@@ -143,6 +144,7 @@ app.get("/sesionData", async (req, res) => {
       //console.log(timeSheetForUser)
       timeSheetForUser.week = week;
       timeSheetForUser.year = year;
+      console.log(timeSheetForUser);
     req.session.timeSheetForUser = timeSheetForUser;
   }
   
@@ -165,6 +167,18 @@ app.get("/sesionData", async (req, res) => {
   
 });
 
+app.get("/allTimesheetsForUser", async (req, res) =>  {
+  const userID = await GetUserIdWithName(poolData, req.session.userName);
+
+  const timeSheetsForUser = await GetFilledOutTimeSheetsForUser(poolData, userID);
+  console.log(timeSheetsForUser);
+  if(timeSheetsForUser.length > 0) {
+    req.session.timeSheetsForUser = timeSheetsForUser;
+  }
+  req.session.save();
+  res.json(req.session);
+  console.log("DatE Sent");
+});
 
 app.post("/userRequests", async (req, res) => {
   switch (req.body.functionName) {
@@ -527,10 +541,10 @@ app.post("/adminRequests", isAuthenticated, async (req, res) => {
 
 // Handle timesheet submition
 app.post("/submitTime", isAuthenticated, async (req, res) => {
-  const userId = req.body.userId;
+  const userID = req.body.userID;
   const week = req.body.week;
   const year = req.body.year;
-  const timeSheetId = await makeNewTimeSheet(poolData, userId, week, year);
+  const timeSheetId = await makeNewTimeSheet(poolData, userID, week, year);
 
   const meeting = req.body.meeting;
   await PrepareStaticTaskEntry(poolData, 1, timeSheetId, meeting.days);
@@ -547,21 +561,21 @@ app.post("/submitTime", isAuthenticated, async (req, res) => {
   }
 });
 
-async function makeNewTimeSheet(poolData, userId, week, year) {
+async function makeNewTimeSheet(poolData, userID, week, year) {
   const isThereATimeSheet = await IsTimeSheetFound(
     poolData,
-    userId,
+    userID,
     week,
     year
   );
   let timeSheetId;
   if (isThereATimeSheet) {
     console.log("Update sheet");
-    timeSheetId = await GetTimeSheetId(poolData, userId, week, year);
+    timeSheetId = await GetTimeSheetId(poolData, userID, week, year);
     await DeleteAllTaskEntryForATimeSheet(poolData, timeSheetId);
   } else {
     console.log("Make new sheet");
-    timeSheetId = await CreateTimeSheet(poolData, userId, week, year);
+    timeSheetId = await CreateTimeSheet(poolData, userID, week, year);
   }
   return timeSheetId;
 }

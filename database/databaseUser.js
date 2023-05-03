@@ -120,6 +120,7 @@ export async function GetUsers(pool) {
         isManager: 0,
         isProjectManager: 0,
       };
+      console.log(user);
       userLevel.isAdmin	= user[0].isAdmin;
       userLevel.isManager = user[0].isManager;
       if(GetManagerProjects(pool, userId).length != 0) {

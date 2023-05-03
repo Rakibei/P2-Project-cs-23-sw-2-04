@@ -220,6 +220,7 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
 
   document.querySelector('#CreateProjectManagerForm').addEventListener('submit', (event) => {
     event.preventDefault();
+    console.log(event.target.ProjectManager);
     const data = {
       CreateProjectManager: event.target.ProjectManager.value,
       ProjectForProjectManager: event.target.ProjectForProjectManager.value,
