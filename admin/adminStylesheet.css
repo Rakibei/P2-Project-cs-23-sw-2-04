@@ -30,6 +30,7 @@ html {
 
 
 /* her justere jeg knapperne i navigation bar*/
+
 #userButton, #projectButton,#userLevelButton, #ProjectManagerButton,#exportButtonXlsx,#exportButton,#CreateTaskButton,#EmailNotificationButton,#LinkUserToManagerContainer,#LinkUserToManagerButton{
     cursor: pointer;
     font-weight: 600;
@@ -62,6 +63,7 @@ form,.menu, .pdf{
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 }
+
 #ProjectManagerButton:hover {
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);}
@@ -101,7 +103,7 @@ form,.menu, .pdf{
 }
 
 /* her justere jeg form felterne */
-input[type=text],input[type=number],input[type=date],input[type=time],input[type=checkbox] {
+input[type=text],input[type=number],input[type=date],input[type=time],input[type=checkbox],input[type=password] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -151,9 +153,6 @@ input{
     display: none;
 }
 
-#CreateProjectManagerContainer{
-    display: none;
-}
 #createTaskForProject{
     display: none;
 }

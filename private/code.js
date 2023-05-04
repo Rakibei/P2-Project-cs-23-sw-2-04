@@ -56,7 +56,6 @@ function CreateTimeSheetTable(projects, timeSheetForUser, week, userName) {
   }
 }
 
-
 //a function the will delete the specific row where the corresponding "delete row button" is pressed
 function DeleteRow() {
   //event.target is the element that is clicked

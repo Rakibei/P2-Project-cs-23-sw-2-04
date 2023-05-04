@@ -40,7 +40,7 @@ window.addEventListener("load", () => {
             
             Button.textContent = UserData[i];
             
-            Button.onclick = () => ShowTimeSheet(data[i]);
+            Button.onclick = () => ShowTimeSheet(data[i],UserData[i]);
 
 
 
@@ -67,123 +67,178 @@ window.addEventListener("load", () => {
       }
 
 
-    async function ShowTimeSheet (UserID){
+    async function ShowTimeSheet (UserID, UserName){
 
-        let CurrentTimeSheet = await GetTimeSheet(UserID);
-      if (CurrentTimeSheet == false) {
-        alert("User Has not submited timesheet");
+      let CurrentTimeSheet = await GetTimeSheet(UserID);
+      console.log(CurrentTimeSheet);
+      let TimeSheetHolder = document.getElementById("TimeSheetContainer");
+
+
+      
+
+
+      if (CurrentTimeSheet == false ||  Object.keys(CurrentTimeSheet).length == 0 ) {
+        TimeSheetHolder.innerHTML="";
+        alert("No timesheets for user");
         return;
       }
 
-        console.log(CurrentTimeSheet);
-        let TimeSheetHolder = document.getElementById("CurrentTimeSheet");
-        let CurrentPath;
-        let k = 0;
+       
+
+        TimeSheetHolder.innerHTML="";
+
+        let CurrentUser = document.createElement("h2");
+
+        CurrentUser.textContent = "TimeSheet data for " + UserName;
+
+        TimeSheetHolder.appendChild(CurrentUser);
+
+      let CurrentPath;
+      let k = 0;
         
-
-      const TopInfo = ["Project","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-      for (let Info of TopInfo) {
-      const td = document.createElement("td");
-      const text = document.createTextNode(Info);
-      td.appendChild(text);
-      TimeSheetHolder.appendChild(td);
-}
+for (let u = 0; u < Object.keys(CurrentTimeSheet).length; u++) {
 
 
 
-        for (let i = 0; i < Object.keys(CurrentTimeSheet.tasks).length + Object.keys(CurrentTimeSheet.tasks.projects).length - 1; i++) {
-          switch (i) {
-            case 0:
-              CurrentPath = CurrentTimeSheet.tasks.absance;
-              break;
-            case 1:
-              CurrentPath = CurrentTimeSheet.tasks.meeting;
-              break;
-            case 2:
-              CurrentPath = CurrentTimeSheet.tasks.vaction;
-              break;
-            case 3:
-              CurrentPath = CurrentTimeSheet.tasks.projects[k];
-              break;
-            default:
-              CurrentPath = CurrentTimeSheet.tasks.projects[++k];
-              break;
-          }
 
-          let Row = document.createElement("tr"); 
-          let Cell0 = document.createElement("td"); 
-          let Cell1 = document.createElement("td");
-          let Cell2 = document.createElement("td"); 
-          let Cell3 = document.createElement("td"); 
-          let Cell4 = document.createElement("td"); 
-          let Cell5 = document.createElement("td"); 
-          let Cell6 = document.createElement("td"); 
-          let Cell7 = document.createElement("td"); 
+        let CurrentTimeSheetInContainer = document.createElement("table");
 
+        let WeekNumbHolder = document.createElement("h3");
 
-          for (let j = 0; j < 8; j++) {
-            eval(`Cell${j}`).id = `Row${i}Cell${j}`;    
-            eval(`Cell${j}`).name = `Row${i}Cell${j}`;            
-        
-          }
-        
+        WeekNumbHolder.textContent = CurrentTimeSheet[u].Week
 
-          // Call Project Info
+        TimeSheetHolder.appendChild(WeekNumbHolder);
 
-          if (i < 3){
-
-            switch (CurrentPath.staticTaskType) {
+        const TopInfo = ["Project","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        for (let Info of TopInfo) {
+        const td = document.createElement("td");
+        const text = document.createTextNode(Info);
+        td.appendChild(text);
+        CurrentTimeSheetInContainer.appendChild(td);
+        }
+  
+  
+  
+          for (let i = 0; i < Object.keys(CurrentTimeSheet[u].tasks).length + Object.keys(CurrentTimeSheet[u].tasks.projects).length - 1; i++) {
+            switch (i) {
+              case 0:
+                CurrentPath = CurrentTimeSheet[u].tasks.absance || {};
+                break;
               case 1:
-                Cell0.textContent = "Vacation";  
+                CurrentPath = CurrentTimeSheet[u].tasks.meeting || {};
                 break;
               case 2:
-                Cell0.textContent =  "Absence"
+                CurrentPath = CurrentTimeSheet[u].tasks.vaction || {};
                 break;
               case 3:
-                Cell0.textContent = "Meeting"
+                CurrentPath = CurrentTimeSheet[u].tasks.projects[k] || {};
                 break;
-              }}
-          else{
-            Cell0.textContent = await GetProjectInfo(CurrentPath.taskId)
-          }
+              default:
+                CurrentPath = CurrentTimeSheet[u].tasks.projects[++k] || {};
+                break;
+            }
 
-          Cell1.textContent = CurrentPath.hours.monday;
-          Cell2.textContent = CurrentPath.hours.tuesday;
-          Cell3.textContent = CurrentPath.hours.wednesday;
-          Cell4.textContent = CurrentPath.hours.thursday;
-          Cell5.textContent = CurrentPath.hours.friday;
-          Cell6.textContent = CurrentPath.hours.saturday;
-          Cell7.textContent = CurrentPath.hours.sunday;
-
-
-          TimeSheetHolder.appendChild(Row);
-          TimeSheetHolder.appendChild(Cell0);
-          TimeSheetHolder.appendChild(Cell1);
-          TimeSheetHolder.appendChild(Cell2);
-          TimeSheetHolder.appendChild(Cell3);
-          TimeSheetHolder.appendChild(Cell4);
-          TimeSheetHolder.appendChild(Cell5);
-          TimeSheetHolder.appendChild(Cell6);
-          TimeSheetHolder.appendChild(Cell7);
+            if (Object.keys(CurrentPath).length === 0) {
+              // Skip this iteration and continue with the next one
+              continue;
+            }
+  
+            let Row = document.createElement("tr"); 
+            let Cell0 = document.createElement("td"); 
+            let Cell1 = document.createElement("td");
+            let Cell2 = document.createElement("td"); 
+            let Cell3 = document.createElement("td"); 
+            let Cell4 = document.createElement("td"); 
+            let Cell5 = document.createElement("td"); 
+            let Cell6 = document.createElement("td"); 
+            let Cell7 = document.createElement("td"); 
+  
+  
+            for (let j = 0; j < 8; j++) {
+              eval(`Cell${j}`).id = `Row${i}Cell${j}`;    
+              eval(`Cell${j}`).name = `Row${i}Cell${j}`;            
           
+            }
+          
+  
+            // Call Project Info
+  
+            if (i < 3){
+  
+              switch (CurrentPath.staticTaskType) {
+                case 1:
+                  Cell0.textContent = "Vacation";  
+                  break;
+                case 2:
+                  Cell0.textContent =  "Absence"
+                  break;
+                case 3:
+                  Cell0.textContent = "Meeting"
+                  break;
+                }}
+            else{
+              Cell0.textContent = await GetProjectInfo(CurrentPath.taskId)
+            }
+  
+            Cell1.textContent = CurrentPath.hours?.monday ?? "Not defined";
+            Cell2.textContent = CurrentPath.hours?.tuesday ?? "Not defined";
+            Cell3.textContent = CurrentPath.hours?.wednesday ?? "Not defined";
+            Cell4.textContent = CurrentPath.hours?.thursday ?? "Not defined";
+            Cell5.textContent = CurrentPath.hours?.friday ?? "Not defined";
+            Cell6.textContent = CurrentPath.hours?.saturday ?? "Not defined";
+            Cell7.textContent = CurrentPath.hours?.sunday ?? "Not defined";
+  
+            CurrentTimeSheetInContainer.appendChild(Row);
+            CurrentTimeSheetInContainer.appendChild(Cell0);
+            CurrentTimeSheetInContainer.appendChild(Cell1);
+            CurrentTimeSheetInContainer.appendChild(Cell2);
+            CurrentTimeSheetInContainer.appendChild(Cell3);
+            CurrentTimeSheetInContainer.appendChild(Cell4);
+            CurrentTimeSheetInContainer.appendChild(Cell5);
+            CurrentTimeSheetInContainer.appendChild(Cell6);
+            CurrentTimeSheetInContainer.appendChild(Cell7);
+            
+  
+  
+          }
+    
+
+          TimeSheetHolder.appendChild(CurrentTimeSheetInContainer)
 
 
-        }
 
-        let ButtonHolder = document.getElementById("ButtonHolder");
-        let ApproveButton = document.createElement("button");
-        let DeclineButton = document.createElement("button");
-        
-        ApproveButton.id = "ApproveButton";
-        DeclineButton.id = "DeclineButton";
+  
+          let ButtonHolder = document.createElement("div");
 
-        ApproveButton.textContent = "Approve";
-        DeclineButton.textContent = "Approve";
+  
+          ButtonHolder.innerHTML = "";
+  
+          let ApproveButton = document.createElement("button");
+          let DeclineButton = document.createElement("button");
+          
+          ApproveButton.id = "ApproveButton" + u;
+          // DeclineButton.id = "DeclineButton";
+  
+          ApproveButton.textContent = "Approve";
+          DeclineButton.textContent = "Approve";
 
-        ApproveButton.addEventListener("click",ApproveTimeSheet(CurrentTimeSheet.timeSheetId))
-       // DeclineButton.addEventListener("click")
+  
+          ApproveButton.addEventListener("click", async function() {
+            let result = await ApproveTimeSheet(CurrentTimeSheet[u].timeSheetId);
+            // Use console.log() to check the result
+            console.log(result);
 
-       ButtonHolder.appendChild(ApproveButton);
+            
+            await ShowTimeSheet (UserID, UserName);
+          });
+          // DeclineButton.addEventListener("click")
+  
+         ButtonHolder.appendChild(ApproveButton);
+          
+         TimeSheetHolder.appendChild(ButtonHolder);
+
+
+}
 
 
     }
