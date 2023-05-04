@@ -66,6 +66,7 @@ try {
   if (userProjectsLinks.length <= 0) {
     return false;
   }
+  
   const projectIds = userProjectsLinks.map((link) => link.projectId);
 
   const [projects] = await pool.query(
@@ -96,7 +97,34 @@ try {
   return false; // error occurred
 }
 }
+export async function GetProjectNameWithTaskID(pool, taskID) {
+  try {
+    const [task] = await pool.query(`SELECT * FROM tasks WHERE id = ?`, [
+      taskID
+    ]);
+    const projectID = task[0].projectId;
+    const [project] = await pool.query(`SELECT * FROM projects WHERE id = ?`, [
+      projectID,
+    ]);
+    
+    return project[0].name;
+  } catch (error) {
+    console.log(error);
+    return false; // error occurred
+  }
+}
 
+export async function GetTaskWithID(pool, taskID) {
+  try {
+    const [task] = await pool.query(`SELECT * FROM tasks WHERE id = ?`, [
+      taskID,
+    ]);
+    return task[0];
+  } catch (error) {
+    console.log(error);
+    return false; // error occurred
+  }
+}
 
 export async function GetProjectTasks(pool, projectId) {
 try {

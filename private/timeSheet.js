@@ -1,8 +1,11 @@
+let userName;
+let userID;
+
 function getTimeSheetData() {
   let timeSheet = {
     week: 0,
     userName: "",
-    userId: 0,
+    userID: 0,
     year: 0,
     vacation: {
       days: {
@@ -45,13 +48,18 @@ function getTimeSheetData() {
   //let columnLength = table.rows[0].cells.length;
 
   timeSheet.week = Math.ceil(
+    
     Math.floor(
+      
       (new Date() - new Date(new Date().getFullYear(), 0, 1)) /
+       
         (24 * 60 * 60 * 1000)
+    
     ) / 7
+  
   );
   timeSheet.userName = userName;
-  timeSheet.userId = userId;
+  timeSheet.userID = userID;
   timeSheet.year = new Date().getFullYear();
 
   //collectMeetingData(timeSheet, table, rowLength);
@@ -82,7 +90,7 @@ function collectProjectData(timeSheet, table, rowLength) {
     let selectProject = table.rows[i].cells[0].querySelector("select");
     let selectTask = table.rows[i].cells[1].querySelector("select");
     //if project is not selected it will be skip
-    if (selectProject.value == "Default" || selectTask.value == "") {
+    if (selectProject.value == "Default" || selectTask.value == "" || selectProject.value == "Select a project") {
       continue;
     }
 
@@ -124,6 +132,20 @@ function collectProjectData(timeSheet, table, rowLength) {
     timeSheet.projects[selectProject.value][selectTask.value].taskId =
       targetTask.id;
 
+    timeSheet.projects[selectProject.value][selectTask.value].taskName = [
+      selectTask.value,
+    ];
+    targetProjectWithTasks = [projects][0].find(
+      (item) => item.name === [selectProject.value][0]
+    ).tasks;
+    targetTask = targetProjectWithTasks.find(
+      (item) =>
+        item.name ===
+        timeSheet.projects[selectProject.value][selectTask.value].taskName[0]
+    );
+    timeSheet.projects[selectProject.value][selectTask.value].taskId =
+      targetTask.id;
+
     collectTableData(
       timeSheet.projects[selectProject.value][selectTask.value],
       table,
@@ -147,3 +169,4 @@ document
       .then((response) => {})
       .catch((error) => console.error(error));
   });
+

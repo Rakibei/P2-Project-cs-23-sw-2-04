@@ -1,3 +1,6 @@
+
+import { GetTaskWithID, GetProjectNameWithTaskID } from "./databaseProject.js";
+
 export async function CreateTasks(
   pool,
   projectId,
@@ -8,8 +11,7 @@ export async function CreateTasks(
   try {
     // Create the task
     const [result] = await pool.query(
-      `
-            INSERT INTO tasks (projectId, name, description, estimate) VALUES (?, ?, ?, ?)`,
+      `INSERT INTO tasks (projectId, name, description, estimate) VALUES (?, ?, ?, ?)`,
       [projectId, name, description, estimate]
     );
     const taskId = result.insertId;
@@ -61,13 +63,13 @@ try {
 }
 }
 
-export async function CreateTimeSheet(pool, userId, week, year) {
+export async function CreateTimeSheet(pool, userID, week, year) {
 try {
     // Create a new timesheet entry and retrieve its auto-generated id
     console.log(week);
     const [insertResult] = await pool.query(
         'INSERT INTO timesheet (userId, week, year) VALUES (?, ?, ?)',
-        [userId, week, year]
+        [userID, week, year]
     );
     const timesheetId = insertResult.insertId;
     return timesheetId;
@@ -76,12 +78,12 @@ try {
     return false; // error occurred 
 }
 }
-export async function GetTimeSheetId(pool, userId, week, year) {
+export async function GetTimeSheetId(pool, userID, week, year) {
 try {
   const [result] = await pool.query(
     `SELECT id FROM timeSheet
     WHERE userId = ? AND week = ? AND year = ?`,
-    [userId, week, year]
+    [userID, week, year]
   );
   return result[0].id
 } catch (error) {
@@ -90,12 +92,12 @@ try {
 }
 }
 
-export async function IsTimeSheetFound(pool, userId, week, year) {
+export async function IsTimeSheetFound(pool, userID, week, year) {
   try {
-      // Check if a timesheet with the given userId, week, and year already exists
+      // Check if a timesheet with the given userID, week, and year already exists
       const [queryResult] = await pool.query(
           'SELECT * FROM timesheet WHERE userId = ? AND week = ? AND year = ?',
-          [userId, week, year]
+          [userID, week, year]
       );
       if (queryResult.length > 0) {
         // An entry already exists, so return true
@@ -108,15 +110,42 @@ export async function IsTimeSheetFound(pool, userId, week, year) {
   }
 }
 
-export async function GetFilledOutTimeSheetForUser(pool, userId, week, year) {
+export async function GetFilledOutTimeSheetsForUser(pool, userID) {
   try {
-      const [timeSheetReference] = await pool.query('SELECT * FROM timesheet WHERE userId = ? AND week = ? AND year = ?', [userId, week, year]);
+    let timeSheets = [];
+    const [timeSheetReferences] = await pool.query('SELECT * FROM timesheet WHERE userId = ?', [userID]);
+    for (let i = 0; i < timeSheetReferences.length; i++) {
+      const [taskEntry] = await pool.query('SELECT * FROM taskentry WHERE timeSheetId = ?', [timeSheetReferences[i].id]);
+      const [staticTaskEntry] = await pool.query('SELECT * FROM statictaskentry WHERE timeSheetId = ?', [timeSheetReferences[i].id]);
+      const tasks = taskEntry.concat(staticTaskEntry);
+
+      const sortedTasks = await sortTaskRows(pool, tasks);
+      timeSheets.push({
+          timeSheetId: timeSheetReferences[i].id,
+          timeSheetWeek: timeSheetReferences[i].week,
+          timeSheetYear: timeSheetReferences[i].year,
+          tasks: sortedTasks,
+      })
+    }
+    return timeSheets;
+  } catch (error) {
+    console.log(error);
+    return false; // error occurred
+  }
+}
+
+
+export async function GetFilledOutTimeSheetForUser(pool, userID, week, year) {
+  try {
+      const [timeSheetReference] = await pool.query('SELECT * FROM timesheet WHERE userId = ? AND week = ? AND year = ?', [userID, week, year]);
       const [taskEntry] = await pool.query('SELECT * FROM taskentry WHERE timeSheetId = ?', [timeSheetReference[0].id]);
       const [staticTaskEntry] = await pool.query('SELECT * FROM statictaskentry WHERE timeSheetId = ?', [timeSheetReference[0].id]);
-      const tasks = taskEntry.concat(staticTaskEntry)
+      const tasks = taskEntry.concat(staticTaskEntry);
+
+      const sortedTasks = await sortTaskRows(pool, tasks)
       const timeSheet = {
           timeSheetId: timeSheetReference[0].id,
-          tasks: sortTaskRows(tasks),
+          tasks: sortedTasks,
       }
       return timeSheet;
   } catch (error) {
@@ -125,19 +154,18 @@ export async function GetFilledOutTimeSheetForUser(pool, userId, week, year) {
   }
 }
 //make sure tasks are in a usable and expedited formart
-function sortTaskRows(tasks) {
+async function sortTaskRows(pool, tasks) {
   const sortedTasks = {
-    vaction: {},
-    absance: {},
-    meeting: {},
     projects: [],
+    meeting: {},
+    absence: {},
+    vacation: {},
   }
-  tasks.forEach(task => {
-    
+  
+  for (const task of tasks) {
     if(Object.hasOwn(task, "staticTaskType")) {
       const structuredTask = {
         id: task.id,
-        taskID: task.taskId,
         staticTaskType: task.staticTaskType,
         timeSheetId: task.timeSheetId,
         hours: {
@@ -152,23 +180,29 @@ function sortTaskRows(tasks) {
       }
       switch (task.staticTaskType) {
         case 1:
-          sortedTasks.vaction = structuredTask;
+          sortedTasks.meeting = structuredTask;
           break;
         case 2:
-          sortedTasks.absance = structuredTask;
+          sortedTasks.absence = structuredTask;
           break;
         case 3:
-          sortedTasks.meeting = structuredTask;
+          sortedTasks.vacation = structuredTask;
           break;
         default:
           break;
       }
     }
-    if(Object.hasOwn(task, "taskId")) {
+    if (Object.hasOwn(task, "taskId")) {
+      let project = await GetProjectNameWithTaskID(pool, task.taskId)
+
+      const taskForEntry = await GetTaskWithID(pool, task.taskId)
+      
       const structuredTask = {
         id: task.id,
         taskId: task.taskId,
         timeSheetId: task.timeSheetId,
+        taskName: taskForEntry.name,
+        projectName: project,
         hours: {
           monday: task.mondayHours,
           tuesday: task.tuesdayHours,
@@ -179,9 +213,10 @@ function sortTaskRows(tasks) {
           sunday: task.sundayHours,
         }
       }
-      sortedTasks.projects.push(structuredTask);
+      sortedTasks.projects.unshift(structuredTask);
     }
-  })
+  }
+  
   return sortedTasks;
 }
 
