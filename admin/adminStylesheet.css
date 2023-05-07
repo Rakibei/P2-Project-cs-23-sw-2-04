@@ -1,13 +1,15 @@
 /* det her er universal selector for den complete general indstillinger*/
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Times New Roman', Times, serif;
-}
+    font-family: 'Nunito', sans-serif;
+ }
+
 /* her redigere jeg baggrund indstillinger*/
 html {
-    overflow: hidden;
+    margin: auto;
     background: linear-gradient(to bottom, rgba(16, 78, 178, 0.8), rgba(16, 78, 178, 0.25));
     background-repeat: no-repeat;
     background-size: cover ;
@@ -28,60 +30,94 @@ html {
 
 
 /* her justere jeg knapperne i navigation bar*/
-#userButton, #projectButton,#userLevelButton, #createManagerButton{
+
+#userButton, #projectButton,#userLevelButton, #ProjectManagerButton,#exportButtonXlsx,#exportButton,#CreateTaskButton,#EmailNotificationButton,#LinkUserToManagerContainer,#LinkUserToManagerButton{
     cursor: pointer;
     font-weight: 600;
     font-size: 20px;
-    padding-left: 0px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
     background: rgb(238, 240, 230);
     color: black;
     border: 1px solid rgb(238, 240, 230);
+    border: 1px solid rgb(238, 240, 230);
     border-radius: 5px;
-    align-items: center;
-    display: inline-block;
-    margin: 0 auto;
+    margin: 3px;
 }
-form,.menu{
+form,.menu, .pdf{
     text-align: center;
 }
 
 /* her justere jeg hovering over navbar og knapperne*/
 #userButton:hover {
-    background: rgb(112, 155, 223);
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
 }
 #projectButton:hover {
-    background: rgb(112, 155, 223);
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
 }
 #userLevelButton:hover {
-    background: rgb(112, 155, 223);
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
 }
-#createManagerButton:hover {
-    background: rgb(112, 155, 223);}
-.sbmt:hover{
-    background: rgb(112, 155, 223);
-} 
 
+#ProjectManagerButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);}
+.sbmt:hover{
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+} 
+#exportButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#exportButtonXlsx:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#CreateTaskButton:hover{
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#EmailNotificationButton:hover{
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#LinkUserToManagerButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
 /* her justere jeg de forskellig former*/
-#userCreation,#projectCreation,#setUserLevel,#createManagerForProject{
-    font-weight: 600;
+#userCreation,#projectCreation,#setUserLevel,#createManagerForProject, #createTaskForProject, #SetTimeForEmailNotification,#CreateProjectManagerContainer,#LinkUserToManagerContainer{
     font-size: 20px;
-    padding-left: 0px;
-    background: rgb(238, 240, 230);
-    color: black;
-    border: 1px solid rgb(238, 240, 230);
-    border-radius: 15px;
-    align-items: center;
-    display: inline-block;
+    font-weight: 400;
+    border-radius: 10px;
     margin: 0 auto;
     width: 80%;
-    height: 180%;
+    padding: 50px;
+    background: rgb(238, 240, 230);
+}
+
+/* her justere jeg form felterne */
+input[type=text],input[type=number],input[type=date],input[type=time],input[type=checkbox],input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 /* her rediger jeg submit knapperne*/
 .sbmt{
     cursor: pointer;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 100%;
     padding-left: 0px;
     background: rgb(16, 78, 178);
     color: white;
@@ -117,6 +153,12 @@ input{
     display: none;
 }
 
-#createManagerForProject{
+#createTaskForProject{
+    display: none;
+}
+#SetTimeForEmailNotification{
+    display: none;
+}
+#LinkUserToManagerContainer{
     display: none;
 }

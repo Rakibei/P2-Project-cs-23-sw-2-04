@@ -4,6 +4,23 @@
 
 body {
     margin: 0;
+    z-index: 1;
+}
+
+#NavAdmin {
+    display: none;
+}
+
+#NavManager {
+    display: none;
+}
+
+#NavProjectManager {
+    display: none;
+}
+
+#NavLogout:hover {
+    cursor: pointer;
 }
 
 .nav {
@@ -62,9 +79,10 @@ ul {
 
 li {
     margin-top: 10px;
+    margin-left: 20px;
 }
 
-a {
+a.navbar {
     text-decoration: none;
     color: white;
     font-size: 200%;

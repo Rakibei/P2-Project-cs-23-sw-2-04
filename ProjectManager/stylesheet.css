@@ -71,6 +71,15 @@ html {
 }
 
 /* her justere jeg de forskellig former*/
+#showProjects{
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 10px;
+    margin: 0 auto;
+    width: 80%;
+    padding:50px;
+    background: rgb(238, 240, 230);
+}
 #createUserManagerLink{
     font-size: 20px;
     font-weight: 400;
@@ -117,7 +126,30 @@ input {
     height: 30px;
 }
 
-#projectCreation {
+table{
+	width: 100%;
+	border-collapse: collapse;
+    border-radius: 1px;
+}
+
+/*her rediger jeg de forskellige rows and collumns*/
+table td,table th{
+  border-collapse: collapse;  
+  text-align: center;
+  font: size 15px;
+  padding:2px 2px;
+  border: 1px solid white
+}
+table th{
+	background-color: rgb(16, 78, 178);
+	color:#ffffff;
+}
+
+#createUserManagerLink {
     display: none;
+}
+
+#showProjects {
+display: none;
 }
 

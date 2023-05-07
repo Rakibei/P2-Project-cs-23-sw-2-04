@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Manager</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="stylesheet.css">
 </head>
-
 <body>
 <!--Navigation Bar Start--><div>
 <script src="https://kit.fontawesome.com/ffe0f0379f.js" crossorigin="anonymous"></script>
@@ -29,7 +28,6 @@
             <li><a class="navbar" id="NavAdmin" href="../admin/admin.html">Admin</a></li>
             <li><a class="navbar" id="NavManager" href="../manager/manager.html">Manager</a></li>
             <li><a class="navbar" id="NavProjectManager" href="../ProjectManager/ProjectManager.html">Project Manager</a></li>
-            <li><a class="navbar" id="NavLogout">Log Out</a></li>
             <div class="signal">
              <img src="navbar/Signal.svg" style="width: 500px;">
             </div>
@@ -39,24 +37,30 @@
     <script src="navbar/navbar.js"></script>
 </div><!--Navigation Bar End-->
 
-    <div class="welcome-title"><span>Welcome</span></div>
-    <div class="container">
-        <div class="innermenu">
-            <button class="centered"><a href="userpage.html">Time sheet</a> </button> 
-            <button class="centered" id="AdminButton" ><a href="/admin/admin.html">Admin</a></button>
-            <button class="centered" id="ManagerButton"><a href="/manager/manager.html">Manager</a></button>
-            <button class="centered" id="ProjectManagerButton"><a href="/ProjectManager/ProjectManager.html">Project Manager</a></button>
-        </div>
-        <div class="logoutdiv">
-            <button id="logoutButton">Logout</button>
-            </div>
-</div>  
+    <div class="welcome-title"><span>Welcome Project Manager</span></div>
     
+    <div class="menu">
+        <button id="LinkUserToProjectkButton">Create a link to a user</button>
+        <button id="showProjectsButton">Show Projects</button>
+        <br><br>
+        <div id="LinkUserToProjectContainer">
+            <form id="LinkUserToProjectForm">
+                <label for="userToLink">link User</label>
+                <input type="text" name="userToLink" id="userToLink" placeholder="UserName" required> <br> <br>
+                <label for="projectToLinkForUser">link Project</label>
+                <input type="text" name="projectToLinkForUser" id="projectToLinkForUser" placeholder="ProjectName" required> <br> <br>
+                <input type="submit" class="sbmt" value="Submit">
+            </form>
+        </div>
 
-    <div id="profileInfo">
+        <div id="showProjects">
+            <div id="showProjectsReplace">
+            </div>
+        </div>
     </div>
 
 
-    <script src="homepage.js"></script>
+
+<script src="ProjectManager.js"></script>
 </body>
 </html>
