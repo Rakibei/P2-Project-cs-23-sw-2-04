@@ -15,7 +15,7 @@ html {
     min-height: 100%;
 }
 
- /* her redigere jeg på titlen indenfor hvor der står welcome Manager */
+ /* her redigere jeg på titlen indenfor hvor der står welcome project Manager */
 .welcome-title {
     line-height: 50px;
     background: rgb(16, 78, 178);
@@ -28,7 +28,7 @@ html {
 }
 
 /* her justere jeg knapperne i navigation bar*/
-#createUserManagerLinkButton , #showProjectsButton, #ManagerButton {
+#LinkUserToProjectkButton, #showProjectsButton {
     cursor: pointer;
     font-weight: 600;
     font-size: 20px;
@@ -49,7 +49,7 @@ html {
 }
 
 /* her justere jeg hovering over navbar og knapperne*/
-#createUserManagerLinkButton:hover {
+#LinkUserToProjectkButton:hover {
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 }
@@ -57,14 +57,7 @@ html {
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 }
-#ManagerButton:hover {
-    color: rgb(38, 144, 210);
-    background: rgb(208, 209, 210);
-}
-#ManagerButton a:hover {
-    color: rgb(38, 144, 210);
-    background: rgb(208, 209, 210);
-}
+
 .sbmt:hover {
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
@@ -80,7 +73,7 @@ html {
     padding:50px;
     background: rgb(238, 240, 230);
 }
-#createUserManagerLink{
+#LinkUserToProjectContainer{
     font-size: 20px;
     font-weight: 400;
     border-radius: 10px;
@@ -100,11 +93,6 @@ input[type=text] {
     box-sizing: border-box;
 }
 
-
-#ManagerButton a {
-    text-decoration: none;
-    color: black;
-}
 /* her rediger jeg submit knapperne*/
 .sbmt {
     cursor: pointer;
@@ -134,11 +122,11 @@ table{
 
 /*her rediger jeg de forskellige rows and collumns*/
 table td,table th{
-  border-collapse: collapse;  
-  text-align: center;
-  font: size 15px;
-  padding:2px 2px;
-  border: 1px solid white
+    border-collapse: collapse;  
+    text-align: center;
+    font: size 15px;
+    padding:2px 2px;
+    border: 1px solid white
 }
 table th{
 	background-color: rgb(16, 78, 178);
