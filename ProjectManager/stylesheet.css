@@ -102,6 +102,24 @@ html {
     padding:50px;
     background: rgb(238, 240, 230);
 }
+#createTaskForProject{
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 10px;
+    margin: 0 auto;
+    width: 80%;
+    padding: 50px;
+    background: rgb(238, 240, 230);
+}
+#createTaskForProject{
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 10px;
+    margin: 0 auto;
+    width: 80%;
+    padding: 50px;
+    background: rgb(238, 240, 230);
+}
 /* her justere jeg form felterne */
 input[type=text] {
     width: 50%;
@@ -158,3 +176,6 @@ table th{
 display: none;
 }
 
+#createTaskForProject {
+display: none;
+}
