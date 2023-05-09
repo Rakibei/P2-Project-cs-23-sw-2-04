@@ -79,7 +79,9 @@ import { isProxy } from "util/types";
 const app = express();
 
 //The server listens on port 3110 localhost so the ip is 127.0.0.1:3110
-app.listen(3000);
+const port = app.listen(process.env.PORT || 3110);
+console.log(`Server running on port ${port.address().port}`);
+
 
 // Database connection
 const poolData = ConnectToDatabase();
@@ -118,7 +120,7 @@ app.get("/", (req, res) => {
     res.redirect("/private/homepage.html");
   } else {
     // If not send them to the login page
-    res.redirect("/index.html");
+    res.redirect("./index.html");
   }
 });
 // we now say that the client can acces the public folder otherwise the client dosent send a get requst
@@ -204,7 +206,7 @@ app.post("/userRequests", async (req, res) => {
   switch (req.body.functionName) {
     case "Logout":
       req.session.isAuthenticated = false;
-      res.redirect("/index.html");
+      res.redirect("./index.html");
       break;
 
     default:

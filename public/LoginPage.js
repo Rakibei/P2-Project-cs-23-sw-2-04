@@ -28,7 +28,7 @@ document.querySelector('form').addEventListener('submit', (event) => {
       password: pswrd
     };
 
-    fetch('http://127.0.0.1:3000', {
+    fetch('https://cs-23-sw-2-04.p2datsw.cs.aau.dk/node0/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
