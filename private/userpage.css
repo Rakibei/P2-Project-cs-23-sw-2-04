@@ -13,6 +13,84 @@ html {
     background-size: cover ;
     min-height: 100%;
 }
+
+.innermenu{
+    place-items: center;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    }
+    .container {
+        margin-left: 84px;
+        display: flex;
+        width: auto;
+     }
+     
+     
+     #logoutButton {
+        margin-left:auto;
+        margin-right:0;
+     }
+
+/* her justere jeg knapperne i navigation bar*/
+#CurrentTimesheet, #TimeSheetHistory, #logoutButton {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 20px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background: rgb(238, 240, 230);
+    color: black;
+    border: 1px solid rgb(238, 240, 230);
+    border: 1px solid rgb(238, 240, 230);
+    border-radius: 5px;
+    margin: 3px;
+    text-decoration: none;
+}
+.menu {
+    text-align: center;
+}
+
+/* her justere jeg hovering over navbar og knapperne*/
+#projectButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#ManagerButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+
+#logoutButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#ManagerButton a:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#logoutButton a:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+.sbmt:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+
+ /* her redigere jeg på titlen indenfor hvor der står welcome Manager */
+ .welcome-title {
+    line-height: 50px;
+    background: rgb(16, 78, 178);
+    padding-left: 0;
+    text-align: center;
+    border-radius: 5px 5px 0 0;
+    color: whitesmoke;
+    font-size: 35px;
+    font-weight: 600;
+ }
 /* her rediger jeg den div der holder hele tabellen*/
 #timesheetcontainer{
     font-size: 20px;

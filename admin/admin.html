@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="adminStylesheet.css">
 </head>
 <body>
+    <div class="welcome-title"><span>Welcome Admin</span></div>
     <div class="container">
-        <div class="welcome-title"><span>Welcome Admin</span></div>
-        <div class="menu">
+        <div class="innermenu">
             <button id="userButton">Create user</button>
             <button id="projectButton">Create project</button>
             <button id="userLevelButton">Set user level</button>
@@ -22,19 +22,23 @@
             <button id="CreateTaskButton">Create Task</button>
             <button id="EmailNotificationButton">Email Notification</button>
         </div>
+        <div class="logoutdiv">
+            <button id="logoutButton">Logout</button>
+        </div>
+  </div>      
 <br>
 
     <div id="userCreation">
         <form id="userCreationForm">
-            <label for="createUsername">New Username:</label>
+            <label for="createUsername">New Username:</label><br>
             <input type="text" id="createUsername" name="createUsername" placeholder="Username" required><br><br>
-            <label for="createPassword">New Password:</label>
+            <label for="createPassword">New Password:</label><br>
             <input type="password" id="createPassword" name="createPassword" placeholder="Password" required><br><br>
-            <label for="FullName">User's Full name</label>
+            <label for="FullName">User's Full name</label><br>
             <input type="text" id="FullName" name="FullName" placeholder="Full Name"><br><br>
-            <label for="PhoneNumber">User's PhoneNumber</label>
+            <label for="PhoneNumber">User's PhoneNumber</label><br>
             <input type="text" id="PhoneNumber" name="PhoneNumber" placeholder="PhoneNumber"><br><br>
-            <label for="Email">User's email adress</label>
+            <label for="Email">User's email adress</label><br>
             <input type="text" id="Email" name="Email" placeholder="Email Adress"><br><br>
             <input type="submit" class="sbmt" value="Create">
         </form>
@@ -43,19 +47,19 @@
 
     <div id="projectCreation">
         <form id="projectCreationForm">
-            <label for="projectName">Project name</label>
+            <label for="projectName">Project name</label><br>
             <input type="text" id="projectName" name="projectName" placeholder="ProjectName" required> <br><br>
 
-            <label for="projectStartDate">Start Date</label>
+            <label for="projectStartDate">Start Date</label><br>
             <input type="date" id="projectStartDate" name="projectStartDate"  required> <br><br>
 
-            <label for="projectEndDate">End Date</label>
+            <label for="projectEndDate">End Date</label><br>
             <input type="date" id="projectEndDate" name="projectEndDate"  required> <br><br>
 
-            <label for="ProjectManager">Manager</label>
+            <label for="ProjectManager">Manager</label><br>
             <input type="text" id="ProjectManager" name="ProjectManager" placeholder="ProjectManager" required> <br><br>
 
-            <label for="projectHoursSpent">Total Hours</label>
+            <label for="projectHoursSpent">Total Hours</label><br>
             <input type="number" id="projectHoursSpent" name="projectHoursSpent" placeholder="0" required> <br><br>
 
             <input type="submit" class="sbmt" value="Create">
@@ -66,20 +70,20 @@
 
     <div id="setUserLevel">
         <form id="searchUserLevel">
-        <label for="seeUserLevel">Search Level</label>
+        <label for="seeUserLevel">Search Level</label><br>
         <input type="text" id="seeUserLevel" name="seeUserLevel" placeholder="UserLevel" required> <br>
-        <input type="submit" class="sbmt" value="Submit"> <br><br>
+        <input type="submit" class="sbmt" value="Search"> <br><br>
         </form>
         <div id="SeeUserInfo"></div>
 
         <form id="setUserLevelForm">
-            <label for="setUserLevelName">Username</label>
+            <label for="setUserLevelName">Username</label><br>
             <input type="text" id="setUserLevelName" name="setUserLevelName" placeholder="UserName" required> <br>
 
-            <label for="SetUserAdmin">Admin</label>
+            <label for="SetUserAdmin">Admin</label><br>
             <input type="checkbox" id="SetUserAdmin" name="SetUserAdmin"> <br><br>
             
-            <label for="SetUserManager">Manager</label>
+            <label for="SetUserManager">Manager</label><br>
             <input type="checkbox" id="SetUserManager" name="SetUserManager"><br><br>
 
             <input type="submit" class="sbmt" value="Submit">
@@ -94,9 +98,9 @@
 
     <div id="LinkUserToManagerContainer">
         <form id="LinkUserToManagerForm">
-            <label for="ManagerToLink">Manager</label>
+            <label for="ManagerToLink">Manager</label><br>
             <input type="text" id="ManagerToLink" name="ManagerToLink" placeholder="ManagerName" ><br> <br>
-            <label for="UserToLinkToManager">User</label>
+            <label for="UserToLinkToManager">User</label><br>
             <input type="text" id="UserToLinkToManager" name="UserToLinkToManager" placeholder="UserName" ><br> <br>
             <input type="submit" class="sbmt" value="Submit">            
         </form>
@@ -107,23 +111,23 @@
 
     <div id="createTaskForProject">
         <form id="createTaskForProjectForm">
-            <label for="projectToLinkFortask">Project name</label>
+            <label for="projectToLinkFortask">Project name</label><br>
             <input type="text" name="projectToLinkFortask" id="projectToLinkFortask" placeholder="ProjectName" > <br> <br>
-            <label for="taskName">Task name</label>
+            <label for="taskName">Task name</label><br>
             <input type="text" name="taskName" id="taskName" placeholder="TaskName" > <br> <br>
-            <label for="taskDescription">Task description</label>
+            <label for="taskDescription">Task description</label><br>
             <input type="text" name="taskDescription" id="taskDescription" placeholder="taskDescription" required> <br> <br>
-            <label for="estimate">estimate</label>
+            <label for="estimate">estimate</label><br>
             <input type="number" name="estimate" id="estimate" placeholder="0" required> <br> <br>
-            <input type="submit" class="sbmt" value="Submit"    >            
+            <input type="submit" class="sbmt" value="Create Task">            
         </form>
     </div>
 
     <div id="SetTimeForEmailNotification">
         <form id="SetTimeForEmailNotificationForm">
-            <label for="TimeOfDay">Time of day:</label>
+            <label for="TimeOfDay">Time of day:</label><br>
             <input type="time" name="TimeOfDay" id="TimeOfDay"><br> <br>
-            <label for="WeekDay">Choose the Weekday:</label>
+            <label for="WeekDay">Choose the Weekday:</label><br>
             <select name="WeekDay" id="WeekDay">
             <option value="1">Monday</option>
             <option value="2">Tuesday</option>

@@ -1,6 +1,30 @@
 let userName;
 let userID;
 
+document.getElementById("logoutButton").addEventListener("click",() => {
+
+  const data = {
+      functionName: "Logout"
+  }
+
+  fetch('/userRequests', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      if (response.redirected) {
+          window.location.href = response.url;
+        }
+  
+    })
+    .catch(error => console.error(error));
+
+
+});
+
 function getTimeSheetData() {
   let timeSheet = {
     week: 0,

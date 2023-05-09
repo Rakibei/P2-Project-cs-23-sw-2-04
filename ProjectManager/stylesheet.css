@@ -26,9 +26,26 @@ html {
     font-size: 35px;
     font-weight: 600;
 }
+.innermenu{
+    place-items: center;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    }
+    .container {
+        margin-left: 84px;
+        display: flex;
+        width: auto;
+     }
+     
+     
+     #logoutButton {
+        margin-left:auto;
+        margin-right:0;
+     }
 
 /* her justere jeg knapperne i navigation bar*/
-#createUserManagerLinkButton , #showProjectsButton, #ManagerButton {
+#LinkUserToProjectkButton , #showProjectsButton, #logoutButton {
     cursor: pointer;
     font-weight: 600;
     font-size: 20px;
@@ -65,22 +82,18 @@ html {
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 }
+
+#logoutButton a:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
 .sbmt:hover {
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 }
 
 /* her justere jeg de forskellig former*/
-#showProjects{
-    font-size: 20px;
-    font-weight: 400;
-    border-radius: 10px;
-    margin: 0 auto;
-    width: 80%;
-    padding:50px;
-    background: rgb(238, 240, 230);
-}
-#createUserManagerLink{
+#LinkUserToProjectForm{
     font-size: 20px;
     font-weight: 400;
     border-radius: 10px;
@@ -91,9 +104,9 @@ html {
 }
 /* her justere jeg form felterne */
 input[type=text] {
-    width: 100%;
+    width: 50%;
     padding: 12px 20px;
-    margin: 8px 0;
+    margin: 0 auto;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -145,9 +158,6 @@ table th{
 	color:#ffffff;
 }
 
-#createUserManagerLink {
-    display: none;
-}
 
 #showProjects {
 display: none;

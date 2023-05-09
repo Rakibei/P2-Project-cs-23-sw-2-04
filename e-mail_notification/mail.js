@@ -33,20 +33,24 @@ console.log(emails);
 mailOptions = {
     from: 'p2projectmail@gmail.com',
     bcc:  emails,
-    subject: 'YoYo MonnerBoy!',
-    text: 'Time for another monner!',
-    html: 'Time for another monner! <img src="cid:monner"/>',
+    subject: 'Hej Hej',
+    text: 'Hej med dig!',
+    /*html: ' <img src="cid:china"/>' ,
+    watchHtml: 'Time for another monner! <img src="cid:china"/>',
         attachments: [{
-            filename: 'monner.jpeg',
-            path: 'C:/Users/tkwa/OneDrive/Skrivebord/Lort/monner.jpeg',
-            cid: 'monner' //same cid value as in the html img src
+            filename: 'chinaeye.png',
+            path: 'C:/Users/tkwa/OneDrive/Skrivebord/Lort/chinaeye.png',
+            cid: 'chinaeye' //same cid value as in the html img src
+            },
+            {
+            filename: 'china.gif',
+            path: 'C:/Users/tkwa/OneDrive/Skrivebord/Lort/china.gif',
+            cid: 'china' //same cid value as in the html img src
+
         }]  
+    */
     }
-
-
-console.log("cron hours"+hours);
-console.log("cron mins"+mins);  
-console.log("cron Weekday"+ JSON.stringify(Weekday));  
+ 
 transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
         console.log(error);

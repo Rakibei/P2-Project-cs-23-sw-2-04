@@ -12,16 +12,21 @@
 </head>
 <body>
     <div class="welcome-title"><span>Welcome Project Manager</span></div>
-    
-    <div class="menu">
-        <button id="LinkUserToProjectkButton">Create a link to a user</button>
-        <button id="showProjectsButton">Show Projects</button>
+    <div class="container">
+        <div class="innermenu">
+            <button id="LinkUserToProjectkButton">Create a link to a user</button>
+            <button id="showProjectsButton">Show Projects</button>
         <br><br>
+        </div>
+        <div class="logoutdiv">
+            <button id="logoutButton">Logout</button>
+        </div>
+  </div>
         <div id="LinkUserToProjectContainer">
             <form id="LinkUserToProjectForm">
-                <label for="userToLink">link User</label>
+                <label for="userToLink">link User</label><br>
                 <input type="text" name="userToLink" id="userToLink" placeholder="UserName" required> <br> <br>
-                <label for="projectToLinkForUser">link Project</label>
+                <label for="projectToLinkForUser">link Project</label><br>
                 <input type="text" name="projectToLinkForUser" id="projectToLinkForUser" placeholder="ProjectName" required> <br> <br>
                 <input type="submit" class="sbmt" value="Submit">
             </form>

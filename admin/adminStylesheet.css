@@ -31,7 +31,7 @@ html {
 
 /* her justere jeg knapperne i navigation bar*/
 
-#userButton, #projectButton,#userLevelButton, #ProjectManagerButton,#exportButtonXlsx,#exportButton,#CreateTaskButton,#EmailNotificationButton,#LinkUserToManagerContainer,#LinkUserToManagerButton{
+#userButton, #projectButton,#userLevelButton, #ProjectManagerButton,#exportButtonXlsx,#exportButton,#CreateTaskButton,#EmailNotificationButton,#LinkUserToManagerContainer,#LinkUserToManagerButton,#logoutButton{
     cursor: pointer;
     font-weight: 600;
     font-size: 20px;
@@ -91,6 +91,10 @@ form,.menu, .pdf{
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 }
+#logoutButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
 /* her justere jeg de forskellig former*/
 #userCreation,#projectCreation,#setUserLevel,#createManagerForProject, #createTaskForProject, #SetTimeForEmailNotification,#CreateProjectManagerContainer,#LinkUserToManagerContainer{
     font-size: 20px;
@@ -104,7 +108,7 @@ form,.menu, .pdf{
 
 /* her justere jeg form felterne */
 input[type=text],input[type=number],input[type=date],input[type=time],input[type=checkbox],input[type=password] {
-    width: 100%;
+    width: 50%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
@@ -139,11 +143,25 @@ input{
     height: 30px;
 }
 
+.innermenu{
+    place-items: center;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    }
+    .container {
+        margin-left: 84px;
+        display: flex;
+        width: auto;
+     }
+     
+     
+     #logoutButton {
+        margin-left:auto;
+        margin-right:0;
+     }
 
 /* her er display kontrol over de forskellige menuer */
-#userCreation{
-    display: none;
-}
 
 #projectCreation{
     display: none;
