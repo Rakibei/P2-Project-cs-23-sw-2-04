@@ -68,6 +68,7 @@ html {
 
 /* her justere jeg hovering over navbar og knapperne*/
 #projectButton:hover {
+#projectButton:hover {
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 }
@@ -89,7 +90,7 @@ html {
 }
 
 /* her justere jeg de forskellig former*/
-#createUserManagerLink{
+#projectCreation{
     font-size: 20px;
     font-weight: 400;
     border-radius: 10px;
@@ -128,12 +129,6 @@ input[type=text] {
     width: 30%;
 }
 
-/* her redigere jeg skrive felterne*/
-input {
-    border-radius: 5px;
-    width: 30%;
-    height: 30px;
-}
 
 
 form,.menu, .pdf{
@@ -150,6 +145,7 @@ form,.menu, .pdf{
     padding: 50px;
     background: rgb(238, 240, 230);
 }
+
 
 /* her justere jeg form felterne */
 input[type=text],input[type=number],input[type=date],input[type=time],input[type=checkbox],input[type=password] {

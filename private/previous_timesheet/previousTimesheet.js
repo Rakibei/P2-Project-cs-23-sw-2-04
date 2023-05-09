@@ -147,7 +147,13 @@ function makeNewTimeSheetTable(tableData, week, year, userName, timeSheetForUser
   table.setAttribute("id", "timesheet");
 
   const caption = document.createElement("caption");
-  caption.textContent = `Time sheet for year ${year} and week ${week} for ${userName}`;
+  caption.textContent += `Time sheet for year ${year} and week ${week} for ${userName}. `;
+  if(timeSheetForUser.timeSheetStatus == 1) {
+    caption.textContent += `This timeSheet is submitted `;
+  } else {
+    caption.textContent += `This timeSheet is not submitted `;
+  }
+
   table.appendChild(caption);
 
   table.appendChild(makeHeaderForTable());
