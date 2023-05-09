@@ -124,6 +124,7 @@ export async function GetFilledOutTimeSheetsForUser(pool, userID) {
           timeSheetId: timeSheetReferences[i].id,
           timeSheetWeek: timeSheetReferences[i].week,
           timeSheetYear: timeSheetReferences[i].year,
+          timeSheetStatus: timeSheetReferences[i].submitstatus,
           tasks: sortedTasks,
       })
     }
