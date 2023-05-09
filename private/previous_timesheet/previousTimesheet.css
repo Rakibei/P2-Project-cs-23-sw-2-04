@@ -13,9 +13,36 @@ html {
     background-size: cover ;
     min-height: 100%;
 }
+
+.containerMain {
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 10px;
+    margin: 0 auto;
+    width: 80%;
+    padding: 50px;
+    background: rgb(238, 240, 230);
+}
+/* her rediger jeg submit knapperne*/
+#sbmt {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 100%;
+    padding-left: 0px;
+    background: rgb(16, 78, 178);
+    color: white;
+    border: 1px solid rgb(16, 78, 178);
+    border-radius: 5px;
+    align-items: center;
+    width: 30%;
+}
+
+#sbmt:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
 /* her rediger jeg den div der holder hele tabellen*/
 #container{
-    
     background-color: rgb(239, 239, 239);
     align-items: center;
     justify-content: center;
