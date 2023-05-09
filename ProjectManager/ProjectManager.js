@@ -32,6 +32,38 @@ document.getElementById("showProjectsButton").addEventListener("click",()=>{
   })
   .catch(error => console.error(error));
   });
+
+
+
+  document.querySelector('#createTaskForProjectForm').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = {
+      projectToLink: event.target.projectToLinkFortask.value,
+      taskDescription: event.target.taskDescription.value,
+      taskName: event.target.taskName.value,
+      estimate: event.target.estimate.value,
+      functionName: "CreateTasks"
+    };
+    console.log(data);
+    fetch('/ProjectManagerRequests', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => {
+        if (response.status === 201) {
+          response.text().then(data => {
+            alert(data);
+            document.querySelector('#createTaskForProjectForm').reset();
+          });
+        }
+      })
+      .catch(error => console.error(error));
+  });
+
+
   
   
   
