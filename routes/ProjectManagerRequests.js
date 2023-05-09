@@ -98,6 +98,23 @@ import {
         console.log(managerProjects);
         res.send(managerProjects);
         break; 
+
+        case "CreateTasks":
+          let projectID2 = await GetProjectIdWithName(
+            poolData,
+            req.body.projectToLink
+          );
+          let task = await CreateTasks(
+            poolData,
+            projectID2,
+            req.body.taskName,
+            req.body.taskDescription,
+            req.body.estimate
+          );
+          console.log(task);
+          res.status(201).send("Task: " + req.body.taskName + " Has now been created for " + req.body.projectToLink);
+  
+        break;
   
         default:
           break;
