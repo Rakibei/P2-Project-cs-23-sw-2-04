@@ -60,12 +60,6 @@ import {
 //import { ConvertJsonToExcel } from "./xlsx/xlsxTest.js";
 import path from "node:path";
 
-
-
-
-//import { ConvertJsonToExcel } from "./xlsx/xlsxTest.js";
-import path from "node:path";
-
 const { json } = express;
 const { urlencoded } = express;
 const { static: serveStatic } = express;
@@ -85,7 +79,6 @@ import { isProxy } from "util/types";
 const app = express();
 
 //The server listens on port 3110 localhost so the ip is 127.0.0.1:3110
-//The server listens on port 3110 localhost so the ip is 127.0.0.1:3110
 app.listen(3000);
 
 // Database connection
@@ -100,22 +93,11 @@ app.use(
     cookie: { secure: false },
   })
 );
-app.use(
-  session({
-    secret: "your secret here",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false },
-  })
-);
 
 //The servers private folder is static and is only able to be used after the isAuthenticated function has confirmed the user
 app.use("/private", isAuthenticated, serveStatic(join(__dirname, "private")));
-app.use("/private", isAuthenticated, serveStatic(join(__dirname, "private")));
 
 //This middleware allows the server to parse data sent in JSON and html forms format
-app.use(json());
-app.use(urlencoded());
 app.use(json());
 app.use(urlencoded());
 
@@ -127,21 +109,15 @@ app.use((req, res, next) => {
 
 // This get middleware is for when the server is called just on the url
 app.get("/", (req, res) => {
-app.get("/", (req, res) => {
   // The server logs the users cookie
   console.log("the cookie is ", req.session);
 
   // We check if the user has accesed the site before
   if (req.session.isAuthenticated == true) {
-  // We check if the user has accesed the site before
-  if (req.session.isAuthenticated == true) {
     // If they are authenticated then redirect them to the next site
     res.redirect("/private/homepage.html");
   } else {
-    res.redirect("/private/homepage.html");
-  } else {
     // If not send them to the login page
-    res.redirect("/index.html");
     res.redirect("/index.html");
   }
 });
@@ -210,15 +186,7 @@ app.get("/sesionData", async (req, res) => {
   req.session.week = week;
   req.session.save();
   res.json(req.session);
-  // The info is stored in session and is sent to the client
-  req.session.projects = userProjects;
-  req.session.userID = userID;
-  req.session.UserLevel = UserLevel;
-  req.session.week = week;
-  req.session.save();
-  res.json(req.session);
 
-  console.log("Data Sent");
   console.log("Data Sent");
 
 });
@@ -300,11 +268,6 @@ app.post("/submitTime", isAuthenticated, async (req, res) => {
       const taskEntry = req.body.projects[project][task];
       await PrepareTaskEntry(poolData, taskEntry, timeSheetId);
     }
-  for (const project in req.body.projects) {
-    for (const task in req.body.projects[project]) {
-      const taskEntry = req.body.projects[project][task];
-      await PrepareTaskEntry(poolData, taskEntry, timeSheetId);
-    }
   }
 });
 
@@ -326,38 +289,7 @@ async function makeNewTimeSheet(poolData, userID, week, year) {
   }
   return timeSheetId;
 }
-  return timeSheetId;
-}
 
-async function PrepareTaskEntry(poolData, taskEntry, timeSheetId) {
-  const retult = await CreateTaskEntry(
-    poolData,
-    taskEntry.taskId,
-    timeSheetId,
-    taskEntry.days.mondayHours,
-    taskEntry.days.tuesdayHours,
-    taskEntry.days.wednesdayHours,
-    taskEntry.days.thursdayHours,
-    taskEntry.days.fridayHours,
-    taskEntry.days.saturdayHours,
-    taskEntry.days.sundayHours
-  );
-}
-
-async function PrepareStaticTaskEntry(poolData, taskId, timeSheetId, hours) {
-  const retult = await CreateStaticTaskEntry(
-    poolData,
-    taskId,
-    timeSheetId,
-    hours.mondayHours,
-    hours.tuesdayHours,
-    hours.wednesdayHours,
-    hours.thursdayHours,
-    hours.fridayHours,
-    hours.saturdayHours,
-    hours.sundayHours
-  );
-}
 async function PrepareTaskEntry(poolData, taskEntry, timeSheetId) {
   const retult = await CreateTaskEntry(
     poolData,
@@ -389,8 +321,6 @@ async function PrepareStaticTaskEntry(poolData, taskId, timeSheetId, hours) {
 }
 
 // Handle 404 errors
-app.use((req, res) => {
-  res.status(404).send("404 error page does not exist");
 app.use((req, res) => {
   res.status(404).send("404 error page does not exist");
 });

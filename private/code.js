@@ -34,15 +34,7 @@ let firstday = 0;
 let lastday = 6;
 let currentday = 0;
 
-    for (let j = columns.length - 1; j >= 0; j--) {
-      const index = columns[j];
 
-      if (index >= 0 && index <= cells.length - 1) {
-        cells[index].style.display = "none";
-      }
-    }
-  }
-}
 
 function CreateTimeSheetTable(projects, timeSheetForUser, week, userName) {
   tableData = preparetableDataForTimeSheetTable(projects, timeSheetForUser);
@@ -91,34 +83,7 @@ function CreateNewRow() {
 
   //inserts a new row
   let row = tabletime.insertRow(1);
-  //inserts a new row
-  let row = tabletime.insertRow(1);
 
-  //inserts 8 new cells
-  let cell1 = row.insertCell(0);
-  let cell2 = row.insertCell(1);
-  let cell3 = row.insertCell(2);
-  let cell4 = row.insertCell(3);
-  let cell5 = row.insertCell(4);
-  let cell6 = row.insertCell(5);
-  let cell7 = row.insertCell(6);
-  let cell8 = row.insertCell(7);
-  let cell9 = row.insertCell(8);
-  let cell10 = row.insertCell(9);
-
-  //inserts the imput for the different cells
-  cell1.innerHTML = `<select name="ProjectsDropdown${newid}" class="ProjectsDropdown" id="ProjectsDropdown${newid}">
-                          <option value="Default">Select a project</option> 
-                          </select>`;
-  cell2.innerHTML = ` <select name="TasksDropdown${newid}" class="TasksDropdown" id="TasksDropdown${newid}" > </select>`;
-  cell3.innerHTML = `<input type="number" id="monday${newid}" value="0" step="0.5" name="monday${newid}" value="0" oninput="validity.valid||(value='0');" step="0.5" min="0" max="20">`;
-  cell4.innerHTML = `<input type="number" id="tuesday${newid}" value="0" step="0.5" name="monday${newid}" value="0" oninput="validity.valid||(value='0');" step="0.5" min="0" max="20">`;
-  cell5.innerHTML = `<input type="number" id="wednesday${newid}" value="0" step="0.5" name="monday${newid}" value="0" oninput="validity.valid||(value='0');" step="0.5" min="0" max="20">`;
-  cell6.innerHTML = `<input type="number" id="thursday${newid}" value="0" step="0.5" name="monday${newid}" value="0" oninput="validity.valid||(value='0');" step="0.5" min="0" max="20">`;
-  cell7.innerHTML = `<input type="number" id="friday${newid}" value="0" step="0.5" name="monday${newid}" value="0" oninput="validity.valid||(value='0');" step="0.5" min="0" max="20">`;
-  cell8.innerHTML = `<input type="number" id="saturday${newid}" value="0" step="0.5" name="monday${newid}" value="0" oninput="validity.valid||(value='0');" step="0.5" min="0" max="20">`;
-  cell9.innerHTML = `<input type="number" id="sunday${newid}" value="0" step="0.5" name="monday${newid}" value="0" oninput="validity.valid||(value='0');" step="0.5" min="0" max="20">`;
-  cell10.innerHTML = `<input type="button"class="DeleteRowButton" value="Delete Row" onclick="DeleteRow()">`;
   //inserts 8 new cells
   let cell1 = row.insertCell(0);
   let cell2 = row.insertCell(1);
