@@ -5,7 +5,6 @@ document.getElementById("projectButton").addEventListener("click", () => {
 
 
 
-
 document.querySelector('#projectCreationForm').addEventListener('submit', (event) => {
   event.preventDefault();
   const data = {

@@ -11,7 +11,33 @@
     <link rel="stylesheet" href="homepage.css">
 </head>
 <body>
-    
+    <script src="https://kit.fontawesome.com/ffe0f0379f.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="navbar/navbar.css">
+    <div class="nav">
+        <div id="menu-text" class="menu-button">
+            <p class="text unselectable">
+                <i id="menu-icon" class="fa-solid fa-bars"></i> MENU
+            </p>
+        </div>
+    </div>
+    <div id="menu" class="menu-closed">
+        <ul class="unselectable">
+            <li><a class="navbar" id="NavHome" href="../private/homepage.html">Home</a></li>
+            <li><a class="navbar" id="NavSheet" href="../private/userpage.html">See Time Sheet</a></li>
+            <li><a class="navbar" id="NavAdmin" href="../admin/admin.html">Admin</a></li>
+            <li><a class="navbar" id="NavManager" href="../manager/manager.html">Manager</a></li>
+            <li><a class="navbar" id="NavProjectManager" href="../ProjectManager/ProjectManager.html">Project Manager</a></li>
+            <li><a class="navbar" id="NavLogout">Log Out</a></li>
+            <div class="signal">
+             <img src="navbar/Signal.svg" style="width: 500px;">
+            </div>
+        </ul>
+    </div>
+
+    <script src="navbar/navbar.js"></script>
+</div><!--Navigation Bar End-->
+
+
     <div class="welcome-title"><span>Welcome</span></div>
     <div class="container">
         <div class="innermenu">
@@ -25,11 +51,8 @@
             <button id="logoutButton">Logout</button>
             </div>
 </div>  
-    
-
     <div id="profileInfo">
     </div>
-
 
     <script src="homepage.js"></script>
 </body>
