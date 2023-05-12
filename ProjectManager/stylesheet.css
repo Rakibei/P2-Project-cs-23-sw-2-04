@@ -45,7 +45,7 @@ html {
      }
 
 /* her justere jeg knapperne i navigation bar*/
-#LinkUserToProjectkButton , #showProjectsButton, #logoutButton {
+#LinkUserToProjectkButton , #showProjectsButton, #logoutButton, #CreateTaskButton {
     cursor: pointer;
     font-weight: 600;
     font-size: 20px;
@@ -87,6 +87,10 @@ html {
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 }
+#CreateTaskButton{
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
 .sbmt:hover {
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
@@ -119,6 +123,9 @@ html {
     width: 80%;
     padding: 50px;
     background: rgb(238, 240, 230);
+}
+#LinkUserToProjectContainer,#createTaskForProject { 
+    text-align: center;
 }
 /* her justere jeg form felterne */
 input[type=text] {
