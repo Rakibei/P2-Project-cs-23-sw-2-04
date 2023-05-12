@@ -117,7 +117,7 @@ table td,table th{
   text-align: center;
   font: size 15px;
   padding:2px 2px;
-  border: 1px solid white
+  border: 1px solid white;
 }
 table th{
 	background-color: rgb(16, 78, 178);
@@ -175,7 +175,14 @@ input{
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 } 
-
+#TimeSheetHistory:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#CurrentTimesheet:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
 @media all and (max-width: 500px ){
 
     #timeSheetButton{
@@ -184,4 +191,13 @@ input{
         margin-left: auto;
         margin-top: 5px;
     }
+
+    table td,table th {
+        font-size: 6px;
+}
+
+#CurrentTimesheet, #TimeSheetHistory, #logoutButton {
+    font-size: 15px;
+}
+
 }
