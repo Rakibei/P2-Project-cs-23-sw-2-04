@@ -11,50 +11,53 @@
     <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
-    <div class="welcome-title"><span>Welcome Project Manager</span></div>
-    <div class="container">
-        <div class="innermenu">
-            <button id="LinkUserToProjectkButton">Create a link to a user</button>
-            <button id="showProjectsButton">Show Projects</button>
-            <button id="CreateTaskButton">Create Task</button>
-        <br><br>
+<!--Navigation Bar Start--><div>
+<script src="https://kit.fontawesome.com/ffe0f0379f.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="navbar/navbar.css">
+    <div class="nav">
+        <div id="menu-text" class="menu-button">
+            <p class="text unselectable">
+                <i id="menu-icon" class="fa-solid fa-bars"></i> MENU
+            </p>
         </div>
-        <div class="logoutdiv">
-            <button id="logoutButton">Logout</button>
-        </div>
-  </div>
+    </div>
+    <div id="menu" class="menu-closed">
+        <ul class="unselectable">
+            <li><a class="navbar" id="NavHome" href="../private/homepage.html">Home</a></li>
+            <li><a class="navbar" id="NavSheet" href="../private/userpage.html">See Time Sheet</a></li>
+            <li><a class="navbar" id="NavAdmin" href="../admin/admin.html">Admin</a></li>
+            <li><a class="navbar" id="NavManager" href="../manager/manager.html">Manager</a></li>
+            <li><a class="navbar" id="NavProjectManager" href="../ProjectManager/ProjectManager.html">Project Manager</a></li>
+            <div class="signal">
+             <img src="navbar/Signal.svg" style="width: 500px;">
+            </div>
+        </ul>
+    </div>
 
+    <script src="navbar/navbar.js"></script>
+</div><!--Navigation Bar End-->
+
+    <div class="welcome-title"><span>Welcome Project Manager</span></div>
+    
+    <div class="menu">
+        <button id="LinkUserToProjectkButton">Create a link to a user</button>
+        <button id="showProjectsButton">Show Projects</button>
+        <br><br>
         <div id="LinkUserToProjectContainer">
             <form id="LinkUserToProjectForm">
-                <label for="userToLink">link User</label><br>
+                <label for="userToLink">link User</label>
                 <input type="text" name="userToLink" id="userToLink" placeholder="UserName" required> <br> <br>
-                <label for="projectToLinkForUser">link Project</label><br>
+                <label for="projectToLinkForUser">link Project</label>
                 <input type="text" name="projectToLinkForUser" id="projectToLinkForUser" placeholder="ProjectName" required> <br> <br>
                 <input type="submit" class="sbmt" value="Submit">
             </form>
         </div>
 
-
         <div id="showProjects">
             <div id="showProjectsReplace">
             </div>
         </div>
-         </div>
-
-        <div id="createTaskForProject">
-            <form id="createTaskForProjectForm">
-            <label for="projectToLinkFortask">Project name</label><br>
-            <input type="text" name="projectToLinkFortask" id="projectToLinkFortask" placeholder="ProjectName" > <br> <br>
-            <label for="taskName">Task name</label><br>
-            <input type="text" name="taskName" id="taskName" placeholder="TaskName" > <br> <br>
-            <label for="taskDescription">Task description</label><br>
-            <input type="text" name="taskDescription" id="taskDescription" placeholder="taskDescription" required> <br> <br>
-            <label for="estimate">estimate</label><br>
-            <input type="number" name="estimate" id="estimate" placeholder="0" required> <br> <br>
-            <input type="submit" class="sbmt" value="Create Task">            
-        </form>
     </div>
-
 
 
 
