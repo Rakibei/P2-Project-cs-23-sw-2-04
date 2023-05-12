@@ -4,7 +4,13 @@ import schedule from 'node-schedule';
 import {GetAllSubmitStatus, GetEmailfromSubmitstaus} from '../database/databaseTimeSheet.js';
 import {ConnectToDatabase} from '../database/databaseSetup.js';
 const poolData = ConnectToDatabase();
+//import cron, { schedule } from 'node-cron'
+import schedule from 'node-schedule';
+import {GetAllSubmitStatus, GetEmailfromSubmitstaus} from '../database/databaseTimeSheet.js';
+import {ConnectToDatabase} from '../database/databaseSetup.js';
+const poolData = ConnectToDatabase();
 
+export async function autoMailer(hours,mins,Weekday){
 export async function autoMailer(hours,mins,Weekday){
 
 //If you need to access the email account, the username is p2projectmail@gmail.com.
@@ -21,6 +27,16 @@ let transporter = nodemailer.createTransport({
     }
 });
 
+
+let mailOptions;
+
+
+schedule.scheduleJob(mins + ' ' + hours + ' * * '+ Weekday, async () => {
+let userIds = await GetAllSubmitStatus(poolData);
+let emails = await GetEmailfromSubmitstaus(poolData,userIds);
+console.log(emails);
+
+mailOptions = {
 
 let mailOptions;
 
@@ -59,5 +75,6 @@ transporter.sendMail(mailOptions, function (error, info) {
     }
 });
 });
+
 
 };
