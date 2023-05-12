@@ -1,22 +1,23 @@
 document.getElementById("LinkUserToProjectkButton").addEventListener("click",()=>{
-
-    document.getElementById("createTaskForProject").style.display = "block";
-    document.getElementById("LinkUserToProjectContainer").style.display = "none";
-    document.getElementById("showProjects").style.display = "block"
+  
+    document.getElementById("LinkUserToProjectContainer").style.display = "block";
+    document.getElementById("createTaskForProject").style.display = "none";
+    document.getElementById("showProjects").style.display = "none"
   })
   
 document.getElementById("showProjectsButton").addEventListener("click",()=>{
 
-    document.getElementById("LinkUserToProjectContainer").style.display = "block";
-    document.getElementById("showProjects").style.display = "none";
-    document.getElementById("createTaskForProject").style.display = "block";
+    document.getElementById("LinkUserToProjectContainer").style.display = "none";
+    document.getElementById("showProjects").style.display = "block";
+    document.getElementById("createTaskForProject").style.display = "none";
   })
 
   document.getElementById("CreateTaskButton").addEventListener("click",()=>{
 
-    document.getElementById("createTaskForProject").style.display = "none";
-    document.getElementById("showProjects").style.display = "block"
-    document.getElementById("LinkUserToProjectContainer").style.display = "block";
+    document.getElementById("showProjects").style.display = "none"
+    document.getElementById("LinkUserToProjectContainer").style.display = "none";
+    document.getElementById("createTaskForProject").style.display = "block";
+
   })
 
   

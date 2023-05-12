@@ -122,7 +122,7 @@ app.get("/", (req, res) => {
   }
 });
 // we now say that the client can acces the public folder otherwise the client does not send a get requst
-//app.use(serveStatic("public"));
+app.use(serveStatic("public"));
 
 // When the server recieves a post request to the server directly
 app.post("/", async (req, res) => {
