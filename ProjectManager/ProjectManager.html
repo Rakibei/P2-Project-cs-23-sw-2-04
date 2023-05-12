@@ -16,12 +16,14 @@
         <div class="innermenu">
             <button id="LinkUserToProjectkButton">Create a link to a user</button>
             <button id="showProjectsButton">Show Projects</button>
+            <button id="CreateTaskButton">Create Task</button>
         <br><br>
         </div>
         <div class="logoutdiv">
             <button id="logoutButton">Logout</button>
         </div>
   </div>
+
         <div id="LinkUserToProjectContainer">
             <form id="LinkUserToProjectForm">
                 <label for="userToLink">link User</label><br>
@@ -33,27 +35,26 @@
         </div>
 
 
-        <div id="createTaskForProject">
-            <form id="createTaskForProjectForm">
-                <label for="projectToLinkFortask">Project name</label>
-                <input type="text" name="projectToLinkFortask" id="projectToLinkFortask" placeholder="ProjectName" > <br> <br>
-                <label for="taskName">Task name</label>
-                <input type="text" name="taskName" id="taskName" placeholder="TaskName" > <br> <br>
-                <label for="taskDescription">Task description</label>
-                <input type="text" name="taskDescription" id="taskDescription" placeholder="taskDescription" required> <br> <br>
-                <label for="estimate">estimate</label>
-                <input type="number" name="estimate" id="estimate" placeholder="0" required> <br> <br>
-                <input type="submit" class="sbmt" value="Submit"    >            
-            </form>
-        </div>
-
-
-
         <div id="showProjects">
             <div id="showProjectsReplace">
             </div>
         </div>
+         </div>
+
+        <div id="createTaskForProject">
+            <form id="createTaskForProjectForm">
+            <label for="projectToLinkFortask">Project name</label><br>
+            <input type="text" name="projectToLinkFortask" id="projectToLinkFortask" placeholder="ProjectName" > <br> <br>
+            <label for="taskName">Task name</label><br>
+            <input type="text" name="taskName" id="taskName" placeholder="TaskName" > <br> <br>
+            <label for="taskDescription">Task description</label><br>
+            <input type="text" name="taskDescription" id="taskDescription" placeholder="taskDescription" required> <br> <br>
+            <label for="estimate">estimate</label><br>
+            <input type="number" name="estimate" id="estimate" placeholder="0" required> <br> <br>
+            <input type="submit" class="sbmt" value="Create Task">            
+        </form>
     </div>
+
 
 
 

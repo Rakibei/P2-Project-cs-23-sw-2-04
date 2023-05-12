@@ -7,6 +7,7 @@ import moment from "moment";
 import {
   ConnectToDatabase,
 
+//All the functions from the databases is imported, so the server can use them
 } from "./database/databaseSetup.js";
 import {
   GetProjects,
@@ -73,7 +74,6 @@ import ProjectManagerRequests from './routes/ProjectManagerRequests.js'
 
 import { autoMailer } from "./e-mail_notification/mail.js";
 import { isProxy } from "util/types";
-//import { autoMailer } from './e-mail_notification/mail.js';
 
 // The server is given the name app and calls from the express function
 const app = express();
@@ -101,7 +101,7 @@ app.use("/private", isAuthenticated, serveStatic(join(__dirname, "private")));
 app.use(json());
 app.use(urlencoded());
 
-// This middleware is to log all requsts sent to the server and log what methond they used and what they want.
+// This middleware is to log all requsts sent to the server and log what method they used and what they want.
 app.use((req, res, next) => {
   console.log("Request received:", req.method, req.url);
   next();
@@ -121,10 +121,10 @@ app.get("/", (req, res) => {
     res.redirect("/index.html");
   }
 });
-// we now say that the client can acces the public folder otherwise the client dosent send a get requst
-app.use(serveStatic("public"));
+// we now say that the client can acces the public folder otherwise the client does not send a get requst
+//app.use(serveStatic("public"));
 
-// When the server recives a post requst to the server directly
+// When the server recieves a post request to the server directly
 app.post("/", async (req, res) => {
   // For error handling to let the user know they typped wrong
   const comp = await ComparePassword(
@@ -134,42 +134,46 @@ app.post("/", async (req, res) => {
   );
   console.log(req.body);
   if (comp) {
-    // If the user is authenticated then the server redirects them and saves their cookie to show that they are
+    // If the user is authenticated then the server redirects them and saves their cookie to show that they are indeed authenticated
     console.log(req.body.username + " is here");
     req.session.isAuthenticated = true;
     req.session.userName = req.body.username;
     req.session.save();
     res.redirect("/private/homepage.html");
+    //If the username doesn´t exist in the database a alert will be sent
   } else if ((await GetUserIdWithName(poolData, req.body.username)) == false) {
     res.status(401).send("Invalid username");
+    //If the Password doesn´t match the username in the database a alert will be sent
   } else {
     res.status(401).send("Invalid password");
   }
 });
 
-// for when the user needs their userdata on the next page
+/*This is for when the user needs their userdata on the next page.
+  These are stored in variables for later use*/
 app.get("/sesionData", async (req, res) => {
   let userID = await GetUserIdWithName(poolData, req.session.userName);
   let userProjects = await GetUserProjects(poolData, userID);
   let UserLevel = await GetUserLevel(poolData, userID);
   
 
-  
-
   const week = moment().isoWeek();
   const year = new Date().getFullYear();
 
+  /*First the function isTimeSheetFound checks if there is an existing TimeSheet for the user
+    and if there is the timesheet is stored in the variable timeSheetForUSer wich is later stored in req.session.timeSheetForUser */
   if (await IsTimeSheetFound(poolData, userID, week, year)) {
     let timeSheetForUser = await GetFilledOutTimeSheetForUser(poolData, userID, week, year)
     //console.log(timeSheetForUser)
     timeSheetForUser.week = week;
     timeSheetForUser.year = year;
-      console.log(timeSheetForUser);
+    console.log(timeSheetForUser);
     req.session.timeSheetForUser = timeSheetForUser;
   }
 
 
-
+  /*This for loop iterates through all the projects that the user is assigned to.
+    For every project the GetProjectTasks function is used to get all the tasks for the selected project*/
   for (let i = 0; i < userProjects.length; i++) {
     userProjects[i].tasks = await GetProjectTasks(poolData, userProjects[i].id);
   }
@@ -236,25 +240,13 @@ app.use("/manager",IsManager, serveStatic(join(__dirname, "manager")));
 app.use("", managerRequests);
 
 
+//handle the projectMAnager function
 app.use("/ProjectManager",IsProjectManager, serveStatic(join(__dirname, "ProjectManager")));
 app.use("",ProjectManagerRequests);
-
-
-
-// Get a list of all projects that the manager is linked too
-
-// let req.session.userName
-
-// handle Admin functions
 
 // This folder is only accelisble after the user is confirmed to be an admin
 app.use("/admin", IsAdmin, serveStatic(join(__dirname, "admin")));
 app.use("", adminRequests);
-
-
-
-// 
-
 
 
 // Handle timesheet submition
