@@ -192,8 +192,11 @@ input{
     #LinkUserToManagerContainer,
     #LinkUserToManagerButton,
     #logoutButton{
-        font-size: 8px;
+        font-size: 12px;
         font-weight: bold;
+        margin: 1px;
+        padding: 0;
+        height: 45px;
     }
     input[type=text],
     input[type=number],

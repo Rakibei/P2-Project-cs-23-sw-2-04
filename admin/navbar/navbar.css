@@ -142,11 +142,8 @@ a.navbar {
         }
         
     #menu-text {
-        width: 10%;
+        width: 20%;
         border-radius: 3px;
         }
         
-    #WelcomeText {
-        padding-left: 40px;
-        }
 }
