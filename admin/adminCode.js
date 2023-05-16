@@ -112,27 +112,37 @@ document.querySelector('#projectCreationForm').addEventListener('submit', (event
     .catch(error => console.error(error));
 });
 
-
 document.querySelector('#searchUserLevel').addEventListener('submit', (event) => {
   event.preventDefault();
-  const data = {
-    seeUserLevel: event.target.seeUserLevel.value,
-    functionName: "seeUserLevel"
-  };
-  fetch('/adminRequests', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
+  document.querySelector("#SeeUserInfo").innerHTML = "";
+fetch("/adminRequests?functionName=seeUserLevel&users="+event.target.seeUserLevel.value,{
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+
+  }).then(async response => {
+    switch (response.status) {
+      case 400:
+      window.alert("User does not exist")
+      break;
+      case 500:
+      window.alert("Internal server error")
+      break;
+    }
+    return response.json();
   })
-    .then(response => {
-      response.json()
-        .then(data => { document.getElementById('SeeUserInfo').innerHTML = getUserLevelName(data); })
-      document.querySelector('#searchUserLevel').reset();
-    })
-    .catch(error => console.error(error));
-});
+  .then(async data =>{
+
+    console.log(JSON.stringify(data));
+
+    document.getElementById('SeeUserInfo').innerHTML = getUserLevelName(data); 
+    document.querySelector('#searchUserLevel').reset();
+  })
+    .catch(error => console.error(error)
+  );
+});   
+ 
 
 function getUserLevelName(data) {
   let TextResponse = "";

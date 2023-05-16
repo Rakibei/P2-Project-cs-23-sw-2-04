@@ -95,22 +95,6 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
         .send("Project: " + req.body.projectName + " has been created");
       break;
 
-    case "seeUserLevel":
-      let userID1 = await GetUserIdWithName(poolData, req.body.seeUserLevel);
-      if (userID1 === false) {
-        res
-          .status(400)
-          .send("User: " + req.body.seeUserLevel + " does not exist");
-        break;
-      }
-      let seeUserLevelData = await GetUserLevel(poolData, userID1);
-      if (seeUserLevelData === false) {
-        res.status(500).send("Internal Server Error");
-        break;
-      }
-      res.send(seeUserLevelData);
-      break;
-
     case "setUserLevel":
       let userID2 = await GetUserIdWithName(
         poolData,
@@ -277,5 +261,40 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
 
   console.log(req.body);
 });
+
+router.get("/adminRequests", IsAdmin, async (req, res) => {
+  
+  console.log(req.query);
+  switch (req.query.functionName) {
+    case "seeUserLevel":
+
+    let userID1 = await GetUserIdWithName(poolData, req.query.users);
+    if (userID1 === false) {
+      res
+        .status(400)
+        .send("User: " + req.query.seeUserLevel + " does not exist");
+      break;
+    }
+    let seeUserLevelData = await GetUserLevel(poolData, userID1);
+    if (seeUserLevelData === false) {
+      res.status(500).send("Internal Server Error");
+      break;
+    }
+    console.log(seeUserLevelData);
+    res.send(seeUserLevelData);
+    break;
+
+  default:
+    break;
+}
+
+
+
+})
+
+
+
+
+
 
 export default router;
