@@ -124,4 +124,16 @@ a.navbar {
         width: 50%;
         background-color: rgb(16, 78, 178);
     }
+
+    .textTitle {
+        display: none;
+    }
+
+    #menu-text{
+        width: 10%;
+        border-radius: 3px;
+    }
+    #WelcomeText{
+        padding-left: 40px;
+    }
 }
