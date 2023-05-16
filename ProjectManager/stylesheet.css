@@ -168,3 +168,20 @@ display: none;
 #createTaskForProject {
 display: none;
 }
+
+/* her justere mobil versionen */
+@media all and (max-width: 500px) {
+    input[type=text],
+    input[type=number],
+    input[type=date],
+    input[type=time],
+    input[type=checkbox],
+    input[type=password] {
+        width: 100%;
+    }
+
+    .sbmt {
+        width: 100%;
+    }
+    
+}

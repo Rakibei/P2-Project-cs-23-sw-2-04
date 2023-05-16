@@ -34,7 +34,6 @@ body {
     display: flex;
     align-items: center;
 }
-
 .welcome-title {
     line-height: 50px;
     background: rgb(16, 78, 178);
@@ -49,21 +48,6 @@ body {
     
 
  }
-.menu-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    font-weight: 600;
-    font-size: 20px;
-    width: 120px;
-    margin: 0;
-    margin-left: 3%;
-    margin-top: 7px;
-    margin-bottom: 7px; 
-    height: 36px;  
-}
-
 
 .menu-button:hover {
     cursor: pointer;
@@ -76,7 +60,7 @@ body {
 
 .menu-open {
     position: fixed;
-    background-color: darkblue;
+    background-color: rgba(16, 78, 178, 0.8);
     width: 30%;
     height: 50%;
     border-radius: 0px 0px 30px 0px;
@@ -104,6 +88,15 @@ li {
     margin-left: 20px;
 }
 
+li:hover {
+    background: rgb(208, 209, 210);
+}
+
+li a:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+
 a.navbar {
     text-decoration: none;
     color: white;
@@ -126,4 +119,11 @@ a.navbar {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+@media all and (max-width: 500px) {
+    .menu-open {
+        width: 50%;
+        background-color: rgb(16, 78, 178);
+    }
 }
