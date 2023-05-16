@@ -30,8 +30,7 @@ window.addEventListener('load', () => {
 fetch('/profileData')
 .then(response => response.json())
 .then(data => {
-    // Do something with session data here
-    console.log(data);
+    document.getElementById("WelcomeText").innerHTML += " " + data.userName;
 });
 
 
