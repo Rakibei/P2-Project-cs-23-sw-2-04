@@ -270,14 +270,12 @@ router.get("/adminRequests", IsAdmin, async (req, res) => {
 
     let userID1 = await GetUserIdWithName(poolData, req.query.users);
     if (userID1 === false) {
-      res
-        .status(400)
-        .send("User: " + req.query.seeUserLevel + " does not exist");
+      res.status(400);
       break;
     }
     let seeUserLevelData = await GetUserLevel(poolData, userID1);
     if (seeUserLevelData === false) {
-      res.status(500).send("Internal Server Error");
+      res.status(500);
       break;
     }
     console.log(seeUserLevelData);
