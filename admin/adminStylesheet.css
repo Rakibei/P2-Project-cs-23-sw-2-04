@@ -133,6 +133,7 @@ input[type=text],input[type=number],input[type=date],input[type=time],input[type
 /* her redigere jeg label*/
 label{
     padding-left: 0;
+    font-size: 20px;
 }
 
 /* her redigere jeg skrive felterne*/
@@ -150,7 +151,6 @@ input{
     margin-right: auto;
     }
     .container {
-        margin-left: 84px;
         display: flex;
         width: auto;
      }
@@ -194,5 +194,17 @@ input{
     #logoutButton{
         font-size: 8px;
         font-weight: bold;
+    }
+    input[type=text],
+    input[type=number],
+    input[type=date],
+    input[type=time],
+    input[type=checkbox],
+    input[type=password] {
+            width: 100%;
+        }
+
+    .sbmt{
+        width: 100%;
     }
 }
