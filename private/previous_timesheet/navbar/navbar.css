@@ -1,5 +1,8 @@
 * {
-    font-family: Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Nunito', sans-serif;
 }
 
 body {
@@ -36,6 +39,7 @@ body {
     align-items: center;
     background-color: white;
     font-size: 20px;
+    font-weight: 600;
     width: 120px;
     margin: 0;
     margin-left: 3%;
