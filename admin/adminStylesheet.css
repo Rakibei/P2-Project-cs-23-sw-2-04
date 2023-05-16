@@ -174,3 +174,19 @@ input{
 #LinkUserToManagerContainer{
     display: none;
 }
+
+/* her redigere jeg mobile udseende */
+@media all and (max-width: 500px) {
+    #userButton,
+    #projectButton,
+    #userLevelButton,
+    #ProjectManagerButton,
+    #CreateTaskButton,
+    #EmailNotificationButton,
+    #LinkUserToManagerContainer,
+    #LinkUserToManagerButton,
+    #logoutButton{
+        font-size: 8px;
+        font-weight: bold;
+    }
+}
