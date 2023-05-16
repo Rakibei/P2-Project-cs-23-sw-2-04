@@ -118,7 +118,7 @@ app.get("/", (req, res) => {
     res.redirect("/private/homepage.html");
   } else {
     // If not send them to the login page
-    res.redirect("/index.html");
+    res.redirect("/LoginPage.html");
   }
 });
 // we now say that the client can acces the public folder otherwise the client does not send a get requst
@@ -208,7 +208,7 @@ app.post("/userRequests", async (req, res) => {
   switch (req.body.functionName) {
     case "Logout":
       req.session.isAuthenticated = false;
-      res.redirect("/index.html");
+      res.redirect("/LoginPage.html");
       break;
 
     default:

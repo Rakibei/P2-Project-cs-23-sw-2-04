@@ -28,7 +28,7 @@ html {
 }
 
 /* her justere jeg de forskellig former*/
-#UserHolder,#timesheetcontainer {
+#UserHolder,.timesheetcontainer {
   font-size: 20px;
   font-weight: 400;
   border-radius: 10px;
@@ -39,10 +39,12 @@ html {
   text-align: center;
 }
 
+/*her redigere jeg selve tabellen */
 table{
-	width: 100%;
+	width: 90%;
 	border-collapse: collapse;
     border-radius: 1px;
+    margin: 0 auto;
 }
 
 /*her rediger jeg de forskellige rows and collumns*/
@@ -51,11 +53,11 @@ table td,table th{
   text-align: center;
   font: size 15px;
   padding:2px 2px;
-  border: 1px solid rgb(0, 0, 0)
+  border: 1px solid white;
 }
 table th{
 	background-color: rgb(16, 78, 178);
-	color:#000000;
+	color:#ffffff;
 }
 
 /* her justere jeg knapperne */
