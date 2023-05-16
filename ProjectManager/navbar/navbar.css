@@ -46,6 +46,22 @@ body {
     margin-top: 7px;
     margin-bottom: 7px;
 }
+.welcome-title {
+    line-height: 50px;
+    background: rgb(16, 78, 178);
+    padding-left: 0;
+    margin-right: 120px;
+    text-align: center;
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+    color: white;
+    font-size: 35px;
+    font-weight: 600;
+    height: 36px;
+    
+
+ }
+
 
 .menu-button:hover {
     cursor: pointer;
