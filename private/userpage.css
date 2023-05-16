@@ -21,15 +21,9 @@ html {
     margin-right: auto;
     }
     .container {
-        margin-left: 84px;
+        margin-left: 0px;
         display: flex;
         width: auto;
-     }
-     
-     
-     #logoutButton {
-        margin-left:auto;
-        margin-right:0;
      }
 
 /* her justere jeg knapperne i navigation bar*/
@@ -58,7 +52,7 @@ html {
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 }
-#ManagerButton:hover {
+#TimeSheetHistory:hover {
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 }
@@ -67,7 +61,7 @@ html {
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 }
-#ManagerButton a:hover {
+#TimeSheetHistory a:hover {
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 }
@@ -102,6 +96,10 @@ html {
     background: rgb(238, 240, 230);
 }
 
+#TimeSheetHistory a {
+    text-decoration: none;
+    color: black;
+}
 
 /*her redigere jeg selve tabellen */
 table{
