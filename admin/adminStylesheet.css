@@ -150,9 +150,15 @@ input{
     margin-right: auto;
     }
     .container {
-        margin-left: 0px;
+        margin-left: 84px;
         display: flex;
         width: auto;
+     }
+     
+     
+     #logoutButton {
+        margin-left:auto;
+        margin-right:0;
      }
 
 /* her er display kontrol over de forskellige menuer */
@@ -173,4 +179,20 @@ input{
 }
 #LinkUserToManagerContainer{
     display: none;
+}
+
+/* her redigere jeg mobile udseende */
+@media all and (max-width: 500px) {
+    #userButton,
+    #projectButton,
+    #userLevelButton,
+    #ProjectManagerButton,
+    #CreateTaskButton,
+    #EmailNotificationButton,
+    #LinkUserToManagerContainer,
+    #LinkUserToManagerButton,
+    #logoutButton{
+        font-size: 8px;
+        font-weight: bold;
+    }
 }

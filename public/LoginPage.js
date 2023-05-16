@@ -5,21 +5,6 @@ document.querySelector('form').addEventListener('submit', (event) => {
   const usrName = event.target.username.value;
   const pswrd = event.target.password.value;
 
-  // function shows an error message when input is invalid
-  function showInvalidInputMessage() {
-    window.alert("The input is invalid! Please try again.");
-  }
-
-  // function returns true when the length of the input is between the min and max length of allowed characters
-  function isValidLength(inputDataLength, min, max) {
-    return inputDataLength >= min && inputDataLength <= max;
-  }
-
-  // function returns true if there are only alphanumeric characters and some special characters in the input
-  function isValidChar(input) {
-    return /^[a-zA-Z0-9_-]+$/.test(input);
-  }
-
   // check if the input is valid
   if (isValidLength(usrName.length, 2, 25) && isValidChar(usrName) &&
     isValidLength(pswrd.length, 4, 25)) {
@@ -55,3 +40,17 @@ document.querySelector('form').addEventListener('submit', (event) => {
   }
 });
 
+  // function shows an error message when input is invalid
+  function showInvalidInputMessage() {
+    window.alert("The input is invalid! Please try again.");
+  }
+
+  // function returns true when the length of the input is between the min and max length of allowed characters
+  function isValidLength(inputDataLength, min, max) {
+    return inputDataLength >= min && inputDataLength <= max;
+  }
+
+  // function returns true if there are only alphanumeric characters and some special characters in the input
+  function isValidChar(input) {
+    return /^[a-zA-Z0-9_-]+$/.test(input);
+  }
