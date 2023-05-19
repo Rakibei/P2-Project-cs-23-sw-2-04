@@ -124,3 +124,22 @@ a.navbar {
     -ms-user-select: none;
     user-select: none;
 }
+@media all and (max-width: 500px) {
+    .menu-open {
+        width: 50%;
+        background-color: rgb(16, 78, 178);
+    }
+
+    .textTitle {
+        display: none;
+    }
+
+    #menu-text {
+        width: 20%;
+        border-radius: 3px;
+    }
+
+    #WelcomeText {
+        padding-left: 0px;
+    }
+}

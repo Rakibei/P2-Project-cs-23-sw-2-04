@@ -129,7 +129,7 @@ input{
 }
 
 /* her rediger jeg Add Row knappen*/
-#AddRow{
+#AddRow ,.DeleteRowButton{
     cursor: pointer;
     font-weight: 600;
     font-size: 100%;
@@ -169,6 +169,10 @@ input{
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 }  
+.DeleteRowButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
 #timeSheetButton:hover{
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
@@ -183,6 +187,10 @@ input{
 }
 @media all and (max-width: 500px ){
 
+    #timesheetcontainer{
+        padding: 5px;
+        font-size: 13px;
+    }
     #timeSheetButton{
         align-items: center;
         margin-right: auto;
@@ -191,9 +199,11 @@ input{
     }
 
     table td,table th {
-        font-size: 6px;
+        font-size: 13px;
 }
-
+    table th {
+        max-width: 100px;
+    }
 #CurrentTimesheet, #TimeSheetHistory, #logoutButton {
     font-size: 15px;
 }

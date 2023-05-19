@@ -145,5 +145,7 @@ a.navbar {
         width: 20%;
         border-radius: 3px;
         }
-        
+    #WelcomeText {
+        padding-left: 0px;
+    }
 }
