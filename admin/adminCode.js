@@ -247,7 +247,7 @@ document.querySelector('#exportButton').addEventListener('click', (event) => {
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = 'DanielTimeSheet.pdf';
+        link.download = 'ExportedTimeSheets.pdf';
         document.body.appendChild(link);
         link.click();
       });
@@ -271,7 +271,7 @@ document.querySelector('#exportButtonXlsx').addEventListener('click', (event) =>
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = 'DanielTimeSheet.xlsx';
+        link.download = 'ExportedTimeSheets.xlsx';
         document.body.appendChild(link);
         link.click();
       });

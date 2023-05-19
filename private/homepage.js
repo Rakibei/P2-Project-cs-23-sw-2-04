@@ -37,26 +37,48 @@ fetch('/profileData')
 });
 
 
-document.getElementById("logoutButton").addEventListener("click",() => {
 
-    const data = {
-        functionName: "Logout"
-    }
-
-    fetch('/userRequests', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-      .then(response => {
-        if (response.redirected) {
-            window.location.href = response.url;
-          }
-    
-      })
-      .catch(error => console.error(error));
-
-
+document.querySelector('#exportButtonPDF').addEventListener('click', (event) => {
+  event.preventDefault();
+  fetch('/UserRequsts?functionName=ExportPDF', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(response => {
+      response.blob().then(blob => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'ExportedTimeSheet.pdf';
+        document.body.appendChild(link);
+        link.click();
+      });
+    });
 });
+
+document.querySelector('#exportButtonXlsx').addEventListener('click', (event) => {
+  event.preventDefault();
+  const data = {
+    functionName: "ExportExcel"
+  };
+  fetch('/adminRequests', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+    .then(response => {
+      response.blob().then(blob => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'ExportedTimeSheet.xlsx';
+        document.body.appendChild(link);
+        link.click();
+      });
+    });
+});
+

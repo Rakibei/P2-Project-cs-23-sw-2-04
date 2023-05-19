@@ -162,18 +162,13 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
       break;
 
     case "ExportPDF":
-      let userID3 = await GetUserIdWithName(poolData, req.session.userName);
-      let projectID3 = await GetProjectIdWithName(
-        poolData,
-        req.session.userName
-      );
-      GetUserProjects(poolData, userID3).then((projects) => {
+      // let userID3 = await GetUserIdWithName(poolData, req.session.userName);
+      await GetProjects(poolData).then(async (projects) => {
         console.log(projects);
-
         if (projects != false) {
-          GetProjectTasks(poolData, projects[0].id).then((TaskData) => {
+          await GetProjectTasks(poolData, projects[0].id).then(async (TaskData) => {
             console.log(TaskData);
-            CreatePDF(req.session.userName, projects, TaskData).then(
+            await CreatePDF(req.session.userName, projects, TaskData).then(
               (pdfPath) => {
                 const stream = fs.createReadStream(pdfPath);
                 stream.on("open", () => {
@@ -197,8 +192,8 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
       break;
 
     case "ExportExcel":
-      let userID4 = await GetUserIdWithName(poolData, req.session.userName);
-      GetUserProjects(poolData, userID4).then((projects) => {
+      // let userID4 = await GetUserIdWithName(poolData, req.session.userName);
+      await GetProjects(poolData).then(async (projects) => {
         console.log(projects);
 
         if (projects != false) {

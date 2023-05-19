@@ -1,4 +1,5 @@
 // The servers parameters are set up so that it works with express
+import fs from "fs";
 import http, { get } from "http";
 import { join } from "path";
 import express, { query } from "express";
@@ -72,6 +73,9 @@ import managerRequests from './routes/ManagerRequests.js';
 import adminRequests from './routes/AdminRequests.js';
 import ProjectManagerRequests from './routes/ProjectManagerRequests.js'
 
+import { CreatePDF } from "./pdf/pdfTest.js";
+import { CreateXLSX } from "./xlsx/xlsxTest.js";
+
 import { autoMailer } from "./e-mail_notification/mail.js";
 import { isProxy } from "util/types";
 
@@ -87,10 +91,11 @@ const poolData = ConnectToDatabase();
 // Use session to set up cookies middleware before other middleware functions
 app.use(
   session({
-    secret: "your secret here",
+    secret: "q9w8e7r6t5y4u3i2o1p0",
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false },
+    cookie: { maxAge: 14400000 }
   })
 );
 
@@ -109,8 +114,8 @@ app.use((req, res, next) => {
 
 // This get middleware is for when the server is called just on the url
 app.get("/", (req, res) => {
-  // The server logs the users cookie
-  console.log("the cookie is ", req.session);
+  // The server logs the users session token
+  console.log("the session token is ", req.session);
 
   // We check if the user has accesed the site before
   if (req.session.isAuthenticated == true) {
@@ -247,6 +252,80 @@ app.use("",ProjectManagerRequests);
 // This folder is only accelisble after the user is confirmed to be an admin
 app.use("/admin", IsAdmin, serveStatic(join(__dirname, "admin")));
 app.use("", adminRequests);
+
+
+
+app.get("/UserRequsts", isAuthenticated, async (req, res) => {
+
+  console.log(req.query);
+
+switch (req.query.functionName) {
+  case "ExportPDF":
+      let userID3 = await GetUserIdWithName(poolData, req.session.userName);
+      GetUserProjects(poolData, userID3).then((projects) => {
+        console.log(projects);
+
+        if (projects != false) {
+          GetProjectTasks(poolData, projects[0].id).then((TaskData) => {
+            console.log(TaskData);
+            CreatePDF(req.session.userName, projects, TaskData).then(
+              (pdfPath) => {
+                const stream = fs.createReadStream(pdfPath);
+                stream.on("open", () => {
+                  stream.pipe(res);
+                });
+                stream.on("error", (err) => {
+                  res.end(err);
+                });
+                res.on("finish", () => {
+                  fs.unlink(pdfPath, (err) => {
+                    if (err) throw err;
+                    console.log("PDF file deleted");
+                  });
+                });
+              }
+            );
+          });
+        }
+      });
+      break;
+
+      case "ExportExcel":
+      let userID4 = await GetUserIdWithName(poolData, req.session.userName);
+      GetUserProjects(poolData, userID4).then((projects) => {
+        console.log(projects);
+
+        if (projects != false) {
+          GetProjectTasks(poolData, projects[0].id).then((TaskData) => {
+            console.log(TaskData);
+            CreateXLSX(req.session.userName, projects, TaskData).then(
+              (xlsxPath) => {
+                const stream = fs.createReadStream(xlsxPath);
+                stream.on("open", () => {
+                  stream.pipe(res);
+                });
+                stream.on("error", (err) => {
+                  res.end(err);
+                });
+                res.on("finish", () => {
+                  fs.unlink(xlsxPath, (err) => {
+                    if (err) throw err;
+                    console.log("XLSX file deleted");
+                  });
+                });
+              }
+            );
+          });
+        }
+      });
+
+      break;
+
+}
+
+});
+
+
 
 
 // Handle timesheet submition
