@@ -32,6 +32,8 @@ export async function CreatePDF(username,projectData, TaskData){
           doc.fontSize(12);
           doc.moveDown();
           projectData.forEach(project => {
+
+            
             doc.text(`Project Name: ${project.name}`,{align: 'left'});
             doc.text(`Start Date: ${project.startDate.toLocaleString()}`, { align: 'left' });
             doc.text(`End Date: ${project.endDate.toLocaleString()}`, { align: 'left' });
