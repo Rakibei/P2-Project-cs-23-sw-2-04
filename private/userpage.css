@@ -102,11 +102,12 @@ html {
 }
 
 /*her redigere jeg selve tabellen */
-table{
+#timesheet{
 	width: 90%;
 	border-collapse: collapse;
     border-radius: 1px;
     margin: 0 auto;
+    
 }
 
 /*her rediger jeg de forskellige rows and collumns*/

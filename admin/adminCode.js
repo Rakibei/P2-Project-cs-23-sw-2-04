@@ -357,11 +357,4 @@ document.querySelector('#SetTimeForEmailNotificationForm').addEventListener('sub
     .catch(error => console.error(error)); // Logs any errors to the console
 });
 
-
-
-
-
-
-
-
 console.log(document.cookie);
