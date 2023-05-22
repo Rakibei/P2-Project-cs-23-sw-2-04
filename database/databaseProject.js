@@ -20,17 +20,28 @@ export async function CreateProject(
   }
 }
 
+export async function GetProjectsForManager(pool, managerId) {
+  try {
+    const [projects] = await pool.query(`SELECT * FROM projects WHERE projectmanagerid = ?`, [
+      managerId,
+    ]);
+    return projects;
+  } catch (error) {
+    console.log(error);
+    return false; // error occurred
+  }
+}
 
 export async function GetProject(pool, id) {
-try {
-  const [project] = await pool.query(`SELECT * FROM projects WHERE id = ?`, [
-    id,
-  ]);
-  return project[0];
-} catch (error) {
-  console.log(error);
-  return false; // error occurred
-}
+  try {
+    const [project] = await pool.query(`SELECT * FROM projects WHERE id = ?`, [
+      id,
+    ]);
+    return project[0];
+  } catch (error) {
+    console.log(error);
+    return false; // error occurred
+  }
 }
 
 export async function GetProjects(pool) {
