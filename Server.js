@@ -132,7 +132,7 @@ app.post("/", async (req, res) => {
     req.body.username,
     req.body.password
   );
-  console.log(req.body);
+  console.log(req.body);  
   if (comp) {
     // If the user is authenticated then the server redirects them and saves their cookie to show that they are indeed authenticated
     console.log(req.body.username + " is here");

@@ -103,7 +103,7 @@ html {
 
 /*her redigere jeg selve tabellen */
 #timesheet{
-	width: 90%;
+	max-width: 90%;
 	border-collapse: collapse;
     border-radius: 1px;
     margin: 0 auto;
@@ -123,14 +123,16 @@ table th{
 	color:#ffffff;
 }
 
-
+input[type=number]{
+max-width: 50px;
+}
 /*her justere jeg input felterne */
 input{
     padding-left: 0px;
 }
 
 /* her rediger jeg Add Row knappen*/
-#AddRow ,.DeleteRowButton{
+#AddRow{
     cursor: pointer;
     font-weight: 600;
     font-size: 100%;
@@ -141,6 +143,20 @@ input{
     border-radius: 5px;
     align-items: center;
     width: 40%;
+    height: 30%;
+}
+
+.DeleteRowButton{
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 80%;
+    padding-left: 0px;
+    background: rgb(16, 78, 178);
+    color: white;
+    border: 1px solid rgb(16, 78, 178);
+    border-radius: 5px;
+    align-items: center;
+    width: 100%;
     height: 30%;
 }
 

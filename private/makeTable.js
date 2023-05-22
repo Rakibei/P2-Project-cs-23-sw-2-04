@@ -248,7 +248,7 @@ function makeHeaderForTable() {
     "Friday",
     "Saturday",
     "Sunday",
-    "Total For Week",
+    "Total",
   ].forEach((headerText) => {
     const header = document.createElement("th");
     header.textContent = headerText;
