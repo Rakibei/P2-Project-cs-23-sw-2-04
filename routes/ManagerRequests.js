@@ -142,9 +142,6 @@ router.post("/managerRequests", IsManager, async (req, res) => {
         let Status = await GetTimeSheetSubmit(poolData,result.timeSheetId);
 
         if (result !== false && Status.submitstatus == 0) {
-
-
-          
           TimeSheetData[CurrentNumb] = result;
           TimeSheetData[CurrentNumb]["Week"] = moment().isoWeek() - i;
           CurrentNumb++;

@@ -1,29 +1,7 @@
 let userName;
 let userID;
 
-document.getElementById("logoutButton").addEventListener("click",() => {
 
-  const data = {
-      functionName: "Logout"
-  }
-
-  fetch('/userRequests', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => {
-      if (response.redirected) {
-          window.location.href = response.url;
-        }
-  
-    })
-    .catch(error => console.error(error));
-
-
-});
 
 function getTimeSheetData() {
   let timeSheet = {
@@ -190,7 +168,20 @@ document
       },
       body: JSON.stringify(timeSheet),
     })
-      .then((response) => {})
+      .then((response) => {
+        
+
+        console.log(response);
+        switch (response.status) {
+          case 200:
+            alert("Time sheet submited");
+          break;
+        }
+
+
+
+
+      })
       .catch((error) => console.error(error));
   });
 

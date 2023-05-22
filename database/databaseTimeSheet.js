@@ -56,6 +56,9 @@ try {
   await pool.query(
     'DELETE FROM staticTaskEntry WHERE timeSheetId = ?', timeSheetId
   )
+  await pool.query(
+    'UPDATE timesheet SET submitstatus = 0 WHERE id = ?' , timeSheetId
+  )
   return true;
 } catch (error) {
   console.log(error);

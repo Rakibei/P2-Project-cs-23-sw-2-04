@@ -34,7 +34,7 @@ import {
   ApproveTimeSheet,
 } from "../database/databaseTimeSheet.js";
 
-import { CreatePDF } from "../pdf/pdfTest.js";
+import { CreatePDFForAdmin } from "../pdf/pdfTest.js";
 import { CreateXLSX } from "../xlsx/xlsxTest.js";
 import { autoMailer } from "../e-mail_notification/mail.js";
 
@@ -162,32 +162,32 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
       break;
 
     case "ExportPDF":
-      // let userID3 = await GetUserIdWithName(poolData, req.session.userName);
-      await GetProjects(poolData).then(async (projects) => {
-        console.log(projects);
-        if (projects != false) {
-          await GetProjectTasks(poolData, projects[0].id).then(async (TaskData) => {
-            console.log(TaskData);
-            await CreatePDF(req.session.userName, projects, TaskData).then(
-              (pdfPath) => {
-                const stream = fs.createReadStream(pdfPath);
-                stream.on("open", () => {
-                  stream.pipe(res);
-                });
-                stream.on("error", (err) => {
-                  res.end(err);
-                });
-                res.on("finish", () => {
-                  fs.unlink(pdfPath, (err) => {
-                    if (err) throw err;
-                    console.log("PDF file deleted");
-                  });
-                });
-              }
-            );
-          });
-        }
-      });
+     
+     let ProjectsToExport = GetProjects(poolData).then(async (projects) => {
+       if (projects != false) {
+         for (let i = 0; i < projects.length; i++) {
+           projects[i].tasks = await GetProjectTasks(poolData, projects[i].id);
+         }
+
+         CreatePDFForAdmin(projects).then(
+           (pdfPath) => {
+             const stream = fs.createReadStream(pdfPath);
+             stream.on("open", () => {
+               stream.pipe(res);
+             });
+             stream.on("error", (err) => {
+               res.end(err);
+             });
+             res.on("finish", () => {
+               fs.unlink(pdfPath, (err) => {
+                 if (err) throw err;
+                 console.log("PDF file deleted");
+               });
+             });
+           }
+         );
+       }
+     });
 
       break;
 
