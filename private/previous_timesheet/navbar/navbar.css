@@ -73,7 +73,7 @@ body {
 
 .menu-open {
     position: fixed;
-    background-color: darkblue;
+    background-color: rgba(16, 78, 178, 0.8);
     width: 30%;
     height: 50%;
     border-radius: 0px 0px 30px 0px;
@@ -100,7 +100,14 @@ li {
     margin-top: 10px;
     margin-left: 20px;
 }
+li:hover {
+    background: rgb(208, 209, 210);
+}
 
+li a:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
 a.navbar {
     text-decoration: none;
     color: white;
