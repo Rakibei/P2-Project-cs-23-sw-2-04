@@ -180,8 +180,16 @@ display: none;
         width: 100%;
     }
 
+    #LinkUserToProjectkButton,
+    #showProjectsButton,
+    #CreateTaskButton {
+        font-size: 13px;
+    }
     .sbmt {
         width: 100%;
     }
-    
+    span{
+        line-height: 100%;
+        font-size: 50%;
+    }
 }

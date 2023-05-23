@@ -174,7 +174,17 @@ input[type=text],input[type=number],input[type=date],input[type=time],input[type
         width: 100%;
     }
 
+    #projectButton,
+    #ManagerButton,
+    #logoutButton {
+        font-size: 13px;
+    }
+
     #projectCreationForm {
         padding: 10px;
+    }
+    span{
+        line-height: 100%;
+        font-size: 70%;
     }
 }

@@ -1,3 +1,4 @@
+//sets up event to when form is submitted
 document.querySelector('form').addEventListener('submit', (event) => {
   event.preventDefault();
 
@@ -12,8 +13,8 @@ document.querySelector('form').addEventListener('submit', (event) => {
       username: usrName,
       password: pswrd
     };
-
-    fetch('http://127.0.0.1:3000', {
+    //makes a POST request to the server to see if the log in is correct
+    fetch('/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -21,12 +22,13 @@ document.querySelector('form').addEventListener('submit', (event) => {
       body: JSON.stringify(data)
     })
       .then(response => {
+        //if the user is not found or password does not match. Give an alert to the user
         if (response.status === 401) {
           response.text().then(data => {
             alert(data);
           });
         }
-
+        //if the log in is successful then redirect the user
         if (response.redirected) {
           window.location.href = response.url;
         }

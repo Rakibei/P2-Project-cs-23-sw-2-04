@@ -181,6 +181,7 @@ input{
     display: none;
 }
 
+
 /* her redigere jeg mobile udseende */
 @media all and (max-width: 500px) {
     #userButton,
@@ -192,7 +193,7 @@ input{
     #LinkUserToManagerContainer,
     #LinkUserToManagerButton,
     #logoutButton{
-        font-size: 12px;
+        font-size: 13px;
         font-weight: bold;
         margin: 1px;
         padding: 0;
@@ -209,5 +210,9 @@ input{
 
     .sbmt{
         width: 100%;
+    }
+    span {
+        line-height: 100%;
+        font-size: 70%;
     }
 }

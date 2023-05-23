@@ -108,8 +108,7 @@ import {
             poolData,
             projectID2,
             req.body.taskName,
-            req.body.taskDescription,
-            req.body.estimate
+            req.body.taskDescription
           );
           console.log(task);
           res.status(201).send("Task: " + req.body.taskName + " Has now been created for " + req.body.projectToLink);

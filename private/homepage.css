@@ -101,6 +101,7 @@ Button:hover {
          border: 1px solid rgb(238, 240, 230);
          border-radius: 5px;
          margin: 3px;
+         
       }
 
       .container {
@@ -108,4 +109,10 @@ Button:hover {
          display: flex;
          width: auto;
       }
+
+      span{
+         line-height: 100%;
+         font-size: 70%;
+      }
+
 }

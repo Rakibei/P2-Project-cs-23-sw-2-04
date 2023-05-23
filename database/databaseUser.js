@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { GetUserProjects } from "./databaseProject.js";
+import { GetProjectsForManager } from "./databaseProject.js";
 import { NULL } from "mysql/lib/protocol/constants/types.js";
 
 export async function GetUsers(pool) {
@@ -101,7 +101,12 @@ export async function GetUsernameWithID(pool, userID) {
       "SELECT * FROM users WHERE id = ?",
       [userID]
     );
-    return username[0].username;
+    if(username.length > 0) {
+      return username[0].username;
+
+    } else {
+      return false;
+    }
   } catch (error) {
     console.log(error);
     return false; // error occurred
@@ -122,7 +127,7 @@ export async function GetUserLevel(pool, userId) {
     };
     userLevel.isAdmin = user[0].isAdmin;
     userLevel.isManager = user[0].isManager;
-    const userProjects = await GetUserProjects(pool, userId)
+    const userProjects = await GetProjectsForManager(pool, userId)
     if (userProjects.length != 0) {
       userLevel.isProjectManager = 1;
     }
