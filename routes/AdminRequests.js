@@ -36,7 +36,7 @@ import {
 } from "../database/databaseTimeSheet.js";
 
 import { CreatePDFForAdmin } from "../pdf/pdfTest.js";
-import { CreateXLSXForAllProjects } from "../xlsx/xlsxExport.js";
+import { CreateXLSX } from "../xlsx/xlsxExport.js";
 import { autoMailer } from "../e-mail_notification/mail.js";
 
 // The frameworks we use are imported
@@ -238,7 +238,7 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
         }
       }
       
-      const xlsxPath = await CreateXLSXForAllProjects(projectObjects);
+      const xlsxPath = await CreateXLSX(projectObjects);
 
       const stream = fs.createReadStream(xlsxPath);
       stream.on("open", () => {
