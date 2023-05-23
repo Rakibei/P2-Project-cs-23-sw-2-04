@@ -60,7 +60,7 @@ document
     const data = {
       functionName: "ExportExcel",
     };
-    fetch("/adminRequests", {
+    fetch("/adminRequests", { 
       method: "POST",
       headers: {
         "Content-Type": "application/json",
