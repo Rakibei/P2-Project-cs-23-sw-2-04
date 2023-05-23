@@ -296,32 +296,52 @@ switch (req.query.functionName) {
       break;
 
       case "ExportExcel":
-      let userID4 = await GetUserIdWithName(poolData, req.session.userName);
-      GetUserProjects(poolData, userID4).then((projects) => {
-        console.log(projects);
-
-        if (projects != false) {
-          GetProjectTasks(poolData, projects[0].id).then((TaskData) => {
-            console.log(TaskData);
-            CreateXLSX(req.session.userName, projects, TaskData).then(
-              (xlsxPath) => {
-                const stream = fs.createReadStream(xlsxPath);
-                stream.on("open", () => {
-                  stream.pipe(res);
-                });
-                stream.on("error", (err) => {
-                  res.end(err);
-                });
-                res.on("finish", () => {
-                  fs.unlink(xlsxPath, (err) => {
-                    if (err) throw err;
-                    console.log("XLSX file deleted");
-                  });
-                });
-              }
-            );
-          });
+      const userID = await GetUserIdWithName(poolData, req.session.userName);
+      const projects = await GetUserProjects(poolData, userID); 
+      if(projects >! 0 || projects == false) {
+        //send alert to user that input is not valid
+        break;
+      }
+      let projectObjects = [];
+      for (let i = 0; i < projects.length; i++) {
+        projectObjects.push({
+          project: projects[i],
+          tasksForProject: await GetProjectTasks(poolData, projects[i].id)
+        });
+      }
+      for (let i = 0; i < projectObjects.length; i++) {
+        projectObjects[i].project.projectmanager = await GetUsernameWithID(poolData, projectObjects[i].project.projectmanagerid);
+        if(!projectObjects[i].project.projectmanager) {projectObjects[i].project.projectmanager = "No one is manager for this project"}
+        projectObjects[i].project.totalHours = 0;
+        for (let j = 0; j < projectObjects[i].tasksForProject.length; j++) {
+          const totalHoursForTask = await GetTotalTimeForTask(poolData, projectObjects[i].tasksForProject[j].id);
+          projectObjects[i].tasksForProject[j].totalHours = totalHoursForTask;
+          projectObjects[i].project.totalHours += totalHoursForTask;
         }
+      }
+      for (let i = 0; i < projectObjects.length; i++) {
+        delete projectObjects[i].project.projectmanagerid;
+        delete projectObjects[i].project.id;
+        for (let j = 0; j < projectObjects[i].tasksForProject.length; j++) {
+          delete projectObjects[i].tasksForProject[j].id
+          delete projectObjects[i].tasksForProject[j].projectId
+        }
+      }
+      
+      const xlsxPath = await CreateXLSX(projectObjects);
+
+      const stream = fs.createReadStream(xlsxPath);
+      stream.on("open", () => {
+        stream.pipe(res);
+      });
+      stream.on("error", (err) => {
+        res.end(err);
+      });
+      res.on("finish", () => {
+        fs.unlink(xlsxPath, (err) => {
+          if (err) throw err;
+          console.log("XLSX file deleted");
+        });
       });
 
       break;
