@@ -57,15 +57,11 @@ document
   .querySelector("#exportButtonXlsx")
   .addEventListener("click", (event) => {
     event.preventDefault();
-    const data = {
-      functionName: "ExportExcel",
-    };
-    fetch("/adminRequests", { 
-      method: "POST",
+    fetch("/UserRequsts?functionName=ExportExcel", {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
     }).then((response) => {
       response.blob().then((blob) => {
         const url = URL.createObjectURL(blob);
