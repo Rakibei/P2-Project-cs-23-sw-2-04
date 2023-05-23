@@ -1,30 +1,6 @@
 let userName;
 let userID;
 
-// Add an event listener to the logoutButton element
-document.getElementById("logoutButton").addEventListener("click", () => {
-  // Create an object to hold the data for the request
-  const data = {
-    functionName: "Logout",
-  };
-
-  // Make a POST request to the /userRequests endpoint
-  fetch("/userRequests", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => {
-      // Check if the response has been redirected
-      if (response.redirected) {
-        // If redirected, change the window location to the redirected URL
-        window.location.href = response.url;
-      }
-    })
-    .catch((error) => console.error(error));
-});
 
 function getTimeSheetData() {
   // Initialize the timeSheet object with default values

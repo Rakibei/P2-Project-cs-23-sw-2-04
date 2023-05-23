@@ -8,9 +8,9 @@ export async function CreateProject(
   ProjectManagerID,
 ) {
   try {
-    const values = [name, startDate, endDate, hoursSpent,ProjectManagerID];
+    const values = [name, startDate, endDate,ProjectManagerID];
     await pool.query(
-      "INSERT INTO projects (name, startDate, endDate, hoursSpent, projectmanagerid) VALUES (?, ?, ?, ?,?)",
+      "INSERT INTO projects (name, startDate, endDate, projectmanagerid) VALUES (?, ?, ?, ?,?)",
       values
     );
     return true; // success
@@ -60,6 +60,7 @@ try {
     "SELECT * FROM projects WHERE name = ?",
     [projectName]
   );
+  console.log(projectId);
   return projectId[0].id;
 } catch (error) {
   console.log(error);

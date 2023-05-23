@@ -101,7 +101,12 @@ export async function GetUsernameWithID(pool, userID) {
       "SELECT * FROM users WHERE id = ?",
       [userID]
     );
-    return username[0].username;
+    if(username.length > 0) {
+      return username[0].username;
+
+    } else {
+      return false;
+    }
   } catch (error) {
     console.log(error);
     return false; // error occurred

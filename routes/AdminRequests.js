@@ -32,10 +32,11 @@ import {
   GetTimeSheetId,
   GetFilledOutTimeSheetForUser,
   ApproveTimeSheet,
+  GetTotalTimeForTask,
 } from "../database/databaseTimeSheet.js";
 
 import { CreatePDF } from "../pdf/pdfTest.js";
-import { CreateXLSX } from "../xlsx/xlsxTest.js";
+import { CreateXLSXForAllProjects } from "../xlsx/xlsxExport.js";
 import { autoMailer } from "../e-mail_notification/mail.js";
 
 import http from "http";
@@ -86,7 +87,6 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
         req.body.projectName,
         req.body.projectStartDate,
         req.body.projectEndDate,
-        req.body.projectHoursSpent,
         ProjectManagerID5
       );
       console.log(CreateProjectData);
@@ -163,7 +163,7 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
 
     case "ExportPDF":
       let userID3 = await GetUserIdWithName(poolData, req.session.userName);
-      let projectID3 = await GetProjectIdWithName(
+      let projectID3 = await GetUserProjects(
         poolData,
         req.session.userName
       );
@@ -197,35 +197,50 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
       break;
 
     case "ExportExcel":
-      let userID4 = await GetUserIdWithName(poolData, req.session.userName);
-      GetUserProjects(poolData, userID4).then((projects) => {
-        console.log(projects);
-
-        if (projects != false) {
-          GetProjectTasks(poolData, projects[0].id).then((TaskData) => {
-            console.log(TaskData);
-            CreateXLSX(req.session.userName, projects, TaskData).then(
-              (xlsxPath) => {
-                const stream = fs.createReadStream(xlsxPath);
-                stream.on("open", () => {
-                  stream.pipe(res);
-                });
-                stream.on("error", (err) => {
-                  res.end(err);
-                });
-                res.on("finish", () => {
-                  fs.unlink(xlsxPath, (err) => {
-                    if (err) throw err;
-                    console.log("XLSX file deleted");
-                  });
-                });
-              }
-            );
-          });
+      const projects = await GetProjects(poolData); 
+      let projectObjects = [];
+      for (let i = 0; i < projects.length; i++) {
+        projectObjects.push({
+          project: projects[i],
+          tasksForProject: await GetProjectTasks(poolData, projects[i].id)
+        });
+      }
+      for (let i = 0; i < projectObjects.length; i++) {
+        projectObjects[i].project.projectmanager = await GetUsernameWithID(poolData, projectObjects[i].project.projectmanagerid);
+        if(!projectObjects[i].project.projectmanager) {projectObjects[i].project.projectmanager = "No one is manager for this project"}
+        projectObjects[i].project.totalHours = 0;
+        for (let j = 0; j < projectObjects[i].tasksForProject.length; j++) {
+          const totalHoursForTask = await GetTotalTimeForTask(poolData, projectObjects[i].tasksForProject[j].id);
+          projectObjects[i].tasksForProject[j].totalHours = totalHoursForTask;
+          projectObjects[i].project.totalHours += totalHoursForTask;
         }
-      });
+      }
+      for (let i = 0; i < projectObjects.length; i++) {
+        delete projectObjects[i].project.projectmanagerid;
+        delete projectObjects[i].project.id;
+        for (let j = 0; j < projectObjects[i].tasksForProject.length; j++) {
+          delete projectObjects[i].tasksForProject[j].id
+          delete projectObjects[i].tasksForProject[j].projectId
+        }
+      }
+      
+      const xlsxPath = await CreateXLSXForAllProjects(projectObjects);
 
+      const stream = fs.createReadStream(xlsxPath);
+      stream.on("open", () => {
+        stream.pipe(res);
+      });
+      stream.on("error", (err) => {
+        res.end(err);
+      });
+      res.on("finish", () => {
+        fs.unlink(xlsxPath, (err) => {
+          if (err) throw err;
+          console.log("XLSX file deleted");
+        });
+      });
       break;
+
     case "CreateTasks":
       let projectID2 = await GetProjectIdWithName(
         poolData,
@@ -236,7 +251,6 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
         projectID2,
         req.body.taskName,
         req.body.taskDescription,
-        req.body.estimate
       );
       console.log(task);
       res
