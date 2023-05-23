@@ -71,7 +71,7 @@ import adminRequests from './routes/AdminRequests.js';
 import ProjectManagerRequests from './routes/ProjectManagerRequests.js'
 
 import { CreatePDFForUser } from "./pdf/pdfTest.js";
-import { CreateXLSX } from "./xlsx/xlsxTest.js";
+import { CreateXLSX } from "./xlsx/xlsxExport.js";
 
 import { autoMailer } from "./e-mail_notification/mail.js";
 import { isProxy } from "util/types";
