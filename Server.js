@@ -8,7 +8,7 @@ import moment from "moment";
 import {
   ConnectToDatabase,
 
-//All the functions from the databases is imported, so the server can use them
+  //All the functions from the databases is imported, so the server can use them
 } from "./database/databaseSetup.js";
 import {
   GetProjects,
@@ -42,18 +42,18 @@ import {
   GetTimeSheetId,
   GetFilledOutTimeSheetForUser,
   GetFilledOutTimeSheetsForUser,
+  GetTotalTimeForTask,
   ApproveTimeSheet,
   GetAllSubmitStatus,
   GetEmailfromSubmitstaus,
 } from "./database/databaseTimeSheet.js";
 
-import { 
+import {
   IsAdmin,
   IsManager,
-  isAuthenticated, 
+  isAuthenticated,
   IsProjectManager,
-} from './routes/Authentication.js';
-
+} from "./routes/Authentication.js";
 
 //import { ConvertJsonToExcel } from "./xlsx/xlsxTest.js";
 import path from "node:path";
@@ -66,9 +66,9 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 import session from "express-session";
 import { stringify } from "querystring";
 import { Console, log } from "console";
-import managerRequests from './routes/ManagerRequests.js';
-import adminRequests from './routes/AdminRequests.js';
-import ProjectManagerRequests from './routes/ProjectManagerRequests.js'
+import managerRequests from "./routes/ManagerRequests.js";
+import adminRequests from "./routes/AdminRequests.js";
+import ProjectManagerRequests from "./routes/ProjectManagerRequests.js";
 
 import { CreatePDFForUser } from "./pdf/pdfTest.js";
 import { CreateXLSX } from "./xlsx/xlsxExport.js";
@@ -92,7 +92,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false },
-    cookie: { maxAge: 14400000 }
+    cookie: { maxAge: 14400000 },
   })
 );
 
@@ -133,7 +133,7 @@ app.post("/", async (req, res) => {
     req.body.username,
     req.body.password
   );
-  console.log(req.body);  
+  console.log(req.body);
   if (comp) {
     // If the user is authenticated then the server redirects them and saves their cookie to show that they are indeed authenticated
     console.log(req.body.username + " is here");
@@ -156,7 +156,6 @@ app.get("/sesionData", async (req, res) => {
   let userID = await GetUserIdWithName(poolData, req.session.userName);
   let userProjects = await GetUserProjects(poolData, userID);
   let UserLevel = await GetUserLevel(poolData, userID);
-  
 
   const week = moment().isoWeek();
   const year = new Date().getFullYear();
@@ -164,7 +163,12 @@ app.get("/sesionData", async (req, res) => {
   /*First the function isTimeSheetFound checks if there is an existing TimeSheet for the user
     and if there is the timesheet is stored in the variable timeSheetForUSer wich is later stored in req.session.timeSheetForUser */
   if (await IsTimeSheetFound(poolData, userID, week, year)) {
-    let timeSheetForUser = await GetFilledOutTimeSheetForUser(poolData, userID, week, year)
+    let timeSheetForUser = await GetFilledOutTimeSheetForUser(
+      poolData,
+      userID,
+      week,
+      year
+    );
     //console.log(timeSheetForUser)
     timeSheetForUser.week = week;
     timeSheetForUser.year = year;
@@ -172,13 +176,11 @@ app.get("/sesionData", async (req, res) => {
     req.session.timeSheetForUser = timeSheetForUser;
   }
 
-
   /*This for loop iterates through all the projects that the user is assigned to.
     For every project the GetProjectTasks function is used to get all the tasks for the selected project*/
   for (let i = 0; i < userProjects.length; i++) {
     userProjects[i].tasks = await GetProjectTasks(poolData, userProjects[i].id);
   }
-
 
   // The info is stored in session and is sent to the client
   req.session.projects = userProjects;
@@ -189,20 +191,21 @@ app.get("/sesionData", async (req, res) => {
   res.json(req.session);
 
   console.log("Data Sent");
-
 });
 
 // Route to get all the time sheets for a user for the time sheet history page
-app.get("/allTimesheetsForUser", async (req, res) =>  {
-
+app.get("/allTimesheetsForUser", async (req, res) => {
   // Database is called to get user and time sheet data
   const userID = await GetUserIdWithName(poolData, req.session.userName);
-  const timeSheetsForUser = await GetFilledOutTimeSheetsForUser(poolData, userID);
+  const timeSheetsForUser = await GetFilledOutTimeSheetsForUser(
+    poolData,
+    userID
+  );
 
   console.log(timeSheetsForUser);
-  
+
   // If there are any time sheets then save it in the session data
-  if(timeSheetsForUser.length > 0) {
+  if (timeSheetsForUser.length > 0) {
     req.session.timeSheetsForUser = timeSheetsForUser;
   }
 
@@ -224,11 +227,11 @@ app.post("/userRequests", async (req, res) => {
   }
 });
 
-// Route to get the current user info 
+// Route to get the current user info
 app.get("/profileData", async (req, res) => {
   // Ask database for data
   let userID = await GetUserIdWithName(poolData, req.session.userName);
-  let UserInfo = await GetUserInfoWithID(poolData,userID);
+  let UserInfo = await GetUserInfoWithID(poolData, userID);
 
   // User info is saved in the session data
   req.session.userID = userID;
@@ -238,44 +241,47 @@ app.get("/profileData", async (req, res) => {
   res.json(req.session);
 });
 
-
 // The manager folder is made accesible to users who are managers
-app.use("/manager",IsManager, serveStatic(join(__dirname, "manager")));
+app.use("/manager", IsManager, serveStatic(join(__dirname, "manager")));
 // The route for managerRequests is imported. "" refers to no extra route added and instead the route from manager requests is the deffinitive route
 app.use("", managerRequests);
 
-
 // The Project manager folder is made accesible to users who are managers
-app.use("/ProjectManager",IsProjectManager, serveStatic(join(__dirname, "ProjectManager")));
+app.use(
+  "/ProjectManager",
+  IsProjectManager,
+  serveStatic(join(__dirname, "ProjectManager"))
+);
 // The route for ProjectManagerRequests is imported
-app.use("",ProjectManagerRequests);
+app.use("", ProjectManagerRequests);
 
 // The admin folder is made accesible to users who are managers
 app.use("/admin", IsAdmin, serveStatic(join(__dirname, "admin")));
 // The route for adminRequests is imported
 app.use("", adminRequests);
 
-
 // To handle requsts from the homepage
 app.get("/UserRequsts", isAuthenticated, async (req, res) => {
+  console.log(req.query);
 
-console.log(req.query);
-
-switch (req.query.functionName) {
-  case "ExportPDF":
-    // The user info is gooten
+  switch (req.query.functionName) {
+    case "ExportPDF":
+      // The user info is gooten
       let userID3 = await GetUserIdWithName(poolData, req.session.userName);
       // All projects that are linked to the user is gotten
-      let ProjectsToExport = GetUserProjects(poolData, userID3).then(async (projects) => {
-        if (projects != false) {
-          for (let i = 0; i < projects.length; i++) {
-            projects[i].tasks = await GetProjectTasks(poolData, projects[i].id);
-          }
-          console.log("asdsdsdsad");
-          console.log(projects);
+      let ProjectsToExport = GetUserProjects(poolData, userID3).then(
+        async (projects) => {
+          if (projects != false) {
+            for (let i = 0; i < projects.length; i++) {
+              projects[i].tasks = await GetProjectTasks(
+                poolData,
+                projects[i].id
+              );
+            }
+            console.log("asdsdsdsad");
+            console.log(projects);
 
-          CreatePDFForUser(req.session.userName, projects).then(
-            (pdfPath) => {
+            CreatePDFForUser(req.session.userName, projects).then((pdfPath) => {
               const stream = fs.createReadStream(pdfPath);
               stream.on("open", () => {
                 stream.pipe(res);
@@ -289,10 +295,10 @@ switch (req.query.functionName) {
                   console.log("PDF file deleted");
                 });
               });
-            }
-          );
+            });
+          }
         }
-      });
+      );
       break;
 
       case "ExportExcel":
@@ -345,13 +351,8 @@ switch (req.query.functionName) {
       });
 
       break;
-
-}
-
+  }
 });
-
-
-
 
 // Handle timesheet submition
 app.post("/submitTime", isAuthenticated, async (req, res) => {
@@ -377,9 +378,8 @@ app.post("/submitTime", isAuthenticated, async (req, res) => {
       await PrepareTaskEntry(poolData, taskEntry, timeSheetId);
     }
   }
-  
-  res.status(200).send("Time sheet submited");
 
+  res.status(200).send("Time sheet submited");
 });
 
 async function makeNewTimeSheet(poolData, userID, week, year) {
@@ -435,4 +435,4 @@ async function PrepareStaticTaskEntry(poolData, taskId, timeSheetId, hours) {
 app.use((req, res) => {
   res.status(404).send("404 error page does not exist");
 });
-  
+});
