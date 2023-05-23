@@ -26,6 +26,9 @@ window.addEventListener("load", () => {
   Currentday determines wich day need to be showed to the user
   */
 
+
+
+
 let array_of_weekdayfunctions = [
   { monday: [3, 4, 5, 6, 7, 8] },
   { tuesday: [2, 4, 5, 6, 7, 8] },

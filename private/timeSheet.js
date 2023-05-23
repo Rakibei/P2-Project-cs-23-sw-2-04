@@ -1,30 +1,6 @@
 let userName;
 let userID;
 
-// Add an event listener to the logoutButton element
-document.getElementById("logoutButton").addEventListener("click", () => {
-  // Create an object to hold the data for the request
-  const data = {
-    functionName: "Logout",
-  };
-
-  // Make a POST request to the /userRequests endpoint
-  fetch("/userRequests", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => {
-      // Check if the response has been redirected
-      if (response.redirected) {
-        // If redirected, change the window location to the redirected URL
-        window.location.href = response.url;
-      }
-    })
-    .catch((error) => console.error(error));
-});
 
 function getTimeSheetData() {
   // Initialize the timeSheet object with default values
@@ -185,20 +161,25 @@ function collectProjectData(timeSheet, table, rowLength) {
   }
 }
 
-document.querySelector("#timeSheetButton").addEventListener("click", (event) => {
-  // Get the time sheet data
-  let timeSheet = getTimeSheetData();
+document.querySelector("#timeSheetButton").onclick = ConfirmBox;
 
-  // Make an HTTP POST request to submit the time sheet data
-  fetch("http://127.0.0.1:3000/submitTime", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(timeSheet),
-  })
-    .then((response) => {
-      // Handle the response if needed
-    })
-    .catch((error) => console.error(error));
-});
+function ConfirmBox() {
+ if (confirm("Are you sure you want to submit your timesheet?")) {
+   // Get the time sheet data
+   let timeSheet = getTimeSheetData();
+
+   // Make an HTTP POST request to submit the time sheet data
+   fetch("http://127.0.0.1:3000/submitTime", {
+     method: "POST",
+     headers: {
+       "Content-Type": "application/json",
+     },
+     body: JSON.stringify(timeSheet),
+   })
+     .then((response) => {
+       // Handle the response if needed
+     })
+     .catch((error) => console.error(error));
+ }
+}
+

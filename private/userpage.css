@@ -27,7 +27,7 @@ html {
      }
 
 /* her justere jeg knapperne i navigation bar*/
-#CurrentTimesheet, #TimeSheetHistory, #logoutButton {
+#TimeSheetHistory {
     cursor: pointer;
     font-weight: 600;
     font-size: 20px;
@@ -149,7 +149,7 @@ input{
 .DeleteRowButton{
     cursor: pointer;
     font-weight: 600;
-    font-size: 80%;
+    font-size: 70%;
     padding-left: 0px;
     background: rgb(16, 78, 178);
     color: white;
@@ -162,11 +162,11 @@ input{
 
 #timeSheetButton{
     display: block;
-    margin-right: 20px;
+    margin-right: auto;
     margin-left: auto;
     cursor: pointer;
     font-weight: 600;
-    font-size: 17px;
+    font-size: 25px;
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 3px;
