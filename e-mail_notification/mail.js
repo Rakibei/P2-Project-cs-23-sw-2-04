@@ -33,22 +33,9 @@ console.log(emails);
 mailOptions = {
     from: 'p2projectmail@gmail.com',
     bcc:  emails,
-    subject: 'Hej Hej',
-    text: 'Hej med dig!',
-    /*html: ' <img src="cid:china"/>' ,
-    watchHtml: 'Time for another monner! <img src="cid:china"/>',
-        attachments: [{
-            filename: 'chinaeye.png',
-            path: 'C:/Users/tkwa/OneDrive/Skrivebord/Lort/chinaeye.png',
-            cid: 'chinaeye' //same cid value as in the html img src
-            },
-            {
-            filename: 'china.gif',
-            path: 'C:/Users/tkwa/OneDrive/Skrivebord/Lort/china.gif',
-            cid: 'china' //same cid value as in the html img src
-
-        }]  
-    */
+    subject: 'Missing timesheet submission',
+    text: 'You are recieveing this email because you have not yet submitted your timesheet.\n Please remember to do this before the deadline.'
+    
     }
  
 transporter.sendMail(mailOptions, function (error, info) {

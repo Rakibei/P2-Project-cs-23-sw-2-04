@@ -211,7 +211,11 @@ router.post("/adminRequests", IsAdmin, async (req, res) => {
       break;
 
     case "ExportExcel":
-      const projects = await GetProjects(poolData); 
+      const projects = await GetProjects(poolData);
+      if(projects >! 0 || projects == false) {
+        //send alert to user that input is not valid
+        break;
+      } 
       let projectObjects = [];
       for (let i = 0; i < projects.length; i++) {
         projectObjects.push({
