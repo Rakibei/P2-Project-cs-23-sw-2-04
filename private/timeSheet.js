@@ -84,7 +84,8 @@ function collectTableData(timeSheetTaskSection, table, rowFromTable) {
   // Iterate over each day in the timeSheetTaskSection.days object
   for (const day in timeSheetTaskSection.days) {
     // Get the input element of type "number" from the specific cell in the table
-    let input = table.rows[rowFromTable].cells[i].querySelector("input[type=number]");
+    let input =
+      table.rows[rowFromTable].cells[i].querySelector("input[type=number]");
 
     // Retrieve the numeric value from the input element
     let value = Number(input.value);
@@ -120,7 +121,9 @@ function collectProjectData(timeSheet, table, rowLength) {
       timeSheet.projects[selectProject.value] = {};
     }
 
-    if (!timeSheet.projects[selectProject.value].hasOwnProperty(selectTask.value)) {
+    if (
+      !timeSheet.projects[selectProject.value].hasOwnProperty(selectTask.value)
+    ) {
       timeSheet.projects[selectProject.value][selectTask.value] = {
         taskName: "",
         taskId: 0,
@@ -150,7 +153,8 @@ function collectProjectData(timeSheet, table, rowLength) {
         item.name ===
         timeSheet.projects[selectProject.value][selectTask.value].taskName[0]
     );
-    timeSheet.projects[selectProject.value][selectTask.value].taskId = targetTask.id;
+    timeSheet.projects[selectProject.value][selectTask.value].taskId =
+      targetTask.id;
 
     // Collect table data for the specific project and task
     collectTableData(
@@ -161,25 +165,34 @@ function collectProjectData(timeSheet, table, rowLength) {
   }
 }
 
-document.querySelector("#timeSheetButton").onclick = ConfirmBox;
+document
+  .querySelector("#timeSheetButton")
+  .onclick = ConfirmBox;
 
 function ConfirmBox() {
  if (confirm("Are you sure you want to submit your timesheet?")) {
-   // Get the time sheet data
-   let timeSheet = getTimeSheetData();
+     // Get the time sheet data
+     let timeSheet = getTimeSheetData();
 
-   // Make an HTTP POST request to submit the time sheet data
-   fetch("http://127.0.0.1:3000/submitTime", {
-     method: "POST",
-     headers: {
-       "Content-Type": "application/json",
-     },
-     body: JSON.stringify(timeSheet),
-   })
-     .then((response) => {
-       // Handle the response if needed
+     // Make an HTTP POST request to submit the time sheet data
+     fetch("http://127.0.0.1:3000/submitTime", {
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+       },
+       body: JSON.stringify(timeSheet),
      })
-     .catch((error) => console.error(error));
- }
+       .then((response) => {
+         // Handle the response if needed
+ 
+        console.log(response);
+        switch (response.status) {
+          case 200:
+            alert("Time sheet submited");
+            break;
+        }
+      })
+       .catch((error) => console.error(error));
+   }
 }
 

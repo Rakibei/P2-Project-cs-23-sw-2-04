@@ -1,3 +1,4 @@
+// The functions from our database functions are imported
 import {
   ConnectToDatabase,
   
@@ -37,12 +38,10 @@ import {
   GetTimeSheetSubmit,
 } from "../database/databaseTimeSheet.js";
 
-
+// a conection to the database is made
 const poolData = ConnectToDatabase();
 
-
-
-
+// The frameworks we use are imported
 import http from "http";
 import { join } from "path";
 import express, { query } from "express";
@@ -58,7 +57,7 @@ import { stringify } from "querystring";
 import { Console, log } from "console";
 
 
-
+// Router is set up with express router this will make it posible to export the path to another main file
 const router = express.Router();
 
 
@@ -142,9 +141,6 @@ router.post("/managerRequests", IsManager, async (req, res) => {
         let Status = await GetTimeSheetSubmit(poolData,result.timeSheetId);
 
         if (result !== false && Status.submitstatus == 0) {
-
-
-          
           TimeSheetData[CurrentNumb] = result;
           TimeSheetData[CurrentNumb]["Week"] = moment().isoWeek() - i;
           CurrentNumb++;

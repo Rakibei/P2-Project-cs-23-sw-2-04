@@ -96,7 +96,6 @@ document.querySelector('#projectCreationForm').addEventListener('submit', (event
     projectName: event.target.projectName.value,
     projectStartDate: event.target.projectStartDate.value,
     projectEndDate: event.target.projectEndDate.value,
-    projectHoursSpent: event.target.projectHoursSpent.value,
     ProjectManager: event.target.ProjectManager.value,
     functionName: "CreateProject"
   };
@@ -261,9 +260,9 @@ document.querySelector('#exportButton').addEventListener('click', (event) => {
         const url = URL.createObjectURL(blob); // Extracts the data from the response and creates a URL for it
         const link = document.createElement('a'); // Creates a link element and sets its attributes
         link.href = url;
-        link.download = 'DanielTimeSheet.pdf';
-        document.body.appendChild(link); // Appends the link element to the HTML body
-        link.click();  // Simulates a click on the link element to download the file
+        link.download = 'ExportedTimeSheets.pdf';
+        document.body.appendChild(link);
+        link.click();
       });
     });
 });
@@ -287,9 +286,9 @@ document.querySelector('#exportButtonXlsx').addEventListener('click', (event) =>
         const url = URL.createObjectURL(blob);  // Extracts the data from the response and creates a URL for it
         const link = document.createElement('a');  // Creates a link element and sets its attributes
         link.href = url;
-        link.download = 'DanielTimeSheet.xlsx';
-        document.body.appendChild(link);   // Appends the link element to the HTML body
-        link.click();  // Simulates a click on the link element to download the file
+        link.download = 'ExportedTimeSheets.xlsx';
+        document.body.appendChild(link);
+        link.click();
       });
     });
 });
@@ -301,7 +300,6 @@ document.querySelector('#createTaskForProjectForm').addEventListener('submit', (
     projectToLink: event.target.projectToLinkFortask.value,
     taskDescription: event.target.taskDescription.value,
     taskName: event.target.taskName.value,
-    estimate: event.target.estimate.value,
     functionName: "CreateTasks"
   };
   console.log(data);

@@ -195,9 +195,9 @@ function makeNewTimeSheetTable(tableData, week, year, userName, timeSheetForUser
 
   // Check the timeSheetStatus and add appropriate caption text
   if (timeSheetForUser.timeSheetStatus == 1) {
-    caption.textContent += `This timeSheet is submitted `;
+    caption.textContent += `This timeSheet has been approved `;
   } else {
-    caption.textContent += `This timeSheet is not submitted `;
+    caption.textContent += `This timeSheet has not been approved `;
   }
 
   // Append the caption to the table
