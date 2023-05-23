@@ -95,20 +95,21 @@ export async function CreateTaskEntry(
   }
 }
 export async function DeleteAllTaskEntryForATimeSheet(pool, timeSheetId) {
-  try {
-    await pool.query(
-      "DELETE FROM taskEntry WHERE timeSheetId = ?",
-      timeSheetId
-    );
-    await pool.query(
-      "DELETE FROM staticTaskEntry WHERE timeSheetId = ?",
-      timeSheetId
-    );
-    return true;
-  } catch (error) {
-    console.log(error);
-    return false; // error occurred
-  }
+try {
+  await pool.query(
+    'DELETE FROM taskEntry WHERE timeSheetId = ?', timeSheetId
+  )
+  await pool.query(
+    'DELETE FROM staticTaskEntry WHERE timeSheetId = ?', timeSheetId
+  )
+  await pool.query(
+    'UPDATE timesheet SET submitstatus = 0 WHERE id = ?' , timeSheetId
+  )
+  return true;
+} catch (error) {
+  console.log(error);
+  return false; // error occurred
+}
 }
 
 export async function CreateTimeSheet(pool, userID, week, year) {
@@ -364,4 +365,5 @@ export async function GetTotalTimeForTask(pool, task) {
     return false; // error occurred
   }
 }
+
 

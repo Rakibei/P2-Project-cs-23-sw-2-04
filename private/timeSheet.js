@@ -175,6 +175,19 @@ document.querySelector("#timeSheetButton").addEventListener("click", (event) => 
   })
     .then((response) => {
       // Handle the response if needed
-    })
+    
+        
+
+        console.log(response);
+        switch (response.status) {
+          case 200:
+            alert("Time sheet submited");
+          break;
+        }
+
+
+
+
+      })
     .catch((error) => console.error(error));
 });

@@ -1,4 +1,6 @@
+// The standard authentication
 export function isAuthenticated(req, res, next) {
+  // Their session data is checked
     if (req.session.isAuthenticated) {
       next();
     } else {
@@ -8,6 +10,7 @@ export function isAuthenticated(req, res, next) {
   }
   
   export function IsAdmin(req, res, next) {
+    // Their session data is checked
     if (req.session.UserLevel.isAdmin) {
       next();
     } else {
@@ -17,6 +20,7 @@ export function isAuthenticated(req, res, next) {
   }
   
   export function IsManager(req, res, next) {
+    // Their session data is checked
     if (req.session.UserLevel.isManager) {
       next();
     } else {
@@ -26,6 +30,7 @@ export function isAuthenticated(req, res, next) {
   }
 
  export function IsProjectManager(req, res, next) {
+    // Their session data is checked
     if (req.session.UserLevel.isProjectManager) {
       next();
     } else {

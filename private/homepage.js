@@ -10,27 +10,70 @@ window.addEventListener("load", () => {
       UserLevel = data.UserLevel;
       console.log(UserLevel);
 
-      // Check if the user is an admin and display the admin button
       if (UserLevel.isAdmin) {
-        AdminButton = document.getElementById("AdminButton").style.display = "flex";
+        AdminButton = document.getElementById("AdminButton").style.display =
+          "flex";
       }
-
-      // Check if the user is a manager and display the manager button
       if (UserLevel.isManager) {
-        ManagerButton = document.getElementById("ManagerButton").style.display = "flex";
+        ManagerButton = document.getElementById("ManagerButton").style.display =
+          "flex";
       }
-
-      // Check if the user is a project manager and display the project manager button
       if (UserLevel.isProjectManager) {
-        ProjectManagerButton = document.getElementById("ProjectManagerButton").style.display = "flex";
+        ProjectManagerButton = document.getElementById(
+          "ProjectManagerButton"
+        ).style.display = "flex";
       }
     });
 
-  // Fetch profile data from "/profileData" endpoint
   fetch("/profileData")
     .then((response) => response.json())
     .then((data) => {
-      // Update the welcome text to include the user's name
       document.getElementById("WelcomeText").innerHTML += " " + data.userName;
     });
 });
+
+document
+  .querySelector("#exportButtonPDF")
+  .addEventListener("click", (event) => {
+    event.preventDefault();
+    fetch("/UserRequsts?functionName=ExportPDF", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      response.blob().then((blob) => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "ExportedTimeSheet.pdf";
+        document.body.appendChild(link);
+        link.click();
+      });
+    });
+  });
+
+document
+  .querySelector("#exportButtonXlsx")
+  .addEventListener("click", (event) => {
+    event.preventDefault();
+    const data = {
+      functionName: "ExportExcel",
+    };
+    fetch("/adminRequests", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((response) => {
+      response.blob().then((blob) => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "ExportedTimeSheet.xlsx";
+        document.body.appendChild(link);
+        link.click();
+      });
+    });
+  });

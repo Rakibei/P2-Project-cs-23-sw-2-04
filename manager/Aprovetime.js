@@ -14,7 +14,11 @@ window.addEventListener("load", () => {
         return response.json()
     })
     .then(async data =>{
+      if (data.length > 0) {
         await DisplayUsers(data);
+      } else{
+        window.alert("No users under you")
+      }
     })
       .catch(error => console.error(error));
     });      
@@ -75,8 +79,6 @@ window.addEventListener("load", () => {
 
 
       
-
-
       if (CurrentTimeSheet == false ||  Object.keys(CurrentTimeSheet).length == 0 ) {
         TimeSheetHolder.innerHTML="";
         alert("No timesheets for user");
@@ -122,13 +124,13 @@ for (let u = 0; u < Object.keys(CurrentTimeSheet).length; u++) {
           for (let i = 0; i < Object.keys(CurrentTimeSheet[u].tasks).length + Object.keys(CurrentTimeSheet[u].tasks.projects).length - 1; i++) {
             switch (i) {
               case 0:
-                CurrentPath = CurrentTimeSheet[u].tasks.absance || {};
+                CurrentPath = CurrentTimeSheet[u].tasks.absence || {};
                 break;
               case 1:
                 CurrentPath = CurrentTimeSheet[u].tasks.meeting || {};
                 break;
               case 2:
-                CurrentPath = CurrentTimeSheet[u].tasks.vaction || {};
+                CurrentPath = CurrentTimeSheet[u].tasks.vacation || {};
                 break;
               case 3:
                 CurrentPath = CurrentTimeSheet[u].tasks.projects[k] || {};
