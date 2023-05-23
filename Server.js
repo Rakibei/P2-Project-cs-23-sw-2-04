@@ -435,4 +435,3 @@ async function PrepareStaticTaskEntry(poolData, taskId, timeSheetId, hours) {
 app.use((req, res) => {
   res.status(404).send("404 error page does not exist");
 });
-});
