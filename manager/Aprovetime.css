@@ -37,6 +37,7 @@ html {
   padding: 50px;
   background: rgb(238, 240, 230);
   text-align: center;
+  justify-content: center;
 }
 
 /*her redigere jeg selve tabellen */

@@ -91,7 +91,6 @@ router.post("/managerRequests", IsManager, async (req, res) => {
     req.body.projectName,
     req.body.projectStartDate,
     req.body.projectEndDate,
-    req.body.projectHoursSpent,
     ProjectManagerID,
   );
   console.log(CreateProjectData);
