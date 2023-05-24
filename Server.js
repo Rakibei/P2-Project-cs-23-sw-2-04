@@ -278,7 +278,6 @@ app.get("/UserRequsts", isAuthenticated, async (req, res) => {
                 projects[i].id
               );
             }
-            console.log("asdsdsdsad");
             console.log(projects);
 
             CreatePDFForUser(req.session.userName, projects).then((pdfPath) => {
@@ -296,6 +295,8 @@ app.get("/UserRequsts", isAuthenticated, async (req, res) => {
                 });
               });
             });
+          }else{
+            res.status(400).send("Fail");
           }
         }
       );
@@ -306,6 +307,7 @@ app.get("/UserRequsts", isAuthenticated, async (req, res) => {
       const projects = await GetUserProjects(poolData, userID); 
       if(projects >! 0 || projects == false) {
         //send alert to user that input is not valid
+        res.status(400).send();
         break;
       }
       let projectObjects = [];
@@ -353,6 +355,7 @@ app.get("/UserRequsts", isAuthenticated, async (req, res) => {
       break;
   }
 });
+
 
 // Handle timesheet submition
 app.post("/submitTime", isAuthenticated, async (req, res) => {

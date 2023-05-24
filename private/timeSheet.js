@@ -196,3 +196,57 @@ function ConfirmBox() {
    }
 }
 
+document
+.querySelector("#exportButtonPDF")
+.addEventListener("click", (event) => {
+  event.preventDefault();
+  fetch("/UserRequsts?functionName=ExportPDF", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((response) => {
+
+    if (response.status === 400) { // If the response status is 201, alert the user and reset the form
+      alert("No Data to export");
+      document.querySelector('#setUserLevelForm').reset();          
+  } else{
+    response.blob().then((blob) => {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "ExportedTimeSheet.pdf";
+      document.body.appendChild(link);
+      link.click();
+    });
+}});
+});
+
+  document
+  .querySelector("#exportButtonXlsx")
+  .addEventListener("click", (event) => {
+    event.preventDefault();
+    fetch("/UserRequsts?functionName=ExportExcel", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+
+
+      if (response.status === 400) { // If the response status is 201, alert the user and reset the form
+          alert("No Data to export");
+          document.querySelector('#setUserLevelForm').reset();
+      } else{
+      response.blob().then((blob) => {
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "ExportedTimeSheet.xlsx";
+        document.body.appendChild(link);
+        link.click();
+      });
+    }}
+    )
+  });
