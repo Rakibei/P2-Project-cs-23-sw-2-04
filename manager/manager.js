@@ -15,7 +15,7 @@ document.querySelector('#projectCreationForm').addEventListener('submit', (event
     ProjectManager: event.target.ProjectManager.value,
     functionName: "CreateProject"
   };
-  fetch('/managerRequests', {
+  fetch('../managerRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

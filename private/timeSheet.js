@@ -175,7 +175,7 @@ function ConfirmBox() {
      let timeSheet = getTimeSheetData();
 
      // Make an HTTP POST request to submit the time sheet data
-     fetch("http://127.0.0.1:3000/submitTime", {
+     fetch("../submitTime", {
        method: "POST",
        headers: {
          "Content-Type": "application/json",
@@ -200,7 +200,7 @@ document
 .querySelector("#exportButtonPDF")
 .addEventListener("click", (event) => {
   event.preventDefault();
-  fetch("/UserRequsts?functionName=ExportPDF", {
+  fetch("../UserRequsts?functionName=ExportPDF", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -226,7 +226,7 @@ document
   .querySelector("#exportButtonXlsx")
   .addEventListener("click", (event) => {
     event.preventDefault();
-    fetch("/UserRequsts?functionName=ExportExcel", {
+    fetch("../UserRequsts?functionName=ExportExcel", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

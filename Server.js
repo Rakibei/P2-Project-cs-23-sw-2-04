@@ -79,8 +79,8 @@ import { isProxy } from "util/types";
 // The server is given the name app and calls from the express function
 const app = express();
 
-//The server listens on port 3110 localhost so the ip is 127.0.0.1:3000
-app.listen(3000);
+//The server listens on port 3110 localhost so the ip is 127.0.0.1:3110
+app.listen(3110);
 
 // Database connection
 const poolData = ConnectToDatabase();
@@ -116,10 +116,10 @@ app.get("/", (req, res) => {
   // We check if the user has accesed the site before
   if (req.session.isAuthenticated == true) {
     // If they are authenticated then redirect them to the next site
-    res.redirect("/private/homepage.html");
+    res.redirect("/node0/private/homepage.html");
   } else {
     // If not send them to the login page
-    res.redirect("/LoginPage.html");
+    res.redirect("/node0/LoginPage.html");
   }
 });
 // we now say that the client can acces the public folder otherwise the client does not send a get requst
@@ -140,7 +140,7 @@ app.post("/", async (req, res) => {
     req.session.isAuthenticated = true;
     req.session.userName = req.body.username;
     req.session.save();
-    res.redirect("/private/homepage.html");
+    res.redirect("/node0/private/homepage.html");
     //If the username doesn´t exist in the database a alert will be sent
   } else if ((await GetUserIdWithName(poolData, req.body.username)) == false) {
     res.status(401).send("Invalid username");
@@ -220,7 +220,7 @@ app.post("/userRequests", async (req, res) => {
   switch (req.body.functionName) {
     case "Logout":
       req.session.isAuthenticated = false;
-      res.redirect("/LoginPage.html");
+      res.redirect("/node0/LoginPage.html");
       break;
     default:
       break;

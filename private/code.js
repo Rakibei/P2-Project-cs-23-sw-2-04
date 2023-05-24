@@ -3,7 +3,7 @@ let projects;
 
 //When the web page loads get info of the user from the server
 window.addEventListener("load", () => {
-  fetch("/sesionData")
+  fetch("../sesionData")
     .then((response) => response.json())
     .then((data) => {
       // Do something with session data here

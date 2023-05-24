@@ -1,6 +1,6 @@
 window.addEventListener('load', () => {
   // Make an HTTP request to "/sesionData" endpoint
-  fetch("/sesionData")
+  fetch("../sesionData")
     .then((response) => response.json())
     .then((data) => {
       // Retrieve the UserLevel data from the response
@@ -44,7 +44,7 @@ document.getElementById("NavLogout").addEventListener("click", () => {
   };
 
   // Make a POST request to '/userRequests' endpoint with the data as JSON payload
-  fetch('/userRequests', {
+  fetch('../userRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

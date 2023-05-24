@@ -4,7 +4,7 @@
 // Requst users under the manager
 window.addEventListener("load", () => {
     
-    fetch("/managerRequests?functionName=GetUsersUnderManager",{
+    fetch("../managerRequests?functionName=GetUsersUnderManager",{
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -58,7 +58,7 @@ window.addEventListener("load", () => {
 
     async function GetUserInfo (UserIds){
         try {
-          const response = await fetch('/managerRequests?functionName=GetUserInfo&users='+UserIds, {
+          const response = await fetch('../managerRequests?functionName=GetUserInfo&users='+UserIds, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
@@ -250,7 +250,7 @@ for (let u = 0; u < Object.keys(CurrentTimeSheet).length; u++) {
     
 
       try {
-        const response = await fetch("/managerRequests?functionName=GetTimeSheet&UserID="+UserID,{
+        const response = await fetch("../managerRequests?functionName=GetTimeSheet&UserID="+UserID,{
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -270,7 +270,7 @@ for (let u = 0; u < Object.keys(CurrentTimeSheet).length; u++) {
    async function GetProjectInfo(TaskId) {
       
       try {
-        const response = await fetch('/managerRequests?functionName=GetProjectInfo&TaskId='+TaskId, {
+        const response = await fetch('../managerRequests?functionName=GetProjectInfo&TaskId='+TaskId, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -293,7 +293,7 @@ async function ApproveTimeSheet(TimeSheetId){
   };
 
   try {
-      const response = await fetch('/managerRequests', {
+      const response = await fetch('../managerRequests', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

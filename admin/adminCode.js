@@ -71,7 +71,7 @@ document.querySelector('#userCreationForm').addEventListener('submit', (event) =
     functionName: "CreateUser"
   };
   // Sends a POST request to /adminRequests with the data in JSON format
-  fetch('/adminRequests', {
+  fetch('../adminRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -100,7 +100,7 @@ document.querySelector('#projectCreationForm').addEventListener('submit', (event
     functionName: "CreateProject"
   };
   // Sends a POST request to /adminRequests with the data in JSON format
-  fetch('/adminRequests', {
+  fetch('../adminRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -124,7 +124,7 @@ document.querySelector('#searchUserLevel').addEventListener('submit', (event) =>
   document.querySelector("#SeeUserInfo").innerHTML = "";
 
   // Sends a GET request to /adminRequests with the data in JSON format
-  fetch("/adminRequests?functionName=seeUserLevel&users=" + event.target.seeUserLevel.value, {
+  fetch("../adminRequests?functionName=seeUserLevel&users=" + event.target.seeUserLevel.value, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -185,7 +185,7 @@ document.querySelector('#setUserLevelForm').addEventListener('submit', (event) =
     functionName: "setUserLevel"
   };
   // Sends a POST request to /adminRequests with the data in JSON format
-  fetch('/adminRequests', {
+  fetch('../adminRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -216,7 +216,7 @@ document.querySelector('#LinkUserToManagerForm').addEventListener('submit', (eve
     functionName: "LinkUserToManagerForm"
   };
   // Sends a POST request to /adminRequests with the data in JSON format
-  fetch('/adminRequests', {
+  fetch('../adminRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -248,7 +248,7 @@ document.querySelector('#exportButton').addEventListener('click', (event) => {
     functionName: "ExportPDF"
   };
   // Sends a POST request to /adminRequests with the data in JSON format
-  fetch('/adminRequests', {
+  fetch('../adminRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -274,7 +274,7 @@ document.querySelector('#exportButtonXlsx').addEventListener('click', (event) =>
     functionName: "ExportExcel"
   };
   // Sends a POST request to /adminRequests with the data in JSON format
-  fetch('/adminRequests', {
+  fetch('../adminRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -304,7 +304,7 @@ document.querySelector('#createTaskForProjectForm').addEventListener('submit', (
   };
   console.log(data);
   // Sends a POST request to /adminRequests with the data in JSON format
-  fetch('/adminRequests', {
+  fetch('../adminRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -337,7 +337,7 @@ document.querySelector('#SetTimeForEmailNotificationForm').addEventListener('sub
     functionName: "AutoMailer",
   }
   // Sends a POST request to /adminRequests with the data in JSON format
-  fetch('/adminRequests', {
+  fetch('../adminRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

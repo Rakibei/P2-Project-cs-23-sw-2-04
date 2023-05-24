@@ -28,7 +28,7 @@ document.getElementById("showProjectsButton").addEventListener("click",()=>{
       projectToLink: event.target.projectToLinkForUser.value,
       functionName: "LinkUserToProject"
     };
-   fetch('/ProjectManagerRequests', {
+   fetch('../ProjectManagerRequests', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ document.getElementById("showProjectsButton").addEventListener("click",()=>{
       functionName: "CreateTasks"
     };
     console.log(data);
-    fetch('/ProjectManagerRequests', {
+    fetch('../ProjectManagerRequests', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -76,7 +76,7 @@ document.getElementById("showProjectsButton").addEventListener("click",()=>{
   
   
   document.getElementById("showProjectsButton").addEventListener("click", () => {
-    fetch('/ProjectManagerRequests?functionName=GetProjectManagerProjects', {
+    fetch('../ProjectManagerRequests?functionName=GetProjectManagerProjects', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

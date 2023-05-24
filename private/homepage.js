@@ -4,7 +4,7 @@ let profileInfo = document.getElementById("profileInfo");
 
 window.addEventListener("load", () => {
   // Fetch session data from "/sesionData" endpoint
-  fetch("/sesionData")
+  fetch("../sesionData")
     .then((response) => response.json())
     .then((data) => {
       UserLevel = data.UserLevel;
@@ -25,7 +25,7 @@ window.addEventListener("load", () => {
       }
     });
 
-  fetch("/profileData")
+  fetch("../profileData")
     .then((response) => response.json())
     .then((data) => {
       document.getElementById("WelcomeText").innerHTML += " " + data.userName;

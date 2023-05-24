@@ -14,7 +14,7 @@ document.querySelector('form').addEventListener('submit', (event) => {
       password: pswrd
     };
     //makes a POST request to the server to see if the log in is correct
-    fetch('/', {
+    fetch('/node0/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

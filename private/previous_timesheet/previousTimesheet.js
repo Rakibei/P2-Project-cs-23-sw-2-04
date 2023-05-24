@@ -5,7 +5,7 @@ let userName;
 
 window.addEventListener("load", () => {
   // Fetch session data from "/sesionData" endpoint
-  fetch("/sesionData")
+  fetch("../sesionData")
     .then((response) => response.json())
     .then((data) => {
       // Log the received session data
@@ -17,7 +17,7 @@ window.addEventListener("load", () => {
     });
   
   // Fetch time sheets for the user from "/allTimesheetsForUser" endpoint
-  fetch("/allTimesheetsForUser")
+  fetch("../allTimesheetsForUser")
     .then((response) => response.json())
     .then((data) => {
       // Log the received time sheets data

@@ -1,6 +1,6 @@
 window.addEventListener('load', () => {
 
-    fetch("/sesionData")
+    fetch("../sesionData")
     .then((response) => response.json())
     .then((data) => {
       UserLevel = data.UserLevel;
@@ -35,7 +35,7 @@ document.getElementById("NavLogout").addEventListener("click",() => {
         functionName: "Logout"
     }
 
-    fetch('/userRequests', {
+    fetch('../userRequests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
