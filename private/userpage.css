@@ -27,7 +27,7 @@ html {
      }
 
 /* her justere jeg knapperne i navigation bar*/
-#TimeSheetHistory {
+.WhiteButton {
     cursor: pointer;
     font-weight: 600;
     font-size: 20px;
@@ -47,32 +47,20 @@ html {
     text-align: center;
 }
 
-/* her justere jeg hovering over navbar og knapperne*/
-#projectButton:hover {
+.WhiteButton:hover{
     color: rgb(38, 144, 210);
-    background: rgb(208, 209, 210);
+    background: rgb(208, 209, 210);   
 }
-#TimeSheetHistory:hover {
+.WhiteButton a:hover{
     color: rgb(38, 144, 210);
-    background: rgb(208, 209, 210);
+    background: rgb(208, 209, 210); 
 }
 
-#logoutButton:hover {
-    color: rgb(38, 144, 210);
-    background: rgb(208, 209, 210);
-}
-#TimeSheetHistory a:hover {
-    color: rgb(38, 144, 210);
-    background: rgb(208, 209, 210);
-}
-#logoutButton a:hover {
-    color: rgb(38, 144, 210);
-    background: rgb(208, 209, 210);
-}
 .sbmt:hover {
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 }
+
 
  /* her redigere jeg på titlen indenfor hvor der står welcome Manager */
  .welcome-title {
@@ -194,14 +182,11 @@ input{
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 } 
-#TimeSheetHistory:hover {
-    color: rgb(38, 144, 210);
-    background: rgb(208, 209, 210);
+
+form,.menu, .export{
+    text-align: center;
 }
-#CurrentTimesheet:hover {
-    color: rgb(38, 144, 210);
-    background: rgb(208, 209, 210);
-}
+
 @media all and (max-width: 500px ){
 
     #timesheetcontainer{
@@ -221,7 +206,7 @@ input{
     table th {
         max-width: 100px;
     }
-#CurrentTimesheet, #TimeSheetHistory, #logoutButton {
+.WhiteButton {
     font-size: 15px;
 }
 
