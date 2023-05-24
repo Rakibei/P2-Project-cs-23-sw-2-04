@@ -19,9 +19,8 @@ window.addEventListener("load", () => {
           "flex";
       }
       if (UserLevel.isProjectManager) {
-        ProjectManagerButton = document.getElementById(
-          "ProjectManagerButton"
-        ).style.display = "flex";
+        ProjectManagerButton = document.getElementById("ProjectManagerButton").style.display =
+         "flex";
       }
     });
 
