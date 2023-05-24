@@ -107,7 +107,7 @@ for (let u = 0; u < Object.keys(CurrentTimeSheet).length; u++) {
 
         let WeekNumbHolder = document.createElement("h3");
 
-        WeekNumbHolder.textContent = CurrentTimeSheet[u].Week
+        WeekNumbHolder.textContent = "Week " + CurrentTimeSheet[u].Week
 
         TimeSheetHolder.appendChild(WeekNumbHolder);
 
