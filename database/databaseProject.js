@@ -70,7 +70,7 @@ try {
 export async function GetUserProjects(pool, userId) {
 try {
   const [userProjectsLinks] = await pool.query(
-    "SELECT * FROM userProjectLinks WHERE userId = ?",
+    "SELECT * FROM userprojectlinks WHERE userId = ?",
     [userId]
   );
   //return if there are no projects links for user

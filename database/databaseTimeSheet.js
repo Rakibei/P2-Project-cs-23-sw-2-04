@@ -5,7 +5,7 @@ export async function CreateTasks(pool, projectId, name, description) {
   try {
     // Create the task
     const [result] = await pool.query(
-      `INSERT INTO tasks (projectId, name, description) VALUES (?, ?, ?, ?)`,
+      `INSERT INTO tasks (projectId, name, description) VALUES (?, ?, ?)`,
       [projectId, name, description]
     );
     const taskId = result.insertId;

@@ -312,14 +312,14 @@ router.get("/adminRequests", IsAdmin, async (req, res) => {
     let userID1 = await GetUserIdWithName(poolData, req.query.users);
     // If the user dosen't exist then send a repsone saying that to the client and stop the case
     if (userID1 === false) {
-      res.status(400);
+      res.status(400).send();
       break;
     }
     // the users level is gotten with their id
     let seeUserLevelData = await GetUserLevel(poolData, userID1);
     // if there was a server error then send that repsone to the client
     if (seeUserLevelData === false) {
-      res.status(500);
+      res.status(500).send();
       break;
     }
     console.log(seeUserLevelData);

@@ -133,10 +133,10 @@ document.querySelector('#searchUserLevel').addEventListener('submit', (event) =>
   }).then(async response => {
     switch (response.status) { // it checks if the user exist or not and alert the window
       case 400:
-        window.alert("User does not exist")
+        alert("User does not exist")
         break;
       case 500:
-        window.alert("Internal server error")
+        alert("Internal server error")
         break;
     }
     return response.json();

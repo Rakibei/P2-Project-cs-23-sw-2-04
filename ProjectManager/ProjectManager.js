@@ -36,7 +36,16 @@ document.getElementById("showProjectsButton").addEventListener("click",()=>{
     body: JSON.stringify(data)
   })
   .then(response => {
-    
+      switch (response.status) { // it checks if the user exist or not and alert the window
+        case 200:
+          alert("User has been added to project");
+          document.querySelector('#LinkUserToProjectForm').reset();
+          break;
+        case 400:
+          alert("Error user or project does not exist");
+          document.querySelector('#LinkUserToProjectForm').reset();
+          break;
+      }
   })
   .catch(error => console.error(error));
   });
@@ -49,7 +58,6 @@ document.getElementById("showProjectsButton").addEventListener("click",()=>{
       projectToLink: event.target.projectToLinkFortask.value,
       taskDescription: event.target.taskDescription.value,
       taskName: event.target.taskName.value,
-      estimate: event.target.estimate.value,
       functionName: "CreateTasks"
     };
     console.log(data);
@@ -66,6 +74,9 @@ document.getElementById("showProjectsButton").addEventListener("click",()=>{
             alert(data);
             document.querySelector('#createTaskForProjectForm').reset();
           });
+        } else if(response.status === 400){
+          alert("Error project dosent exist");
+          document.querySelector('#createTaskForProjectForm').reset();
         }
       })
       .catch(error => console.error(error));
