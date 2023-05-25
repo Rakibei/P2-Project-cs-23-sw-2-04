@@ -1,0 +1,190 @@
+/* det her er universal selector for den complete general indstillinger*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Nunito', sans-serif;
+}
+
+/* her redigere jeg baggrund indstillinger*/
+html {
+    margin: auto;
+    background: linear-gradient(to bottom, rgba(16, 78, 178, 0.8), rgba(16, 78, 178, 0.25));
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100%;
+}
+
+ /* her redigere jeg på titlen indenfor hvor der står welcome Manager */
+.welcome-title {
+    line-height: 50px;
+    background: rgb(16, 78, 178);
+    padding-left: 0;
+    text-align: center;
+    border-radius: 5px 5px 0 0;
+    color: whitesmoke;
+    font-size: 35px;
+    font-weight: 600;
+}
+
+/* her justere jeg knapperne i navigation bar*/
+#projectButton, #ManagerButton, #logoutButton {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 20px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background: rgb(238, 240, 230);
+    color: black;
+    border: 1px solid rgb(238, 240, 230);
+    border: 1px solid rgb(238, 240, 230);
+    border-radius: 5px;
+    margin: 3px;
+    text-decoration: none;
+}
+.menu {
+    text-align: center;
+}
+
+.innermenu{
+    place-items: center;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    }
+    .container {
+        margin-left: 0px;
+        display: flex;
+        width: auto;
+     }
+     
+    
+
+/* her justere jeg hovering over navbar og knapperne*/
+
+#projectButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#ManagerButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#ManagerButton a:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#logoutButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+.sbmt:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+
+/* her justere jeg de forskellig former*/
+#projectCreation{
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 10px;
+    margin: 0 auto;
+    width: 80%;
+    padding:50px;
+    background: rgb(238, 240, 230);
+}
+/* her justere jeg form felterne */
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+#ManagerButton a {
+    text-decoration: none;
+    color: black;
+}
+/* her rediger jeg submit knapperne*/
+.sbmt {
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 20px;
+    padding-left: 0px;
+    background: rgb(16, 78, 178);
+    color: white;
+    border: 1px solid rgb(16, 78, 178);
+    border-radius: 5px;
+    align-items: center;
+    width: 30%;
+}
+
+
+
+form,.menu, .pdf{
+    text-align: center;
+}
+
+/* her justere jeg de forskellig former*/
+#projectCreationForm{
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 10px;
+    margin: 0 auto;
+    width: 80%;
+    padding: 50px;
+    background: rgb(238, 240, 230);
+}
+
+
+/* her justere jeg form felterne */
+input[type=text],input[type=number],input[type=date],input[type=time],input[type=checkbox],input[type=password] {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* her redigere jeg mobile udseende */
+@media all and (max-width: 500px) {
+
+    input[type=text],
+    input[type=number],
+    input[type=date],
+    input[type=time],
+    input[type=checkbox],
+    input[type=password] {
+            width: 100%;
+        }
+
+    input[type=password] {
+        width: 100%;
+        }
+    
+    .sbmt{
+        width: 100%;
+    }
+
+    #projectButton,
+    #ManagerButton,
+    #logoutButton {
+        font-size: 13px;
+    }
+
+    #projectCreationForm {
+        padding: 10px;
+    }
+    span{
+        line-height: 100%;
+        font-size: 70%;
+    }
+}

@@ -1,0 +1,217 @@
+/* det her er universal selector for den complete general indstillinger*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Nunito', sans-serif;
+ }
+
+/* her redigere jeg baggrund indstillinger*/
+html {
+    margin: auto;
+    background: linear-gradient(to bottom, rgba(16, 78, 178, 0.8), rgba(16, 78, 178, 0.25));
+    background-repeat: no-repeat;
+    background-size: cover ;
+    min-height: 100%;
+}
+
+ /* her redigere jeg på titlen indenfor hvor der står welcome admin */
+.welcome-title {
+    line-height: 50px;
+    background: rgb(16, 78, 178);
+    padding-left: 0;
+    text-align: center;
+    border-radius: 5px 5px 0 0;
+    color: whitesmoke;
+    font-size: 35px;
+    font-weight: 600;
+}
+
+
+/* her justere jeg knapperne i navigation bar*/
+
+#userButton, #projectButton,#userLevelButton, #ProjectManagerButton,#exportButtonXlsx,#exportButton,#CreateTaskButton,#EmailNotificationButton,#LinkUserToManagerContainer,#LinkUserToManagerButton,#logoutButton{
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 20px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background: rgb(238, 240, 230);
+    color: black;
+    border: 1px solid rgb(238, 240, 230);
+    border: 1px solid rgb(238, 240, 230);
+    border-radius: 5px;
+    margin: 3px;
+}
+form,.menu, .export{
+    text-align: center;
+}
+
+/* her justere jeg hovering over navbar og knapperne*/
+#userButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#projectButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#userLevelButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+
+#ProjectManagerButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);}
+.sbmt:hover{
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+} 
+#exportButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#exportButtonXlsx:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#CreateTaskButton:hover{
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#EmailNotificationButton:hover{
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#LinkUserToManagerButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+#logoutButton:hover {
+    color: rgb(38, 144, 210);
+    background: rgb(208, 209, 210);
+}
+/* her justere jeg de forskellig former*/
+#userCreation,#projectCreation,#setUserLevel,#createManagerForProject, #createTaskForProject, #SetTimeForEmailNotification,#CreateProjectManagerContainer,#LinkUserToManagerContainer{
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 10px;
+    margin: 0 auto;
+    width: 80%;
+    padding: 50px;
+    background: rgb(238, 240, 230);
+}
+
+/* her justere jeg form felterne */
+input[type=text],input[type=number],input[type=date],input[type=time],input[type=checkbox],input[type=password] {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* her rediger jeg submit knapperne*/
+.sbmt{
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 100%;
+    padding-left: 0px;
+    background: rgb(16, 78, 178);
+    color: white;
+    border: 1px solid rgb(16, 78, 178);
+    border-radius: 5px;
+    align-items: center;
+    width: 30%;
+}
+/* her redigere jeg label*/
+label{
+    padding-left: 0;
+    font-size: 20px;
+}
+
+/* her redigere jeg skrive felterne*/
+input{
+
+    border-radius: 5px;
+    width: 30%;
+    height: 30px;
+}
+
+.innermenu{
+    place-items: center;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    }
+    .container {
+        display: flex;
+        width: auto;
+     }
+     
+     
+     #logoutButton {
+        margin-left:auto;
+        margin-right:0;
+     }
+
+/* her er display kontrol over de forskellige menuer */
+
+#projectCreation{
+    display: none;
+}
+
+#setUserLevel{
+    display: none;
+}
+
+#createTaskForProject{
+    display: none;
+}
+#SetTimeForEmailNotification{
+    display: none;
+}
+#LinkUserToManagerContainer{
+    display: none;
+}
+
+
+/* her redigere jeg mobile udseende */
+@media all and (max-width: 500px) {
+    #userButton,
+    #projectButton,
+    #userLevelButton,
+    #ProjectManagerButton,
+    #CreateTaskButton,
+    #EmailNotificationButton,
+    #LinkUserToManagerButton,
+    #logoutButton{
+        font-size: 13px;
+        font-weight: bold;
+        margin: 1px;
+        padding: 0;
+        height: 45px;
+    }
+    input[type=text],
+    input[type=number],
+    input[type=date],
+    input[type=time],
+    input[type=checkbox],
+    input[type=password] {
+            width: 100%;
+        }
+
+    .sbmt{
+        width: 100%;
+    }
+    span {
+        line-height: 100%;
+        font-size: 70%;
+    }
+}

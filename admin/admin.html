@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="adminStylesheet.css">
+</head>
+<body>
+    <!--Navigation Bar Start--><div>
+        <script src="https://kit.fontawesome.com/ffe0f0379f.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="navbar/navbar.css">
+            <div class="nav">
+                <div id="menu-text" class="menu-button">
+                    <p class="text unselectable">
+                        <i id="menu-icon" class="fa-solid fa-bars"></i>
+                    </p>
+                    <p class="textTitle">
+                        MENU
+                    </p>
+                </div>
+                <div class="welcome-title"><span>Welcome Admin</span></div>
+            </div>
+            <div id="menu" class="menu-closed">
+                <ul class="unselectable">
+                    <li><a class="navbar" id="NavHome" href="../private/homepage.html">Home</a></li>
+                    <li><a class="navbar" id="NavSheet" href="../private/userpage.html">See Time Sheet</a></li>
+                    <li><a class="navbar" id="NavAdmin" href="../admin/admin.html">Admin</a></li>
+                    <li><a class="navbar" id="NavManager" href="../manager/manager.html">Manager</a></li>
+                    <li><a class="navbar" id="NavProjectManager" href="../ProjectManager/ProjectManager.html">Project Manager</a></li>
+                    <li><a class="navbar" id="NavLogout">Log Out</a></li>
+                    <div class="signal">
+                     <img src="navbar/Signal.svg" style="width: 500px;">
+                    </div>
+                </ul>
+            </div>
+        
+            <script src="navbar/navbar.js"></script>
+    </div><!--Navigation Bar End-->
+    <div class="container">
+        <div class="innermenu">
+            <button id="userButton">Create user</button>
+            <button id="projectButton">Create project</button>
+            <button id="userLevelButton">Set and see user level</button>
+            <button id="LinkUserToManagerButton">Add user to manager</button>
+            <button id="CreateTaskButton">Create Task</button>
+            <button id="EmailNotificationButton">Email Notification</button>
+        </div>
+  </div>      
+<br>
+
+    <div id="userCreation">
+        <form id="userCreationForm">
+            <label for="createUsername">New Username:</label><br>
+            <input type="text" id="createUsername" name="createUsername" placeholder="Username" required><br><br>
+            <label for="createPassword">New Password:</label><br>
+            <input type="password" id="createPassword" name="createPassword" placeholder="Password" required><br><br>
+            <label for="FullName">User's Full name</label><br>
+            <input type="text" id="FullName" name="FullName" placeholder="Full Name"><br><br>
+            <label for="PhoneNumber">User's PhoneNumber</label><br>
+            <input type="text" id="PhoneNumber" name="PhoneNumber" placeholder="PhoneNumber"><br><br>
+            <label for="Email">User's email adress</label><br>
+            <input type="text" id="Email" name="Email" placeholder="Email Adress"><br><br>
+            <input type="submit" class="sbmt" value="Create">
+        </form>
+    </div>
+
+
+    <div id="projectCreation">
+        <form id="projectCreationForm">
+            <label for="projectName">Project name</label><br>
+            <input type="text" id="projectName" name="projectName" placeholder="ProjectName" required> <br><br>
+
+            <label for="projectStartDate">Start Date</label><br>
+            <input type="date" id="projectStartDate" name="projectStartDate"  required> <br><br>
+
+            <label for="projectEndDate">End Date</label><br>
+            <input type="date" id="projectEndDate" name="projectEndDate"  required> <br><br>
+
+            <label for="ProjectManager">Project Manager</label><br>
+            <input type="text" id="ProjectManager" name="ProjectManager" placeholder="ProjectManager" required> <br><br>
+
+            <input type="submit" class="sbmt" value="Create">
+
+        </form>
+
+    </div>
+
+    <div id="setUserLevel">
+        <form id="searchUserLevel">
+        <label for="seeUserLevel">Search Level</label><br>
+        <input type="text" id="seeUserLevel" name="seeUserLevel" placeholder="UserLevel" required> <br>
+        <input type="submit" class="sbmt" value="Search"> <br><br>
+        </form>
+        <div id="SeeUserInfo"></div>
+
+        <form id="setUserLevelForm">
+            <label for="setUserLevelName">Username</label><br>
+            <input type="text" id="setUserLevelName" name="setUserLevelName" placeholder="UserName" required> <br>
+
+            <label for="SetUserAdmin">Admin</label><br>
+            <input type="checkbox" id="SetUserAdmin" name="SetUserAdmin"> <br><br>
+            
+            <label for="SetUserManager">Manager</label><br>
+            <input type="checkbox" id="SetUserManager" name="SetUserManager"><br><br>
+
+            <input type="submit" class="sbmt" value="Submit">
+        </form>
+        
+        
+
+    </div>
+
+
+
+
+    <div id="LinkUserToManagerContainer">
+        <form id="LinkUserToManagerForm">
+            <label for="ManagerToLink">Manager</label><br>
+            <input type="text" id="ManagerToLink" name="ManagerToLink" placeholder="ManagerName" ><br> <br>
+            <label for="UserToLinkToManager">User</label><br>
+            <input type="text" id="UserToLinkToManager" name="UserToLinkToManager" placeholder="UserName" ><br> <br>
+            <input type="submit" class="sbmt" value="Submit">            
+        </form>
+
+    </div>
+
+
+
+    <div id="createTaskForProject">
+        <form id="createTaskForProjectForm">
+            <label for="projectToLinkFortask">Project name</label><br>
+            <input type="text" name="projectToLinkFortask" id="projectToLinkFortask" placeholder="ProjectName" > <br> <br>
+            <label for="taskName">Task name</label><br>
+            <input type="text" name="taskName" id="taskName" placeholder="TaskName" > <br> <br>
+            <label for="taskDescription">Task description</label><br>
+            <input type="text" name="taskDescription" id="taskDescription" placeholder="taskDescription" required> <br> <br>
+            <input type="submit" class="sbmt" value="Create Task">            
+        </form>
+    </div>
+
+    <div id="SetTimeForEmailNotification">
+        <form id="SetTimeForEmailNotificationForm">
+            <label for="TimeOfDay">Time of day:</label><br>
+            <input type="time" name="TimeOfDay" id="TimeOfDay"><br> <br>
+            <label for="WeekDay">Choose the Weekday:</label><br>
+            <select name="WeekDay" id="WeekDay">
+            <option value="1">Monday</option>
+            <option value="2">Tuesday</option>
+            <option value="3">Wednesday</option>
+            <option value="4">Thursday</option>
+            <option value="5">Friday</option>
+            <option value="6">Saturday</option>
+            <option value="7">Sunday</option>
+            </select>
+            <br> <br>
+            <input type="submit" class="sbmt" value="Submit">            
+        </form>
+    </div>
+
+
+<br>
+    <div class="export">
+        <button id="exportButton">Get PDF</button>
+        <button id="exportButtonXlsx">Get xlsx file</button>
+    </div>
+</div>
+<script src="adminCode.js"></script> 
+
+</body>
+</html>

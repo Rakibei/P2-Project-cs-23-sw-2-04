@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>previousTimeSheet</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="previousTimesheet.css">
+    </head>
+    <body>
+<!--Navigation Bar Start--><div>
+    <script src="https://kit.fontawesome.com/ffe0f0379f.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="navbar/navbar.css">
+        <div class="nav">
+            <div id="menu-text" class="menu-button">
+                <p class="text unselectable">
+                    <i id="menu-icon" class="fa-solid fa-bars"></i>
+                </p>
+                <p class="textTitle">
+                    MENU
+                </p>
+            </div>
+            <div class="welcome-title"><span>History</span></div>
+        </div>
+        <div id="menu" class="menu-closed">
+            <ul class="unselectable">
+                <li><a class="navbar" id="NavHome" href="../../private/homepage.html">Home</a></li>
+                <li><a class="navbar" id="NavSheet" href="../../private/userpage.html">See Time Sheet</a></li>
+                <li><a class="navbar" id="NavAdmin" href="../../admin/admin.html">Admin</a></li>
+                <li><a class="navbar" id="NavManager" href="../../manager/manager.html">Manager</a></li>
+                <li><a class="navbar" id="NavProjectManager" href="../../ProjectManager/ProjectManager.html">Project Manager</a></li>
+                <li><a class="navbar" id="NavLogout">Log Out</a></li>
+                <div class="signal">
+                 <img src="navbar/Signal.svg" style="width: 500px;">
+                </div>
+            </ul>
+        </div>
+    
+        <script src="navbar/navbar.js"></script>
+</div><!--Navigation Bar End-->
+
+
+
+
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <div class="containerMain">
+        <form id="formweek">
+            <label for="year">Choose a week for time sheet</label>
+            <br>
+            <label for="year">Year</label>
+            <input type="text" name="year" id="year" required>
+            <label for="week">week</label>
+            <input type="text" name="week" id="week" required>
+            <input type="submit" value="Submit" id="sbmt" >
+        </form>
+        </div>
+        <br><br><br>
+        <div class="timesheet" id="timesheetcontainer">
+            
+            <div id="container">
+
+            </div>
+            
+            <script src="previousTimesheet.js"></script>
+        </div>
+    </body>
+</html>
