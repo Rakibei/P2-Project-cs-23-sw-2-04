@@ -39,7 +39,7 @@ html {
      }
 
 /* her justere jeg knapperne i navigation bar*/
-#LinkUserToProjectkButton , #showProjectsButton, #CreateTaskButton {
+.WhiteButton {
     cursor: pointer;
     font-weight: 600;
     font-size: 20px;
@@ -60,16 +60,7 @@ html {
 }
 
 /* her justere jeg hovering over navbar og knapperne*/
-#LinkUserToProjectkButton:hover {
-    color: rgb(38, 144, 210);
-    background: rgb(208, 209, 210);
-}
-#showProjectsButton:hover {
-    color: rgb(38, 144, 210);
-    background: rgb(208, 209, 210);
-}
-
-#CreateTaskButton :hover {
+.WhiteButton:hover {
     color: rgb(38, 144, 210);
     background: rgb(208, 209, 210);
 }
@@ -79,7 +70,7 @@ html {
 }
 
 /* her justere jeg de forskellig former*/
-#LinkUserToProjectForm{
+form,#showProjects{
     font-size: 20px;
     font-weight: 400;
     border-radius: 10px;
@@ -88,24 +79,7 @@ html {
     padding:50px;
     background: rgb(238, 240, 230);
 }
-#createTaskForProject{
-    font-size: 20px;
-    font-weight: 400;
-    border-radius: 10px;
-    margin: 0 auto;
-    width: 80%;
-    padding: 50px;
-    background: rgb(238, 240, 230);
-}
-#showProjects{
-    font-size: 20px;
-    font-weight: 400;
-    border-radius: 10px;
-    margin: 0 auto;
-    width: 80%;
-    padding: 50px;
-    background: rgb(238, 240, 230);
-}
+
 #LinkUserToProjectContainer,#createTaskForProject, #showProjects { 
     text-align: center;
 }
@@ -190,6 +164,6 @@ display: none;
     }
     span{
         line-height: 100%;
-        font-size: 50%;
+        font-size: 45%;
     }
 }

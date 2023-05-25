@@ -1,10 +1,11 @@
+import moment from "moment/moment.js";
 import { GetTaskWithID, GetProjectNameWithTaskID } from "./databaseProject.js";
 
 export async function CreateTasks(pool, projectId, name, description) {
   try {
     // Create the task
     const [result] = await pool.query(
-      `INSERT INTO tasks (projectId, name, description) VALUES (?, ?, ?, ?)`,
+      `INSERT INTO tasks (projectId, name, description) VALUES (?, ?, ?)`,
       [projectId, name, description]
     );
     const taskId = result.insertId;
@@ -313,17 +314,59 @@ export async function GetTimeSheetSubmit(pool, TimeSheetID) {
   }
 }
 
-export async function GetAllSubmitStatus(pool) {
+export async function GetAllSubmitStatus(pool,CurrentWeek,CurrentYear) {
   try {
-    const [submitStatusForUsers] = await pool.query(
-      `SELECT * FROM timeSheet WHERE submitstatus = 0`
-    );
-    const userIds = submitStatusForUsers.map((user) => user.userId);
-    const filteredUserIds = userIds.filter(function (item, pos) {
-      return userIds.indexOf(item) == pos;
-    });
-    console.log(filteredUserIds);
-    return filteredUserIds;
+
+
+    console.log(CurrentWeek);
+    console.log(CurrentYear);
+    
+
+
+    // get list of users
+    // Get list of timesheets for current week
+    // if user has a time sheet then remove them
+    const [Users] = await pool.query(
+      'SELECT * FROM users'
+    )
+    let UserIDs = []
+    console.log(Users);
+    UserIDs = Users.map((user) => user.id);
+
+    const [SubmitedTimeSheets] = await pool.query(
+      `SELECT * FROM timeSheet WHERE week = ? AND year = ?`
+      , [CurrentWeek,CurrentYear]
+      )
+
+    let FilteredUsers = [];
+
+    for (let i = 0; i < UserIDs.length; i++) {
+      for (let j = 0; j < SubmitedTimeSheets.length; j++) {
+        if (UserIDs[i] === SubmitedTimeSheets[j].userId) {
+          console.log(UserIDs[i]);
+          FilteredUsers.push(UserIDs[i]);
+          break
+        }
+      }
+    }
+
+    for (let m = 0; m < Users.length; m++) {
+
+      let SelectedUser = FilteredUsers[m];
+
+      let UserIndex = UserIDs.indexOf(SelectedUser);
+
+      // -1 means here that the user was not found
+      // so if its greater there was a user
+      if (UserIndex > -1) {
+        UserIDs.splice(UserIndex, 1); // 2nd parameter means remove one item only
+      }
+    }
+
+    console.log(UserIDs);
+
+    return UserIDs;
+
   } catch (error) {
     console.log(error);
     return false; // error occurred

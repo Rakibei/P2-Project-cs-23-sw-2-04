@@ -1,6 +1,7 @@
 let userName;
 let userID;
 
+
 function getTimeSheetData() {
   // Initialize the timeSheet object with default values
   let timeSheet = {
@@ -166,21 +167,24 @@ function collectProjectData(timeSheet, table, rowLength) {
 
 document
   .querySelector("#timeSheetButton")
-  .addEventListener("click", (event) => {
-    // Get the time sheet data
-    let timeSheet = getTimeSheetData();
+  .onclick = ConfirmBox;
 
-    // Make an HTTP POST request to submit the time sheet data
-    fetch("http://127.0.0.1:3000/submitTime", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(timeSheet),
-    })
-      .then((response) => {
-        // Handle the response if needed
+function ConfirmBox() {
+ if (confirm("Are you sure you want to submit your timesheet?")) {
+     // Get the time sheet data
+     let timeSheet = getTimeSheetData();
 
+     // Make an HTTP POST request to submit the time sheet data
+     fetch("http://127.0.0.1:3000/submitTime", {
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+       },
+       body: JSON.stringify(timeSheet),
+     })
+       .then((response) => {
+         // Handle the response if needed
+ 
         console.log(response);
         switch (response.status) {
           case 200:
@@ -188,5 +192,61 @@ document
             break;
         }
       })
-      .catch((error) => console.error(error));
+       .catch((error) => console.error(error));
+   }
+}
+
+document
+.querySelector("#exportButtonPDF")
+.addEventListener("click", (event) => {
+  event.preventDefault();
+  fetch("/UserRequsts?functionName=ExportPDF", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((response) => {
+
+    if (response.status === 400) { // If the response status is 201, alert the user and reset the form
+      alert("No Data to export");
+      document.querySelector('#setUserLevelForm').reset();          
+  } else{
+    response.blob().then((blob) => {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "ExportedTimeSheet.pdf";
+      document.body.appendChild(link);
+      link.click();
+    });
+}});
+});
+
+  document
+  .querySelector("#exportButtonXlsx")
+  .addEventListener("click", (event) => {
+    event.preventDefault();
+    fetch("/UserRequsts?functionName=ExportExcel", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+
+
+      if (response.status === 400) { // If the response status is 201, alert the user and reset the form
+          alert("No Data to export");
+          document.querySelector('#setUserLevelForm').reset();
+      } else{
+      response.blob().then((blob) => {
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "ExportedTimeSheet.xlsx";
+        document.body.appendChild(link);
+        link.click();
+      });
+    }}
+    )
   });

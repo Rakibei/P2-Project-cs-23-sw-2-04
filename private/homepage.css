@@ -40,7 +40,7 @@ html {
 }
 
 /* her justere jeg knapperne i navigation bar*/
-button {
+.WhiteButton{
    cursor: pointer;
    font-weight: 600;
    font-size: 20px;
@@ -69,18 +69,17 @@ button {
  }
 
 /* her justere jeg links indenfor */
-button a {
+.WhiteButton a {
    text-decoration: none;
    color: black
    
 }
-
-button a:hover{
+.WhiteButton a:hover{
 color: rgb(38, 144, 210);
 }
 
 /* her justere jeg hovering over navbar og knapperne*/
-Button:hover {
+.WhiteButton:hover {
    color: rgb(38, 144, 210);
    background: rgb(208, 209, 210);
 }

@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer'
 //import cron, { schedule } from 'node-cron'
 import schedule from 'node-schedule';
+import moment from 'moment';
 import {GetAllSubmitStatus, GetEmailfromSubmitstaus} from '../database/databaseTimeSheet.js';
 import {ConnectToDatabase} from '../database/databaseSetup.js';
 const poolData = ConnectToDatabase();
@@ -26,29 +27,20 @@ let mailOptions;
 
 
 schedule.scheduleJob(mins + ' ' + hours + ' * * '+ Weekday, async () => {
-let userIds = await GetAllSubmitStatus(poolData);
+
+let CurrentWeek = moment().isoWeek();
+let CurrentYear = moment().year();
+
+let userIds = await GetAllSubmitStatus(poolData,CurrentWeek,CurrentYear);
 let emails = await GetEmailfromSubmitstaus(poolData,userIds);
 console.log(emails);
 
 mailOptions = {
     from: 'p2projectmail@gmail.com',
     bcc:  emails,
-    subject: 'Hej Hej',
-    text: 'Hej med dig!',
-    /*html: ' <img src="cid:china"/>' ,
-    watchHtml: 'Time for another monner! <img src="cid:china"/>',
-        attachments: [{
-            filename: 'chinaeye.png',
-            path: 'C:/Users/tkwa/OneDrive/Skrivebord/Lort/chinaeye.png',
-            cid: 'chinaeye' //same cid value as in the html img src
-            },
-            {
-            filename: 'china.gif',
-            path: 'C:/Users/tkwa/OneDrive/Skrivebord/Lort/china.gif',
-            cid: 'china' //same cid value as in the html img src
-
-        }]  
-    */
+    subject: 'Missing timesheet submission',
+    text: 'You are recieveing this email because you have not yet submitted your timesheet.\n Please remember to do this before the deadline.'
+    
     }
  
 transporter.sendMail(mailOptions, function (error, info) {

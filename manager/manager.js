@@ -11,7 +11,6 @@ document.querySelector('#projectCreationForm').addEventListener('submit', (event
     projectName: event.target.projectName.value,
     projectStartDate: event.target.projectStartDate.value,
     projectEndDate: event.target.projectEndDate.value,
-    projectHoursSpent: event.target.projectHoursSpent.value,
     ProjectManager: event.target.ProjectManager.value,
     functionName: "CreateProject"
   };

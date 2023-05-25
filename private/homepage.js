@@ -19,9 +19,8 @@ window.addEventListener("load", () => {
           "flex";
       }
       if (UserLevel.isProjectManager) {
-        ProjectManagerButton = document.getElementById(
-          "ProjectManagerButton"
-        ).style.display = "flex";
+        ProjectManagerButton = document.getElementById("ProjectManagerButton").style.display =
+         "flex";
       }
     });
 
@@ -32,48 +31,3 @@ window.addEventListener("load", () => {
     });
 });
 
-document
-  .querySelector("#exportButtonPDF")
-  .addEventListener("click", (event) => {
-    event.preventDefault();
-    fetch("/UserRequsts?functionName=ExportPDF", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
-      response.blob().then((blob) => {
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "ExportedTimeSheet.pdf";
-        document.body.appendChild(link);
-        link.click();
-      });
-    });
-  });
-
-document
-  .querySelector("#exportButtonXlsx")
-  .addEventListener("click", (event) => {
-    event.preventDefault();
-    const data = {
-      functionName: "ExportExcel",
-    };
-    fetch("/adminRequests", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).then((response) => {
-      response.blob().then((blob) => {
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "ExportedTimeSheet.xlsx";
-        document.body.appendChild(link);
-        link.click();
-      });
-    });
-  });
