@@ -3,9 +3,9 @@ import dotenv from "dotenv";
 
 export function ConnectToDatabase() {
   try {
-    dotenv.config();
+    dotenv.config(); //Connects to the .env file
     const pool = mysql2
-      .createPool({
+      .createPool({ //Fetches variables from the .env file
         host: process.env.MYSQL_HOST,
         user: process.env.MYSQL_USER,
         password: process.env.MYSQL_PASSWORD,
