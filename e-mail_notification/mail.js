@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer'
 //import cron, { schedule } from 'node-cron'
 import schedule from 'node-schedule';
+import moment from 'moment';
 import {GetAllSubmitStatus, GetEmailfromSubmitstaus} from '../database/databaseTimeSheet.js';
 import {ConnectToDatabase} from '../database/databaseSetup.js';
 const poolData = ConnectToDatabase();
@@ -26,7 +27,11 @@ let mailOptions;
 
 
 schedule.scheduleJob(mins + ' ' + hours + ' * * '+ Weekday, async () => {
-let userIds = await GetAllSubmitStatus(poolData);
+
+let CurrentWeek = moment().isoWeek();
+let CurrentYear = moment().year();
+
+let userIds = await GetAllSubmitStatus(poolData,CurrentWeek,CurrentYear);
 let emails = await GetEmailfromSubmitstaus(poolData,userIds);
 console.log(emails);
 

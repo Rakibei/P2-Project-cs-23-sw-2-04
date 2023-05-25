@@ -34,14 +34,13 @@ document.querySelector("#formweek").addEventListener('submit', (event) => {
   // Extract the week value from the form input
   const formData = {
     week: event.target.week.value,
+    year: event.target.year.value,
   };
 
   console.log(formData);
-
-  // Split the week value into week and year components
-  const formDataWeek = formData.week.split("-W");
-  const week = Number(formDataWeek[1]);
-  const year = Number(formDataWeek[0]);
+  
+  const week = Number(formData.week);
+  const year = Number(formData.year);
 
   console.log(week + " " + year);
 
